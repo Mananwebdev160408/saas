@@ -217,14 +217,14 @@ export default function Home() {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1, duration: 1 }}
-              className="absolute top-20 left-10 p-3 rounded-2xl glass-card border border-white/10 flex items-center gap-3 animate-float"
+              className="absolute top-20 left-10 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float"
             >
-              <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-                <span className="material-icons text-blue-400 text-sm">person_add</span>
+              <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/20">
+                <span className="material-icons text-blue-400 text-xl">person_add</span>
               </div>
               <div className="text-left">
-                <div className="text-[10px] font-bold">Request Sent</div>
-                <div className="text-[8px] text-dim-grey">To: Sarah Jenkins</div>
+                <div className="text-sm font-bold">Request Sent</div>
+                <div className="text-xs text-dim-grey">To: Sarah Jenkins</div>
               </div>
             </motion.div>
 
@@ -233,14 +233,65 @@ export default function Home() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.2, duration: 1 }}
-              className="absolute top-40 right-10 p-3 rounded-2xl glass-card border border-white/10 flex items-center gap-3 animate-float animate-delay-1000"
+              className="absolute top-40 right-10 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float animate-delay-1000"
             >
-              <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
-                <span className="material-icons text-green-400 text-sm">reply</span>
+              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/20">
+                <span className="material-icons text-green-400 text-xl">reply</span>
               </div>
               <div className="text-left">
-                <div className="text-[10px] font-bold">New Reply!</div>
-                <div className="text-[8px] text-dim-grey">&quot;Let&apos;s talk tomorrow&quot;</div>
+                <div className="text-sm font-bold">New Reply!</div>
+                <div className="text-xs text-dim-grey">&quot;Let&apos;s talk tomorrow&quot;</div>
+              </div>
+            </motion.div>
+
+            {/* Meeting Booked Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5, duration: 1 }}
+              className="absolute bottom-32 left-16 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float"
+              style={{ animationDelay: '0.5s' }}
+            >
+              <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center border border-purple-500/20">
+                <span className="material-icons text-purple-400 text-xl">event_available</span>
+              </div>
+              <div className="text-left">
+                <div className="text-sm font-bold">Meeting Booked 🎉</div>
+                <div className="text-xs text-dim-grey">With: Alex @ TechCorp</div>
+              </div>
+            </motion.div>
+
+            {/* Campaign Stats Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.8, duration: 1 }}
+              className="absolute bottom-48 right-16 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float animate-delay-1000"
+              style={{ animationDelay: '1.5s' }}
+            >
+              <div className="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center border border-orange-500/20">
+                <span className="material-icons text-orange-400 text-xl">trending_up</span>
+              </div>
+              <div className="text-left">
+                <div className="text-sm font-bold">+34% Reply Rate</div>
+                <div className="text-xs text-dim-grey">Campaign: Q1 Outbound</div>
+              </div>
+            </motion.div>
+
+            {/* AI Enriched Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2, duration: 1 }}
+              className="absolute top-8 right-56 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float"
+              style={{ animationDelay: '0.8s' }}
+            >
+              <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/20">
+                <span className="material-icons text-indigo-400 text-xl">auto_awesome</span>
+              </div>
+              <div className="text-left">
+                <div className="text-sm font-bold">AI Enriched</div>
+                <div className="text-xs text-dim-grey">1,240 leads processed</div>
               </div>
             </motion.div>
           </div>
