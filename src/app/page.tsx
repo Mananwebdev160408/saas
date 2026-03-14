@@ -61,19 +61,21 @@ export default function Home() {
   });
 
   const pathHeight = useTransform(flowProgress, [0, 1], ["0%", "100%"]);
-  const step1Opacity = useTransform(flowProgress, [0.05, 0.15, 0.25, 0.35], [0, 1, 1, 0]);
-  const step2Opacity = useTransform(flowProgress, [0.3, 0.4, 0.5, 0.6], [0, 1, 1, 0]);
-  const step3Opacity = useTransform(flowProgress, [0.55, 0.65, 0.75, 0.85], [0, 1, 1, 0]);
-  const step4Opacity = useTransform(flowProgress, [0.8, 0.9, 0.95], [0, 1, 1]);
+  const step1Opacity = useTransform(flowProgress, [0.05, 0.15, 0.25, 0.3], [0, 1, 1, 0]);
+  const step2Opacity = useTransform(flowProgress, [0.25, 0.35, 0.45, 0.5], [0, 1, 1, 0]);
+  const step3Opacity = useTransform(flowProgress, [0.45, 0.55, 0.65, 0.7], [0, 1, 1, 0]);
+  const step4Opacity = useTransform(flowProgress, [0.65, 0.75, 0.85], [0, 1, 1]);
 
   const step1X = useTransform(flowProgress, [0.05, 0.15], [-50, 0]);
-  const step2X = useTransform(flowProgress, [0.3, 0.4], [50, 0]);
-  const step3X = useTransform(flowProgress, [0.55, 0.65], [-50, 0]);
-  const step4X = useTransform(flowProgress, [0.8, 0.9], [50, 0]);
+  const step2X = useTransform(flowProgress, [0.25, 0.35], [50, 0]);
+  const step3X = useTransform(flowProgress, [0.45, 0.55], [-50, 0]);
+  const step4X = useTransform(flowProgress, [0.65, 0.75], [50, 0]);
 
-  const step1Y = useTransform(flowProgress, [0.25, 0.35], [0, -30]);
-  const step2Y = useTransform(flowProgress, [0.5, 0.6], [0, -30]);
-  const step3Y = useTransform(flowProgress, [0.75, 0.85], [0, -30]);
+  const step1Y = useTransform(flowProgress, [0.25, 0.3], [0, -30]);
+  const step2Y = useTransform(flowProgress, [0.45, 0.5], [0, -30]);
+  const step3Y = useTransform(flowProgress, [0.65, 0.7], [0, -30]);
+  
+  const gridY = useTransform(flowProgress, [0.1, 0.8], ["0%", "-40%"]);
   const particleOpacity = useTransform(flowProgress, [0.05, 0.95], [0, 1]);
 
   useEffect(() => {
@@ -652,7 +654,7 @@ export default function Home() {
       </motion.section>
 
       {/* Multichannel Outreach: Sticky Scroll Flow Simulator */}
-      <section ref={flowRef} className="relative h-[500vh] bg-background-dark border-t border-white/5 z-0">
+      <section ref={flowRef} className="relative h-[650vh] bg-background-dark border-t border-white/5 z-0">
         <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden z-10">
           {/* Header */}
           <div className="absolute top-20 left-0 right-0 z-20 px-4 text-center">
@@ -693,7 +695,10 @@ export default function Home() {
             </div>
 
             {/* Stages Grid */}
-            <div className="w-full flex flex-col gap-32 relative z-10">
+            <motion.div 
+              style={{ y: gridY }}
+              className="w-full flex flex-col gap-20 relative z-10"
+            >
               {/* Stage 1: Discovery */}
               <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-48">
                 <motion.div 
@@ -777,7 +782,7 @@ export default function Home() {
                   </p>
                 </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
