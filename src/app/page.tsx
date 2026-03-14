@@ -49,7 +49,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
+    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative overflow-x-hidden">
       {/* Quirky Background Blobs */}
       <div className="quirky-blob w-96 h-96 bg-purple-600/10 top-20 -left-48" />
       <div className="quirky-blob w-[500px] h-[500px] bg-blue-600/5 top-[1000px] -right-64 animate-delay-1000" />
@@ -115,7 +115,7 @@ export default function Home() {
                 </div>
               </div>
               
-              <div className="relative h-[400px] flex items-center justify-center overflow-hidden">
+              <div className="relative h-auto min-h-[500px] md:h-[400px] flex items-center justify-center overflow-hidden py-8 md:py-0">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl relative z-10">
                   {/* Step 1: Profile View */}
                   <div className="flex flex-col items-center gap-4 group/step">
@@ -135,7 +135,6 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Step 2: Connection Request */}
                   <div className="flex flex-col items-center gap-4 relative">
                     <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
                     <div className="relative">
@@ -355,12 +354,12 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm text-dim-grey uppercase tracking-widest mb-8">Trusted by 4,000+ companies</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-            <h3 className="text-xl font-bold font-display text-white">INTERCOM</h3>
-            <h3 className="text-xl font-bold font-display text-white italic">Clay</h3>
-            <h3 className="text-xl font-bold font-display text-white flex items-center gap-1"><span className="material-icons">bolt</span>Instantly</h3>
-            <h3 className="text-xl font-bold font-display text-white">Trigify.io</h3>
-            <h3 className="text-xl font-bold font-display text-white tracking-widest">FRECKLE.</h3>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+            <h3 className="text-lg md:text-xl font-bold font-display text-white">INTERCOM</h3>
+            <h3 className="text-lg md:text-xl font-bold font-display text-white italic">Clay</h3>
+            <h3 className="text-lg md:text-xl font-bold font-display text-white flex items-center gap-1"><span className="material-icons text-base">bolt</span>Instantly</h3>
+            <h3 className="text-lg md:text-xl font-bold font-display text-white">Trigify.io</h3>
+            <h3 className="text-lg md:text-xl font-bold font-display text-white tracking-widest">FRECKLE.</h3>
           </div>
         </div>
       </motion.section>
@@ -409,8 +408,8 @@ export default function Home() {
 
                   {/* Multiple Rings of Orbit Icons */}
                   {[
-                    { ring: 0, count: 8, radius: 140, speed: 'animate-spin-slow' },
-                    { ring: 1, count: 6, radius: 100, speed: 'animate-spin-reverse-slow' }
+                    { ring: 0, count: 8, radius: 130, speed: 'animate-spin-slow' },
+                    { ring: 1, count: 6, radius: 90, speed: 'animate-spin-reverse-slow' }
                   ].map((orbit, ringIdx) => (
                     <div key={`ring-${ringIdx}`} className="absolute inset-0">
                       {Array.from({ length: orbit.count }).map((_, i) => {
@@ -529,39 +528,39 @@ export default function Home() {
             <div className="bg-background-dark rounded-xl border border-white/5 p-8 min-h-[500px] relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-purple-900/20 via-black to-black transition-all group-hover:from-purple-900/40"></div>
               <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
-                <div className="flex items-center gap-6">
-                  <div className="p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                    <div className="w-10 h-10 rounded bg-white/10 flex items-center justify-center">
-                      <span className="material-icons text-white">email</span>
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                  <div className="p-3 sm:p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-full sm:w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded bg-white/10 flex items-center justify-center">
+                      <span className="material-icons text-white text-base sm:text-xl">email</span>
                     </div>
                     <div>
-                      <div className="text-sm font-bold">Email not found</div>
-                      <div className="text-xs text-dim-grey">Switch channel</div>
+                      <div className="text-xs sm:text-sm font-bold">Email not found</div>
+                      <div className="text-[10px] text-dim-grey">Switch channel</div>
                     </div>
                   </div>
-                  <div className="h-px w-12 bg-white/20"></div>
-                  <div className="p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                    <div className="w-10 h-10 rounded bg-white/10 flex items-center justify-center">
-                      <span className="material-icons text-white">check</span>
+                  <div className="hidden md:block h-px w-8 lg:w-12 bg-white/20"></div>
+                  <div className="p-3 sm:p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-full sm:w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded bg-white/10 flex items-center justify-center">
+                      <span className="material-icons text-white text-base sm:text-xl">check</span>
                     </div>
                     <div>
-                      <div className="text-sm font-bold">Email found</div>
-                      <div className="text-xs text-dim-grey">Proceed to verify</div>
+                      <div className="text-xs sm:text-sm font-bold">Email found</div>
+                      <div className="text-[10px] text-dim-grey">Proceed to verify</div>
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-12 sm:gap-24 relative mt-12">
-                  <div className="absolute top-0 left-1/4 w-px h-16 bg-linear-to-b from-white/20 to-transparent -translate-x-1/2"></div>
-                  <div className="absolute top-0 right-1/4 w-px h-16 bg-linear-to-b from-white/20 to-transparent translate-x-1/2"></div>
-                  <div className="pt-16">
-                    <button className="group relative flex items-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
+                <div className="flex flex-col sm:flex-row gap-8 sm:gap-24 relative mt-12 w-full justify-center">
+                  <div className="flex-1 max-w-[280px] relative pt-12 sm:pt-16">
+                    <div className="absolute top-0 left-1/2 w-px h-12 sm:h-16 bg-linear-to-b from-white/20 to-transparent -translate-x-1/2"></div>
+                    <button className="w-full group relative flex items-center justify-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
                       <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
                       <span className="font-medium text-gray-300 group-hover:text-white">Add to Smartlead</span>
                       <div className="absolute -inset-0.5 bg-linear-to-r from-purple-500 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
                     </button>
                   </div>
-                  <div className="pt-16">
-                    <button className="group relative flex items-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
+                  <div className="flex-1 max-w-[280px] relative pt-12 sm:pt-16">
+                    <div className="absolute top-0 left-1/2 w-px h-12 sm:h-16 bg-linear-to-b from-white/20 to-transparent -translate-x-1/2"></div>
+                    <button className="w-full group relative flex items-center justify-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
                       <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
                       <span className="font-medium text-gray-300 group-hover:text-white">Add to Instantly</span>
                       <div className="absolute -inset-0.5 bg-linear-to-r from-blue-500 to-cyan-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
@@ -663,83 +662,84 @@ export default function Home() {
           </div>
           <div className="glass-card rounded-2xl p-6 md:p-10 border border-white/10 relative overflow-hidden group">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
-              <div className="grid grid-cols-3 gap-4 sm:gap-8 w-full md:w-auto">
-                <div className="text-center hover:scale-105 transition-transform cursor-default">
-                  <div className="text-xs text-dim-grey uppercase tracking-wide">Sent</div>
-                  <div className="text-2xl font-bold font-display">2,557</div>
+              <div className="flex items-center gap-4 sm:gap-8 w-full md:w-auto justify-between md:justify-start">
+                <div className="text-center group-hover:scale-105 transition-transform cursor-default">
+                  <div className="text-[10px] sm:text-xs text-dim-grey uppercase tracking-wide">Sent</div>
+                  <div className="text-xl sm:text-2xl font-bold font-display">2,557</div>
                 </div>
-                <div className="w-px h-10 bg-white/10"></div>
-                <div className="text-center hover:scale-105 transition-transform cursor-default">
-                  <div className="text-xs text-dim-grey uppercase tracking-wide">Accepted</div>
-                  <div className="text-2xl font-bold font-display text-green-400">840</div>
+                <div className="hidden xs:block w-px h-8 sm:h-10 bg-white/10"></div>
+                <div className="text-center group-hover:scale-105 transition-transform cursor-default">
+                  <div className="text-[10px] sm:text-xs text-dim-grey uppercase tracking-wide">Accepted</div>
+                  <div className="text-xl sm:text-2xl font-bold font-display text-green-400">840</div>
                 </div>
-                <div className="w-px h-10 bg-white/10"></div>
-                <div className="text-center hover:scale-105 transition-transform cursor-default">
-                  <div className="text-xs text-dim-grey uppercase tracking-wide">Replies</div>
-                  <div className="text-2xl font-bold font-display text-blue-400">178</div>
+                <div className="hidden xs:block w-px h-8 sm:h-10 bg-white/10"></div>
+                <div className="text-center group-hover:scale-105 transition-transform cursor-default">
+                  <div className="text-[10px] sm:text-xs text-dim-grey uppercase tracking-wide">Replies</div>
+                  <div className="text-xl sm:text-2xl font-bold font-display text-blue-400">178</div>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <button className="bg-white text-black px-4 py-2 rounded text-sm font-bold hover:scale-105 active:scale-95 transition-all">Try HeyReach</button>
+              <div className="flex gap-2 w-full md:w-auto">
+                <button className="w-full md:w-auto bg-white text-black px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-sm font-bold hover:scale-105 active:scale-95 transition-all shadow-xl">Try HeyReach</button>
               </div>
             </div>
             {/* Animated SVG Chart */}
-            <div className="relative h-64 w-full bg-linear-to-b from-white/5 to-transparent rounded-lg border border-white/5 p-4 flex items-end gap-1">
-              <div className="w-full flex items-end justify-between h-full px-2">
-                <motion.svg 
-                  initial={{ scaleY: 0, originY: 1 }}
-                  whileInView={{ scaleY: 1 }}
+            <div className="relative h-64 md:h-80 w-full bg-linear-to-b from-white/5 to-transparent rounded-xl border border-white/5 p-4 overflow-hidden">
+              <motion.svg 
+                viewBox="0 0 800 250"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1 }}
+                className="absolute inset-0 w-full h-full p-4 md:p-8 overflow-visible" 
+                preserveAspectRatio="none"
+              >
+                <motion.path 
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
-                  className="absolute inset-0 w-full h-full p-4 overflow-visible" 
-                  preserveAspectRatio="none"
-                >
-                  <motion.path 
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 2, delay: 0.5 }}
-                    d="M0,200 C50,150 100,180 150,100 S250,120 300,50 S400,80 500,20 S600,60 800,10" 
-                    fill="none" 
-                    stroke="#60A5FA" 
-                    strokeWidth="2" 
-                    vectorEffect="non-scaling-stroke"
-                  />
-                  <motion.path 
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 2, delay: 0.7 }}
-                    d="M0,220 C50,180 100,200 150,150 S250,170 300,120 S400,140 500,80 S600,100 800,50" 
-                    fill="none" 
-                    stroke="#4ADE80" 
-                    strokeDasharray="4 4" 
-                    strokeWidth="2" 
-                    vectorEffect="non-scaling-stroke"
-                    className="opacity-50"
-                  />
-                  <defs>
-                    <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: 'rgba(96, 165, 250, 0.2)', stopOpacity: 1 }}></stop>
-                      <stop offset="100%" style={{ stopColor: 'rgba(96, 165, 250, 0)', stopOpacity: 0 }}></stop>
-                    </linearGradient>
-                  </defs>
-                  <motion.path 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: 1.5 }}
-                    d="M0,200 C50,150 100,180 150,100 S250,120 300,50 S400,80 500,20 S600,60 800,10 V250 H0 Z" 
-                    fill="url(#grad1)" 
-                    stroke="none" 
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </motion.svg>
-                <div className="absolute bottom-2 left-4 text-[10px] text-dim-grey">Apr 14</div>
-                <div className="absolute bottom-2 left-1/4 text-[10px] text-dim-grey">Apr 16</div>
-                <div className="absolute bottom-2 left-2/4 text-[10px] text-dim-grey">Apr 18</div>
-                <div className="absolute bottom-2 left-3/4 text-[10px] text-dim-grey">Apr 20</div>
-                <div className="absolute bottom-2 right-4 text-[10px] text-dim-grey">Apr 22</div>
+                  transition={{ duration: 2, delay: 0.5 }}
+                  d="M0,200 C100,150 200,180 300,100 S450,120 550,50 S650,80 750,20 S800,60 850,10" 
+                  fill="none" 
+                  stroke="#60A5FA" 
+                  strokeWidth="3" 
+                  vectorEffect="non-scaling-stroke"
+                />
+                <motion.path 
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 2, delay: 0.7 }}
+                  d="M0,220 C100,180 200,200 300,150 S450,170 550,120 S650,140 750,80 S800,100 850,50" 
+                  fill="none" 
+                  stroke="#4ADE80" 
+                  strokeDasharray="6 6" 
+                  strokeWidth="2" 
+                  vectorEffect="non-scaling-stroke"
+                  className="opacity-40"
+                />
+                <defs>
+                  <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: 'rgba(96, 165, 250, 0.15)', stopOpacity: 1 }}></stop>
+                    <stop offset="100%" style={{ stopColor: 'rgba(96, 165, 250, 0)', stopOpacity: 0 }}></stop>
+                  </linearGradient>
+                </defs>
+                <motion.path 
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5, delay: 1.2 }}
+                  d="M0,200 C100,150 200,180 300,100 S450,120 550,50 S650,80 750,20 S800,60 850,10 V250 H0 Z" 
+                  fill="url(#grad1)" 
+                  stroke="none" 
+                  vectorEffect="non-scaling-stroke"
+                />
+              </motion.svg>
+              
+              {/* Chart X-Axis Labels */}
+              <div className="absolute bottom-4 left-0 w-full flex justify-between px-6 sm:px-12 pointer-events-none">
+                {["Apr 14", "Apr 16", "Apr 18", "Apr 20", "Apr 22"].map((date, i) => (
+                  <span key={i} className="text-[10px] text-dim-grey font-medium">{date}</span>
+                ))}
               </div>
             </div>
           </div>
@@ -775,7 +775,7 @@ export default function Home() {
         </div>
 
         {/* Marquee Container */}
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <div className="absolute inset-y-0 left-0 w-32 bg-linear-to-r from-black to-transparent z-10"></div>
           <div className="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-black to-transparent z-10"></div>
           
@@ -786,10 +786,10 @@ export default function Home() {
               ease: "linear", 
               repeat: Infinity 
             }}
-            className="flex gap-8 whitespace-nowrap w-max px-4"
+            className="flex gap-4 md:gap-8 whitespace-nowrap w-max px-4"
           >
             {[1, 2, 3, 4, 1, 2, 3, 4].map((item, idx) => (
-              <div key={idx} className="w-[450px] inline-block whitespace-normal">
+              <div key={idx} className="w-[300px] sm:w-[450px] inline-block whitespace-normal">
                 <div className="glass-card rounded-3xl p-8 border border-white/10 h-full hover:border-white/30 transition-all group">
                   <div className="flex items-center gap-4 mb-8">
                     <div className="w-12 h-12 rounded-full bg-linear-to-br from-white/10 to-transparent border border-white/20 overflow-hidden flex items-center justify-center">
@@ -854,7 +854,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
-        className="py-24 relative overflow-hidden bg-[#050505]"
+        className="py-24 relative overflow-hidden bg-background-dark"
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 

@@ -52,7 +52,7 @@ export default function Pricing() {
   ];
 
   return (
-    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative overflow-hidden">
+    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative overflow-x-hidden">
       {/* Grid Background Overlay */}
       <div className="fixed inset-0 grid-bg opacity-20 pointer-events-none"></div>
 
@@ -72,10 +72,10 @@ export default function Pricing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-8xl font-display font-bold mb-8 uppercase italic tracking-tighter leading-tight"
+            className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-display font-bold mb-8 uppercase italic tracking-tighter leading-tight"
           >
             Simple, <br />
-            <span className="metallic-text border-t-2 border-b-2 border-white/20 py-2">Transparent</span> Pricing
+            <span className="metallic-text border-t-2 border-b-2 border-white/20 py-2 sm:py-4 inline-block my-2">Transparent</span> Pricing
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
