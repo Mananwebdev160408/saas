@@ -2,49 +2,65 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
     };
 
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 4);
+    }, 3000);
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    // Initial check for scroll position
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
-    <main className="min-h-screen bg-background-dark">
+    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans">
       {/* Navigation */}
       <nav 
-        className={`fixed z-50 left-1/2 -translate-x-1/2 transition-all duration-700 cubic-bezier(0.4, 0, 0.2, 1) ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 flex justify-center ${
           isScrolled 
-            ? "top-4 w-[85%] md:w-[70%] rounded-full border border-white/10 bg-background-dark/60 backdrop-blur-xl px-6 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.8)]" 
-            : "top-0 w-full border-b border-white/5 bg-background-dark/80 backdrop-blur-md px-4"
+            ? 'mt-4 px-4' 
+            : 'px-0'
         }`}
       >
-        <div className="max-w-7xl mx-auto">
-          <div className={`flex items-center justify-between transition-all duration-500 ${isScrolled ? "h-14" : "h-20"}`}>
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 bg-white rounded-md flex items-center justify-center shrink-0">
-                <span className="material-icons text-black text-sm font-bold">bolt</span>
-              </div>
-              <span className="font-display font-bold text-xl tracking-tight hidden sm:block">HeyReach</span>
+        <div 
+          className={`transition-all duration-500 flex items-center justify-between border-white/5 bg-background-dark/80 backdrop-blur-md ${
+            isScrolled 
+              ? 'w-[70%] rounded-full border px-8 py-3 shadow-2xl' 
+              : 'w-full border-b px-4 sm:px-6 lg:px-8 py-5'
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 bg-white rounded flex items-center justify-center">
+              <span className="material-icons text-black text-sm font-bold">bolt</span>
             </div>
-            <div className="hidden md:block">
-              <div className="flex items-baseline space-x-4 lg:space-x-8">
-                <Link className="text-dim-grey hover:text-white transition-all duration-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-white/5" href="#">Product</Link>
-                <Link className="text-dim-grey hover:text-white transition-all duration-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-white/5" href="#">Solutions</Link>
-                <Link className="text-dim-grey hover:text-white transition-all duration-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-white/5" href="#">Pricing</Link>
-                <Link className="text-dim-grey hover:text-white transition-all duration-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-white/5" href="#">Resources</Link>
-              </div>
+            <span className="font-display font-bold text-xl tracking-tight text-white">heyreach</span>
+          </div>
+          <div className="hidden lg:block">
+            <div className="flex items-baseline space-x-8">
+              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Product</Link>
+              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Solutions</Link>
+              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Pricing</Link>
+              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Resources</Link>
             </div>
-            <div className="flex gap-4 items-center">
-              <Link className="text-sm font-medium text-dim-grey hover:text-white transition-colors" href="#">Login</Link>
-              <Link className="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-full text-sm font-medium border border-white/10 transition-all hover:scale-105 active:scale-95 whitespace-nowrap" href="#">Start Free Trial</Link>
-            </div>
+          </div>
+          <div className="flex gap-4 items-center">
+            <Link className="text-sm font-medium text-dim-grey hover:text-white hidden sm:block" href="#">Login</Link>
+            <Link className="bg-white text-black px-6 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap" href="#">Start Free Trial</Link>
           </div>
         </div>
       </nav>
@@ -52,7 +68,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
         <div className="absolute inset-0 grid-bg opacity-30"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in-up">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 animate-float">
             <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
             <span className="text-xs font-medium text-gray-300 uppercase tracking-wider">New: AI Sequence Generator</span>
@@ -65,9 +81,12 @@ export default function Home() {
             Unlimited senders. One fixed cost. Automate outreach for agencies, sales teams, and GTM experts with absolute precision.
           </p>
           <div className="mt-10 flex justify-center gap-4 flex-col sm:flex-row">
-            <Link className="bg-white text-black hover:bg-gray-200 px-8 py-4 rounded-lg text-base font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:scale-105 active:scale-95 flex items-center justify-center gap-2" href="#">
-              Try HeyReach for free
-              <span className="material-icons text-sm">arrow_forward</span>
+            <Link className="group relative bg-white text-black px-10 py-5 rounded-lg text-xl font-bold transition-all shadow-2xl hover:scale-105 active:scale-95 overflow-hidden" href="#">
+              <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                Try HeyReach free
+                <span className="material-icons">rocket_launch</span>
+              </span>
             </Link>
             <Link className="group px-8 py-4 rounded-lg text-base font-medium border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2" href="#">
               <span className="material-icons text-dim-grey group-hover:text-white transition-colors">play_circle</span>
@@ -83,61 +102,128 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Dashboard Preview */}
+          {/* Automation Simulation */}
           <div className="mt-16 relative mx-auto max-w-5xl group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
-            <div className="relative glass-card rounded-xl p-2 md:p-4 overflow-hidden">
-              <div className="flex items-center gap-2 mb-4 px-2 opacity-50">
-                <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
-              </div>
-              <div className="grid grid-cols-12 gap-4 h-[400px] md:h-[500px] relative">
-                <div className="hidden md:block col-span-2 border-r border-white/5 pr-4 flex flex-col gap-4">
-                  <div className="h-8 w-full bg-white/5 rounded animate-pulse"></div>
-                  <div className="h-8 w-3/4 bg-white/5 rounded animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                  <div className="h-8 w-5/6 bg-white/5 rounded animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+            <div className="absolute -inset-1 bg-linear-to-b from-white/10 via-white/5 to-white/10 rounded-3xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+            <div className="relative glass-card rounded-3xl p-4 md:p-8 border border-white/10 overflow-hidden">
+              <div className="flex items-center justify-between mb-8 px-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
                 </div>
-                <div className="col-span-12 md:col-span-10 flex flex-col items-center justify-center relative">
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl">
-                    <div className="flex justify-between items-center mb-12">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-800 to-black border border-white/10 flex items-center justify-center shadow-lg relative z-10 animate-float">
-                        <span className="material-icons text-white/50">person</span>
+                <div className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-medium text-dim-grey flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                  Campaign: Ultra-Scale Outreach Q1
+                </div>
+              </div>
+              
+              <div className="relative h-[400px] flex items-center justify-center overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl relative z-10">
+                  {/* Step 1: Profile View */}
+                  <div className="flex flex-col items-center gap-4 group/step">
+                    <div className="relative">
+                      <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
+                        activeStep >= 0 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
+                      }`}>
+                        <span className={`material-icons text-3xl transition-colors duration-500 ${activeStep >= 0 ? "text-white" : "text-white/20"}`}>visibility</span>
                       </div>
-                      <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent flex-1 mx-4 relative">
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black px-2 text-xs text-dim-grey border border-white/10 rounded">Wait 2d</div>
-                      </div>
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-800 to-black border border-white/10 flex items-center justify-center shadow-lg relative z-10 animate-float" style={{ animationDelay: '1s' }}>
-                        <span className="material-icons text-white/50">mail</span>
-                      </div>
-                      <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent flex-1 mx-4 relative">
-                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black px-2 text-xs text-dim-grey border border-white/10 rounded">If Replied</div>
-                      </div>
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-800 to-black border border-white/10 flex items-center justify-center shadow-lg relative z-10 animate-float" style={{ animationDelay: '2s' }}>
-                        <span className="material-icons text-white/50">check_circle</span>
-                      </div>
+                      {activeStep === 0 && (
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+                      )}
                     </div>
-                    {/* Floating Notifications */}
-                    <div className="absolute -top-20 left-10 p-2 glass-card rounded-lg flex items-center gap-3 animate-float" style={{ animationDuration: "3s" }}>
-                      <div className="w-8 h-8 rounded-full bg-gray-600 border border-white/20 overflow-hidden shrink-0">
-                        <img alt="Avatar" className="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG3_TUBhuhBEbhSqpPBNz_vhIP_v_6c-RZRnzoidOS0WpnUiaY818EfcFvdPqRFiKRUVlr9ocvb2gLXpcTPUy6oyPfkDflXDcJGFHfox6UiKO9WRvwhgsEcbPwd0AYhI77ip2x3BBPB2L4_MZuu4Hvt0kNW7YehAS58LDePJKttOw9W2NLMK-yArUdRGKoozId3miJ0vE2VTsFP8XKHuyS-Ji9HRwelTQCQVlcst4KeLnF7HVJr7jqVwpQbtv62CuLDrnaKycZddkP" />
-                      </div>
-                      <div className="text-left">
-                        <div className="text-[10px] text-white font-medium">Sarah connected</div>
-                        <div className="text-[10px] text-dim-grey">Just now</div>
-                      </div>
+                    <div className="text-center">
+                      <div className={`font-bold text-sm mb-1 transition-colors ${activeStep >= 0 ? "text-white" : "text-dim-grey"}`}>Profile Visit</div>
+                      <div className="text-[10px] text-dim-grey">AI-driven viewing</div>
                     </div>
-                    <div className="absolute -bottom-10 right-20 p-2 glass-card rounded-lg flex items-center gap-3 animate-float" style={{ animationDuration: "4s", animationDelay: '1.5s' }}>
-                      <div className="w-8 h-8 rounded-full bg-gray-600 border border-white/20 overflow-hidden shrink-0">
-                        <img alt="Avatar" className="w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiu474yiGrg9-9pfity0dPBiuCP_JxgpH8Eoq9voSWqvp6gZScTck2XNtnLaKSMbBh5gO_8_GbYfdy03cjCM672yXKk_gxESBC2CLyUkYpq1m6zfHcWi0JMn_sbsRbwdLpxYS1Bl0MESEOaT-kto9EcoGW04bIWf6Xk6Q2Fi0K6KCgms4ZHWU6Elqc4vmXGrdHtgqnPmuVLZoJ1AuG7VXM2bePyjeyQbS8885MR-us_hqLnwhHJOIFX8IZY4FdttL2cAD-hWuXeK76" />
+                  </div>
+
+                  {/* Step 2: Connection Request */}
+                  <div className="flex flex-col items-center gap-4 relative">
+                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
+                    <div className="relative">
+                      <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
+                        activeStep >= 1 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
+                      }`}>
+                        <span className={`material-icons text-3xl transition-colors duration-500 ${activeStep >= 1 ? "text-white" : "text-white/20"}`}>person_add</span>
                       </div>
-                      <div className="text-left">
-                        <div className="text-[10px] text-white font-medium">Mike replied</div>
-                        <div className="text-[10px] text-dim-grey">2m ago</div>
+                      {activeStep === 1 && (
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <div className={`font-bold text-sm mb-1 transition-colors ${activeStep >= 1 ? "text-white" : "text-dim-grey"}`}>Connect</div>
+                      <div className="text-[10px] text-dim-grey">With personalized note</div>
+                    </div>
+                  </div>
+
+                  {/* Step 3: Message / Email */}
+                  <div className="flex flex-col items-center gap-4 relative">
+                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
+                    <div className="relative">
+                      <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
+                        activeStep >= 2 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
+                      }`}>
+                        <span className={`material-icons text-3xl transition-colors duration-500 ${activeStep >= 2 ? "text-white" : "text-white/20"}`}>alternate_email</span>
                       </div>
+                      {activeStep === 2 && (
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <div className={`font-bold text-sm mb-1 transition-colors ${activeStep >= 2 ? "text-white" : "text-dim-grey"}`}>Multichannel</div>
+                      <div className="text-[10px] text-dim-grey">LinkedIn + Email</div>
                     </div>
                   </div>
                 </div>
+
+                {/* Automation Log Overlay */}
+                <div className="absolute bottom-4 left-4 right-4 h-24 glass-card border-white/5 rounded-xl p-4 overflow-hidden">
+                  <div className="flex flex-col gap-2">
+                    {activeStep >= 0 && (
+                      <div className="flex items-center gap-3 text-[10px] animate-fade-in-up">
+                        <span className="text-blue-400 font-mono">[14:26:01]</span>
+                        <span className="text-white">Visiting profile: <b>Sarah Wilson</b> (Head of GTM at ScaleFlow)</span>
+                        <span className="ml-auto text-green-500 flex items-center gap-1">
+                          <span className="material-icons text-[12px]">check_circle</span>
+                          Completed
+                        </span>
+                      </div>
+                    )}
+                    {activeStep >= 1 && (
+                      <div className="flex items-center gap-3 text-[10px] animate-fade-in-up">
+                        <span className="text-blue-400 font-mono">[14:26:05]</span>
+                        <span className="text-white">Sending connection request with AI-personalized note...</span>
+                        <span className="ml-auto text-green-500 flex items-center gap-1">
+                          <span className="material-icons text-[12px]">check_circle</span>
+                          Sent
+                        </span>
+                      </div>
+                    )}
+                    {activeStep >= 2 && (
+                      <div className="flex items-center gap-3 text-[10px] animate-fade-in-up">
+                        <span className="text-blue-400 font-mono">[14:26:12]</span>
+                        <span className="text-white">Lead connected. Initializing multichannel sequence (Email 1)...</span>
+                        <span className="ml-auto text-blue-400 flex items-center gap-1 animate-pulse">
+                          <span className="material-icons text-[12px]">sync</span>
+                          Processing
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Particle / Connection Lines */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="transparent" />
+                      <stop offset="50%" stopColor="white" />
+                      <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M 0 200 L 1000 200" stroke="url(#lineGrad)" strokeWidth="1" fill="none" className="animate-draw" />
+                </svg>
               </div>
             </div>
           </div>
@@ -149,6 +235,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm text-dim-grey uppercase tracking-widest mb-8">Trusted by 4,000+ companies</p>
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+            <h3 className="text-xl font-bold font-display text-white">INTERCOM</h3>
             <h3 className="text-xl font-bold font-display text-white italic">Clay</h3>
             <h3 className="text-xl font-bold font-display text-white flex items-center gap-1"><span className="material-icons">bolt</span>Instantly</h3>
             <h3 className="text-xl font-bold font-display text-white">Trigify.io</h3>
@@ -161,14 +248,14 @@ export default function Home() {
       <section className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="glass-card rounded-3xl p-8 lg:p-12 border border-white/10 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none"></div>
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
                   <span className="text-xs font-bold text-white uppercase tracking-wider">Smart Rotation</span>
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6">
-                  Auto-rotate <span className="metallic-text">LinkedIn senders</span>
+                  Auto-rotate <span className="bg-clip-text text-transparent bg-linear-to-r from-white via-gray-400 to-gray-600">LinkedIn senders</span>
                 </h2>
                 <p className="text-gray-400 text-lg leading-relaxed mb-8">
                   Connect unlimited LinkedIn accounts for one flat fee. We automatically rotate sending between them to maximize reach while keeping accounts safe under the radar.
@@ -182,36 +269,225 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[400px] flex items-center justify-center">
+              <div className="relative min-h-[450px] flex items-center justify-center">
                 {/* Concentric Rotating Rings */}
-                <div className="relative w-80 h-80 rounded-full border border-white/5 flex items-center justify-center">
-                  {/* Outer Ring */}
-                  <div className="absolute inset-0 rounded-full border border-dashed border-white/10 animate-spin-slow"></div>
-                  {/* Inner Ring (Reverse) */}
-                  <div className="absolute inset-8 rounded-full border border-dashed border-white/10 animate-spin-reverse-slow"></div>
+                <div className="relative w-80 h-80 flex items-center justify-center">
+                  {/* Outer Orbit Paths */}
+                  <div className="absolute inset-0 rounded-full border border-white/5 bg-linear-to-r from-white/5 to-transparent"></div>
+                  <div className="absolute inset-10 rounded-full border border-white/5 bg-linear-to-r from-transparent via-white/5 to-transparent"></div>
                   
-                  <div className="w-20 h-20 bg-gradient-to-b from-gray-800 to-black rounded-full border border-white/20 flex items-center justify-center z-10 relative shadow-[0_0_30px_rgba(255,255,255,0.15)] animate-float">
-                    <span className="material-icons text-white text-3xl">hub</span>
+                  {/* Central Hub Icon */}
+                  <div className="relative z-10 w-24 h-24 rounded-full bg-linear-to-b from-white/10 to-transparent border border-white/20 flex items-center justify-center shadow-2xl backdrop-blur-xl group-hover:scale-110 transition-transform duration-500">
+                    <span className="material-icons text-5xl text-white drop-shadow-lg">hub</span>
                   </div>
 
-                  {/* Sender Avatars on Orbit */}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg animate-float">
-                    <img alt="Sender" className="opacity-80 object-cover w-full h-full hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOlkn1O4IvHcU6Et2FiRLanS7iJHmT1eNYEL8meFRb_Eod8TeNL4kDQeW90mPVDyx1uhq_0ZE27Aek7IvND3tFwDpEipWsJJzGNB9GXm893iKvRkX3_BPUTpMT7hvJ1M5oHwLNbJRlwrJMi6YivPdQBjmqL0DJLrrmaLthX_e_2d_Rki4eF6SUNdwq6Fj6xQriX-JblGlkCKWwyCazZz7PkUE29FZcdM5ZsPYplVG9iuVSp5vZbISUvYuR67bXjcq6S7k0dPMOHGnV" />
-                  </div>
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-12 h-12 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg animate-float" style={{ animationDelay: '1s' }}>
-                    <img alt="Sender" className="opacity-80 object-cover w-full h-full hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpW09xfpjy0vk06OAZFWG6V73_SoXJek146l_ojOnIArHWtbM972fqs9z-HlFb4oZr2XeQxri3lLmm7Stw_oAqC2qYRoOSxaH5fLmGjSHwmYSN_rVy6ro_RKh18FsPWyXBbfEuBjtitU35bfoqhDlx-Uia2ezWBGJz_DLqhangjuxBOYyFAUAQAj-PBA6hB-t5LnP7X14BozFKlAKk26vbDhGI_HZj-Si1hmJcShTZ7Kx8pc53jp2zHLi0NKFER1MJtp6eur16GEBE" />
-                  </div>
-                  <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg animate-float" style={{ animationDelay: '2s' }}>
-                    <img alt="Sender" className="opacity-80 object-cover w-full h-full hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2Zf7tpqUXMOXpyWIoFCIwqOt-kQF4gF_eIzh6HRmMPePKUyupIfnLoHIHk4HvfLwV6RSl8-C3iZkwu3jgKJXFHEItcPKM8tmFBy6BdphHnB1ENNpeEffPXxqmIgM2BP4B7Tjqw2kJ_bLdLDdN_fApBM-kK0jNhQTY9hgeVvLsWSdk23TqOtEY1QjowGNxrwR7iVAQY1IXuqUI1sQAoJLTVwyuaGuo1WoAVcxZgj110CI_b0nbTrhhYFXwVTxCB1eAw88TERXq6R61" />
-                  </div>
-                  <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg animate-float" style={{ animationDelay: '3s' }}>
-                    <img alt="Sender" className="opacity-80 object-cover w-full h-full hover:scale-110 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBej7__AC2fBf_klzl1PrMlohLyQZGappe4deSf7pt9iF2wNgT0KeVSMbQONQ_rTO7RPctti-og4N7_g3WVcFpuVM-dYRJ2MLoOqVSTu038cz7iGeDe9fMM79GksGj6DpSrSgYmEwky-jyDrw4I_SzQGrs1L7Cmc-A7ob3mfr-ueJJAdHMWMt0ug7-zd8IHP68RCCklbkZptDdrbWW2afwGNz7lpQpaLK4khrsd3AhVAhelnu76oB-QqJ7kD6kEokURBlx27dbV4lm0" />
-                  </div>
+                  {/* Outer Orbit Icons (12 icons total) */}
+                  {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle, i) => (
+                    <div 
+                      key={`orbit-${i}`}
+                      className="absolute inset-0 animate-spin-slow pointer-events-none" 
+                      style={{ transform: `rotate(${angle}deg)` }}
+                    >
+                      <div 
+                        className="absolute top-0 left-1/2 -ml-5 -mt-5 w-10 h-10 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg pointer-events-auto hover:scale-125 transition-transform duration-300"
+                        style={{ transform: `rotate(-${angle}deg)` }}
+                      >
+                        <img 
+                          alt="Sender" 
+                          className="opacity-80 object-cover w-full h-full" 
+                          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=sender-${i}`} 
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="50%" cy="50%" fill="none" r="160" stroke="white" strokeDasharray="4 4" strokeWidth="1"></circle>
+                  <circle cx="20%" cy="20%" fill="white" r="2" className="animate-pulse"></circle>
+                  <circle cx="80%" cy="30%" fill="white" r="3" className="animate-pulse" style={{ animationDelay: '1s' }}></circle>
+                  <circle cx="10%" cy="70%" fill="white" r="1.5" className="animate-pulse" style={{ animationDelay: '2s' }}></circle>
                 </svg>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Grid: Import Leads & Combine Steps */}
+      <section className="pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all -rotate-2 hover:rotate-0">
+              <div className="mb-8">
+                <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 border border-white/10 text-white">
+                  <span className="material-icons">download</span>
+                </div>
+                <h3 className="text-3xl font-display font-bold mb-4">Import <span className="text-green-400">qualified leads</span></h3>
+                <p className="text-gray-400">Run outbound and inbound-led campaigns. Import relevant LinkedIn contacts from Sales Navigator, Clay, HubSpot, or CSV.</p>
+              </div>
+              <div className="mt-auto relative h-48 bg-black/40 rounded-xl border border-white/5 overflow-hidden flex items-center justify-center">
+                <div className="absolute inset-0 grid-bg opacity-20"></div>
+                <div className="flex flex-col gap-3 w-3/4">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-default">
+                    <span className="material-icons text-blue-400">description</span>
+                    <span className="text-sm font-medium">Sales Navigator Search</span>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-default">
+                    <span className="material-icons text-orange-400">table_chart</span>
+                    <span className="text-sm font-medium">HubSpot List Import</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all">
+              <div className="mb-8">
+                <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 border border-white/10 text-white">
+                  <span className="material-icons">merge_type</span>
+                </div>
+                <h3 className="text-3xl font-display font-bold mb-4">Combine <span className="text-blue-400">LinkedIn steps</span></h3>
+                <p className="text-gray-400">Automate actions such as connection requests, messages, and profile views. Use 'If Connected' logic for precision.</p>
+              </div>
+              <div className="mt-auto relative h-48 bg-black/40 rounded-xl border border-white/5 overflow-hidden flex items-center justify-center">
+                <div className="flex items-center gap-2">
+                  <div className="px-3 py-2 rounded bg-white/10 border border-white/10 text-xs">Connection</div>
+                  <div className="w-8 h-px bg-white/20"></div>
+                  <div className="px-3 py-2 rounded bg-white/10 border border-white/10 text-xs flex flex-col items-center gap-1">
+                    <span>Condition</span>
+                  </div>
+                  <div className="w-8 h-px bg-white/20"></div>
+                  <div className="px-3 py-2 rounded bg-blue-500/20 border border-blue-500/30 text-blue-300 text-xs">Message</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Multichannel Outreach Section */}
+      <section className="py-24 bg-linear-to-b from-black to-[#0a0a0a] border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-purple-300 to-indigo-300">Multichannel outreach</span>, done right
+            </h2>
+            <p className="text-gray-400 text-lg">
+              Native integrations with Instantly and Smartlead. Switching between tools is dead-simple, no GTM engineer needed.
+            </p>
+          </div>
+          <div className="glass-card rounded-3xl border border-white/10 p-1 md:p-4 overflow-hidden relative group">
+            <div className="bg-[#050505] rounded-xl border border-white/5 p-8 min-h-[500px] relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-purple-900/20 via-black to-black transition-all group-hover:from-purple-900/40"></div>
+              <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
+                <div className="flex items-center gap-6">
+                  <div className="p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                    <div className="w-10 h-10 rounded bg-white/10 flex items-center justify-center">
+                      <span className="material-icons text-white">email</span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold">Email not found</div>
+                      <div className="text-xs text-dim-grey">Switch channel</div>
+                    </div>
+                  </div>
+                  <div className="h-px w-12 bg-white/20"></div>
+                  <div className="p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                    <div className="w-10 h-10 rounded bg-white/10 flex items-center justify-center">
+                      <span className="material-icons text-white">check</span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold">Email found</div>
+                      <div className="text-xs text-dim-grey">Proceed to verify</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-12 sm:gap-24 relative mt-12">
+                  <div className="absolute top-0 left-1/4 w-px h-16 bg-gradient-to-b from-white/20 to-transparent -translate-x-1/2"></div>
+                  <div className="absolute top-0 right-1/4 w-px h-16 bg-gradient-to-b from-white/20 to-transparent translate-x-1/2"></div>
+                  <div className="pt-16">
+                    <button className="group relative flex items-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
+                      <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
+                      <span className="font-medium text-gray-300 group-hover:text-white">Add to Smartlead</span>
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
+                    </button>
+                  </div>
+                  <div className="pt-16">
+                    <button className="group relative flex items-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
+                      <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                      <span className="font-medium text-gray-300 group-hover:text-white">Add to Instantly</span>
+                      <div className="absolute -inset-0.5 bg-linear-to-r from-blue-500 to-cyan-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Unified Inbox Section */}
+      <section className="py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1 relative">
+              <div className="glass-card rounded-3xl p-2 border border-white/10 transform rotate-[-2deg] hover:rotate-0 transition-all duration-700 animate-float">
+                <div className="bg-black rounded-2xl overflow-hidden border border-white/5 relative h-[500px]">
+                  <div className="bg-graphite p-4 border-b border-white/10 flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-gray-600 relative overflow-hidden">
+                        <img alt="Inbox User" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvnJauUxvC4prR8vKB4OsY8Fya2I0vyxeClaV96qOMk7JUzLHmL4lzS3vtB1byu3kdVWhY-fFHRRfBnauqXxT9IV0i6bSvzz2mTPNIvWdZldTeO87GJjdb8KdXl8Ay2DcUjI1Zbg6yDlMDb5Aj7fAA7SvJfrFjJPbY-yH-mf5oNkHqKjKavEBL5MB6T6G2vhphTgjDjA7jfKECzvm-PICEwmVuTGGvxQbTtJDK-oW6Nc_kpoetyXcAiyjYyHtm4uLbUWYg6-lpjc78" />
+                        <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border border-black"></div>
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold">Unified Inbox</div>
+                        <div className="text-[10px] text-gray-400">All accounts active</div>
+                      </div>
+                    </div>
+                    <span className="material-icons text-gray-400 text-sm cursor-pointer hover:text-white transition-colors">settings</span>
+                  </div>
+                  <div className="p-2 space-y-2">
+                    <div className="p-3 bg-white/5 rounded-lg border border-white/5 hover:bg-white/10 cursor-pointer transition-colors group">
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium group-hover:text-white">Thomas Lean</span>
+                        <span className="text-xs text-dim-grey">10:42 AM</span>
+                      </div>
+                      <p className="text-xs text-gray-400 truncate">That sounds awesome, I've been looking...</p>
+                    </div>
+                    <div className="p-3 bg-transparent rounded-lg hover:bg-white/5 cursor-pointer transition-colors group">
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium text-gray-300 group-hover:text-white">Sarah Wilson</span>
+                        <span className="text-xs text-dim-grey">Yesterday</span>
+                      </div>
+                      <p className="text-xs text-gray-500 truncate">Let's schedule a call for next week.</p>
+                    </div>
+                    <div className="p-3 bg-transparent rounded-lg hover:bg-white/5 cursor-pointer transition-colors group">
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium text-gray-300 group-hover:text-white">Michael Gough</span>
+                        <span className="text-xs text-dim-grey">Mon</span>
+                      </div>
+                      <p className="text-xs text-gray-500 truncate">Thanks for the connection request!</p>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-0 w-full p-4 bg-graphite border-t border-white/10">
+                    <div className="bg-black rounded-lg p-3 text-xs text-gray-500 border border-white/5 flex justify-between items-center hover:border-white/20 transition-all cursor-text">
+                      <span>Type a message...</span>
+                      <span className="material-icons text-sm hover:text-white cursor-pointer">send</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
+                <span className="text-xs font-bold text-orange-400 uppercase tracking-wider">Zero Context Switching</span>
+              </div>
+              <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6">
+                Manage replies in <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-200 to-orange-400">Unified Inbox</span>
+              </h2>
+              <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                Handle all LinkedIn messages in one centralized inbox without logging in and out of accounts. Send voice notes from your desktop and reply on behalf of colleagues seamlessly.
+              </p>
+              <Link className="inline-flex items-center gap-2 text-white font-bold hover:gap-3 transition-all group" href="#">
+                Learn more about Inbox <span className="material-icons text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -224,7 +500,9 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
               Unlock <span className="bg-white/10 px-2 rounded font-light italic font-serif">key insights</span>
             </h2>
-            <p className="text-gray-400">Monitor lead behavior in real time. Track campaign results, sender performance, A/B tests.</p>
+          <p className="text-gray-400">
+            Monitor lead behavior in real time. Track campaign results, sender performance, A/B tests.
+          </p>
           </div>
           <div className="glass-card rounded-2xl p-6 md:p-10 border border-white/10 relative overflow-hidden group">
             <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
@@ -249,25 +527,39 @@ export default function Home() {
               </div>
             </div>
             {/* Animated SVG Chart */}
-            <div className="relative h-64 w-full bg-gradient-to-b from-white/5 to-transparent rounded-lg border border-white/5 p-4 flex items-end gap-1">
+            <div className="relative h-64 w-full bg-linear-to-b from-white/5 to-transparent rounded-lg border border-white/5 p-4 flex items-end gap-1">
               <div className="w-full flex items-end justify-between h-full px-2">
-                <svg className="absolute inset-0 w-full h-full p-4 overflow-visible" preserveAspectRatio="none">
-                  <path 
+                <motion.svg 
+                  initial={{ scaleY: 0, originY: 1 }}
+                  whileInView={{ scaleY: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  className="absolute inset-0 w-full h-full p-4 overflow-visible" 
+                  preserveAspectRatio="none"
+                >
+                  <motion.path 
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 2, delay: 0.5 }}
                     d="M0,200 C50,150 100,180 150,100 S250,120 300,50 S400,80 500,20 S600,60 800,10" 
                     fill="none" 
                     stroke="#60A5FA" 
                     strokeWidth="2" 
                     vectorEffect="non-scaling-stroke"
-                    className="animate-draw"
                   />
-                  <path 
+                  <motion.path 
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 2, delay: 0.7 }}
                     d="M0,220 C50,180 100,200 150,150 S250,170 300,120 S400,140 500,80 S600,100 800,50" 
                     fill="none" 
                     stroke="#4ADE80" 
                     strokeDasharray="4 4" 
                     strokeWidth="2" 
                     vectorEffect="non-scaling-stroke"
-                    className="animate-draw opacity-50"
+                    className="opacity-50"
                   />
                   <defs>
                     <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
@@ -275,14 +567,17 @@ export default function Home() {
                       <stop offset="100%" style={{ stopColor: 'rgba(96, 165, 250, 0)', stopOpacity: 0 }}></stop>
                     </linearGradient>
                   </defs>
-                  <path 
+                  <motion.path 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 1.5 }}
                     d="M0,200 C50,150 100,180 150,100 S250,120 300,50 S400,80 500,20 S600,60 800,10 V250 H0 Z" 
                     fill="url(#grad1)" 
                     stroke="none" 
                     vectorEffect="non-scaling-stroke"
-                    className="animate-fade-in-up"
                   />
-                </svg>
+                </motion.svg>
                 <div className="absolute bottom-2 left-4 text-[10px] text-dim-grey">Apr 14</div>
                 <div className="absolute bottom-2 left-1/4 text-[10px] text-dim-grey">Apr 16</div>
                 <div className="absolute bottom-2 left-2/4 text-[10px] text-dim-grey">Apr 18</div>
@@ -294,24 +589,186 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer (Simplified) */}
-      <footer className="bg-black border-t border-white/5 pt-16 pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex flex-col items-center mb-12">
-            <div className="flex items-center gap-2 mb-6 hover:scale-105 transition-transform group cursor-pointer">
-              <div className="h-6 w-6 bg-white rounded flex items-center justify-center group-hover:bg-primary transition-colors">
-                <span className="material-icons text-black text-xs font-bold">bolt</span>
+      {/* Join the Outbound Outliers movement (Playbook Marquee) */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl lg:text-6xl font-display font-bold mb-6"
+          >
+            Join the <span className="metallic-text">Outbound Outliers</span> movement
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-gray-400 text-lg max-w-2xl mx-auto"
+          >
+            Take a deep dive into proven GTM playbooks from people who see the game differently.
+          </motion.p>
+        </div>
+
+        {/* Marquee Container */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+          
+          <motion.div 
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ 
+              duration: 40, 
+              ease: "linear", 
+              repeat: Infinity 
+            }}
+            className="flex gap-8 whitespace-nowrap w-max px-4"
+          >
+            {[1, 2, 3, 4, 1, 2, 3, 4].map((item, idx) => (
+              <div key={idx} className="w-[450px] inline-block whitespace-normal">
+                <div className="glass-card rounded-3xl p-8 border border-white/10 h-full hover:border-white/30 transition-all group">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/10 to-transparent border border-white/20 overflow-hidden flex items-center justify-center">
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item}`} alt="Avatar" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white">{item === 1 ? "Hiring campaign" : item === 2 ? "Recruiting Masterclass" : item === 3 ? "Lead Gen Machine" : "SaaS Growth"}</h4>
+                      <p className="text-xs text-dim-grey">{item === 1 ? "Matthew @ LevelUp" : item === 2 ? "Nikita @ Influencer" : item === 3 ? "Sanko @ Platinum" : "Alex @ ScaleUp"}</p>
+                    </div>
+                  </div>
+                  <div className="bg-black/40 rounded-2xl p-6 border border-white/5 mb-8 h-32 flex items-center">
+                    <p className="text-lg font-medium metallic-text italic">
+                      {item === 1 ? "\"Build hiring campaign with 13.8% reply rates\"" : 
+                       item === 2 ? "\"800 connections, 571 replies, 2 weeks: a masterclass\"" : 
+                       item === 3 ? "\"Smart way to turn your LinkedIn engagers into leads\"" :
+                       "\"Scale to $1M ARR with 0 ad spend using automated loops\""}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-medium">
+                      <span className={`material-icons text-sm ${item === 1 ? "text-green-500" : item === 2 ? "text-blue-500" : "text-orange-500"}`}>
+                        {item === 1 ? "link" : item === 2 ? "reply" : "trending_up"}
+                      </span>
+                      <span className="text-dim-grey">{item === 1 ? "Acceptance: 72%" : item === 2 ? "Reply Rate: 79%" : "Leads: 450+"}</span>
+                    </div>
+                    <Link href="#" className="text-xs font-bold text-white flex items-center gap-1 group/link">
+                      Read playbook <span className="material-icons text-[14px] group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <span className="font-display font-bold text-lg tracking-tight">heyreach</span>
+            ))}
+          </motion.div>
+        </div>
+        <div className="mt-12 text-center">
+            <button className="bg-transparent border border-white/20 hover:bg-white/5 text-white px-8 py-3 rounded-lg text-sm font-bold transition-all hover:scale-105 active:scale-95 shadow-lg">
+              Show me all the playbooks
+            </button>
+          </div>
+      </section>
+
+      {/* Conversations Counter Section */}
+      <section className="py-20 text-center relative overflow-hidden bg-black">
+        <div className="absolute inset-0 bg-hero-radial opacity-30"></div>
+        <div className="relative z-10">
+            {/* Main Title */}
+            <h1 className="text-6xl lg:text-8xl font-display font-bold mb-8 leading-[1.1] tracking-tight bg-linear-to-r from-white via-white to-white/50 bg-clip-text text-transparent">
+              426,089 <span className="text-4xl md:text-6xl align-top">🔥</span>
+            </h1>
+          <p className="text-dim-grey text-lg font-medium max-w-xl mx-auto">conversations started by GTM operators on HeyReach last month</p>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+            Power up your LinkedIn outbound.<br />
+            Make every interaction count!
+          </h2>
+          <p className="text-dim-grey mb-10 text-lg">Get started for free - no credit card required.</p>
+          <div className="flex flex-col items-center gap-8">
+            <Link className="w-full sm:w-auto bg-white hover:bg-gray-200 text-black px-12 py-5 rounded-lg text-xl font-bold transition-all shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 flex items-center justify-center gap-2" href="#">
+              Try HeyReach free
+              <span className="material-icons">rocket_launch</span>
+            </Link>
+            <div className="glass-card px-6 py-3 rounded-2xl flex items-center gap-4 border border-white/10 hover:border-white/30 transition-all cursor-pointer group">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20 group-hover:scale-110 transition-transform shadow-lg">
+                <img alt="Nadja" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe2IEMII7XuuiHUFGst6Uy70G3Y2LSGCNRPawR7ZtaJW_UHq4Ac9ANODFkUafuKdQXauf3cfOs325L_i500Z_vrGR83sfpIkn_l79pvShpSJD1668q5ANEkulG2wBPaAk3tTF7v3hWWnnkcMrdVx7hBPTVk5dIRoyTJhA4zGpODCf1Bd2xOHHGf-6zXe-QBxtK2KJTezYKUD5d6Z99MLWDTISdqoBxS8DUNV3_MllHW5LBlfenw2bg1wP6kLSLk4qSBwHninq6JB_r" />
+              </div>
+              <div className="text-left">
+                <div className="text-xs text-gray-400">A personal walkthrough with <span className="text-white font-bold">Nadja</span>, our Head of Sales</div>
+                <Link className="text-xs text-white underline hover:no-underline font-medium" href="#">Book a demo ↗</Link>
+              </div>
             </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-dim-grey mb-12">
-            <Link className="hover:text-white transition-colors" href="#">Pricing</Link>
-            <Link className="hover:text-white transition-colors" href="#">About</Link>
-            <Link className="hover:text-white transition-colors" href="#">Help Center</Link>
-            <Link className="hover:text-white transition-colors" href="#">Terms</Link>
+        </div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-900/10 blur-[120px] rounded-full"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-900/10 blur-[120px] rounded-full"></div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black border-t border-white/5 pt-20 pb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center mb-16">
+            <div className="flex items-center gap-2 mb-6 group cursor-pointer hover:scale-105 transition-transform">
+              <div className="h-8 w-8 bg-white rounded flex items-center justify-center group-hover:bg-primary transition-colors">
+                <span className="material-icons text-black text-sm font-bold">bolt</span>
+              </div>
+              <span className="font-display font-bold text-2xl tracking-tight">heyreach</span>
+            </div>
           </div>
-          <p className="text-xs text-dim-grey opacity-50">© 2025 HeyReach - LinkedIn Automation for Scale</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-sm">
+            <div>
+              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Join the movement</h4>
+              <ul className="space-y-3 text-dim-grey">
+                <li><Link className="hover:text-white transition-colors" href="#">See pricing</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Try HeyReach free</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Log in to your account</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Join our expert program</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Join our affiliate program</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Product</h4>
+              <ul className="space-y-3 text-dim-grey">
+                <li><Link className="hover:text-white transition-colors" href="#">For Agencies</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">For Sales</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">For Growth</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Multichannel outreach</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Integrations</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Resources</h4>
+              <ul className="space-y-3 text-dim-grey">
+                <li><Link className="hover:text-white transition-colors" href="#">Content Hub</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Outbound Outliers</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Help Center</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Clay templates</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Company</h4>
+              <ul className="space-y-3 text-dim-grey">
+                <li><Link className="hover:text-white transition-colors" href="#">About us</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Careers</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Connect on LinkedIn</Link></li>
+                <li><Link className="hover:text-white transition-colors" href="#">Subscribe to YouTube</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center text-[10px] sm:text-xs text-dim-grey">
+            <p className="mb-6 md:mb-0 text-center md:text-left">HeyReach - LinkedIn automation tool for agencies, sales teams, and GTM operators © 2025</p>
+            <div className="flex gap-6">
+              <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
+              <Link className="hover:text-white transition-colors" href="#">Terms of Service</Link>
+            </div>
+          </div>
+          <div className="mt-8 text-[10px] text-dim-grey text-center opacity-40">
+            HeyReach is not associated with, or endorsed by, the LinkedIn Corporation.
+          </div>
         </div>
       </footer>
     </main>
