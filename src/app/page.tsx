@@ -59,6 +59,27 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
+        {/* Stripe-style Moving Background Strips */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+          <div className="absolute -top-[50%] -left-[10%] w-[120%] h-[150%] skew-y-[-12deg] flex flex-col gap-12">
+            <motion.div 
+              animate={{ x: [-100, 100] }} 
+              transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+              className="w-full h-32 bg-linear-to-r from-blue-500/20 via-transparent to-blue-500/20" 
+            />
+            <motion.div 
+              animate={{ x: [100, -100] }} 
+              transition={{ duration: 25, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+              className="w-full h-48 bg-linear-to-r from-purple-500/20 via-transparent to-purple-500/20" 
+            />
+            <motion.div 
+              animate={{ x: [-150, 150] }} 
+              transition={{ duration: 18, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+              className="w-full h-32 bg-linear-to-r from-indigo-500/20 via-transparent to-indigo-500/20" 
+            />
+          </div>
+        </div>
+        
         <div className="absolute inset-0 grid-bg opacity-30"></div>
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -97,6 +118,41 @@ export default function Home() {
             <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
               <span className="material-icons text-base">workspace_premium</span> Premium features
             </div>
+          </div>
+
+          {/* Floating UI Elements Around Hero */}
+          <div className="absolute inset-0 pointer-events-none hidden xl:block">
+            {/* Connection Request Card */}
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1, duration: 1 }}
+              className="absolute top-20 left-10 p-3 rounded-2xl glass-card border border-white/10 flex items-center gap-3 animate-float"
+            >
+              <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <span className="material-icons text-blue-400 text-sm">person_add</span>
+              </div>
+              <div className="text-left">
+                <div className="text-[10px] font-bold">Request Sent</div>
+                <div className="text-[8px] text-dim-grey">To: Sarah Jenkins</div>
+              </div>
+            </motion.div>
+
+            {/* Reply Card */}
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.2, duration: 1 }}
+              className="absolute top-40 right-10 p-3 rounded-2xl glass-card border border-white/10 flex items-center gap-3 animate-float animate-delay-1000"
+            >
+              <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                <span className="material-icons text-green-400 text-sm">reply</span>
+              </div>
+              <div className="text-left">
+                <div className="text-[10px] font-bold">New Reply!</div>
+                <div className="text-[8px] text-dim-grey">&quot;Let&apos;s talk tomorrow&quot;</div>
+              </div>
+            </motion.div>
           </div>
 
           {/* Automation Simulation */}
