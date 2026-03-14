@@ -36,6 +36,7 @@ function StatItem({ value, label, suffix = "" }: { value: number; label: string;
 
 export default function Home() {
   const [activeStep, setActiveStep] = useState(0);
+  const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,14 +50,22 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
-      {/* Visual Effects: Blur Glitch Mask removed */}
+      {/* Quirky Background Blobs */}
+      <div className="quirky-blob w-96 h-96 bg-purple-600/10 top-20 -left-48" />
+      <div className="quirky-blob w-[500px] h-[500px] bg-blue-600/5 top-[1000px] -right-64 animate-delay-1000" />
+      <div className="quirky-blob w-72 h-72 bg-orange-600/10 top-[2500px] left-20" />
 
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
         <div className="absolute inset-0 grid-bg opacity-30"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 animate-float">
             <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
             <span className="text-xs font-medium text-gray-300 uppercase tracking-wider">New: AI Sequence Generator</span>
@@ -215,7 +224,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
         {/* Interactive Process Flowchart Section */}
@@ -337,7 +346,13 @@ export default function Home() {
       </section>
 
       {/* Testimonials Marquee Section */}
-      <section className="py-24 border-t border-white/5 bg-black overflow-hidden relative">
+      <motion.section 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="py-24 border-t border-white/5 bg-black overflow-hidden relative"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm text-dim-grey uppercase tracking-widest mb-8">Trusted by 4,000+ companies</p>
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
@@ -348,12 +363,17 @@ export default function Home() {
             <h3 className="text-xl font-bold font-display text-white tracking-widest">FRECKLE.</h3>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Rotating Hub Section */}
       <section className="py-24 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="glass-card rounded-3xl p-8 lg:p-12 border border-white/10 relative overflow-hidden group">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="glass-card rounded-3xl p-8 lg:p-12 border border-white/10 relative overflow-hidden group rotate-1 hover:rotate-0 transition-all duration-500"
+          >
             <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none"></div>
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="relative z-10">
@@ -428,12 +448,18 @@ export default function Home() {
                 </svg>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Feature Grid: Import Leads & Combine Steps */}
-      <section className="pb-24">
+      <motion.section 
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="pb-24"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all -rotate-2 hover:rotate-0">
@@ -480,10 +506,16 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Multichannel Outreach Section */}
-      <section className="py-24 bg-linear-to-b from-black to-[#0a0a0a] border-t border-white/5">
+      <motion.section 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1 }}
+        className="py-24 bg-linear-to-b from-black to-[#0a0a0a] border-t border-white/5"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
@@ -540,10 +572,16 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Unified Inbox Section */}
-      <section className="py-24 overflow-hidden">
+      <motion.section 
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="py-24 overflow-hidden"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
@@ -610,7 +648,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Analytics Section with Animated Chart */}
       <section className="py-24 bg-black border-y border-white/5">
@@ -709,7 +747,13 @@ export default function Home() {
       </section>
 
       {/* Join the Outbound Outliers movement (Playbook Marquee) */}
-      <section className="py-24 relative overflow-hidden">
+      <motion.section 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="py-24 relative overflow-hidden"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -785,10 +829,16 @@ export default function Home() {
               Show me all the playbooks
             </button>
           </div>
-      </section>
+      </motion.section>
 
       {/* Conversations Counter Section */}
-      <section className="py-24 text-center relative overflow-hidden bg-black border-y border-white/5">
+      <motion.section 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="py-24 text-center relative overflow-hidden bg-black border-y border-white/5"
+      >
         <div className="absolute inset-0 bg-hero-radial opacity-30"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-12 lg:gap-24">
@@ -797,34 +847,127 @@ export default function Home() {
             <StatItem value={98} label="Average deliverability rate" suffix="%" />
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Final CTA Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-            Power up your LinkedIn outbound.<br />
-            Make every interaction count!
-          </h2>
-          <p className="text-dim-grey mb-10 text-lg">Get started for free - no credit card required.</p>
-          <div className="flex flex-col items-center gap-8">
-            <Link className="w-full sm:w-auto bg-white hover:bg-gray-200 text-black px-12 py-5 rounded-lg text-xl font-bold transition-all shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 flex items-center justify-center gap-2" href="#">
-              Try HeyReach free
-              <span className="material-icons">rocket_launch</span>
-            </Link>
-            <div className="glass-card px-6 py-3 rounded-2xl flex items-center gap-4 border border-white/10 hover:border-white/30 transition-all cursor-pointer group">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20 group-hover:scale-110 transition-transform shadow-lg">
-                <img alt="Nadja" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe2IEMII7XuuiHUFGst6Uy70G3Y2LSGCNRPawR7ZtaJW_UHq4Ac9ANODFkUafuKdQXauf3cfOs325L_i500Z_vrGR83sfpIkn_l79pvShpSJD1668q5ANEkulG2wBPaAk3tTF7v3hWWnnkcMrdVx7hBPTVk5dIRoyTJhA4zGpODCf1Bd2xOHHGf-6zXe-QBxtK2KJTezYKUD5d6Z99MLWDTISdqoBxS8DUNV3_MllHW5LBlfenw2bg1wP6kLSLk4qSBwHninq6JB_r" />
-              </div>
-              <div className="text-left">
-                <div className="text-xs text-gray-400">A personal walkthrough with <span className="text-white font-bold">Nadja</span>, our Head of Sales</div>
-                <Link className="text-xs text-white underline hover:no-underline font-medium" href="#">Book a demo ↗</Link>
-              </div>
-            </div>
+      {/* FAQ Section */}
+      <motion.section 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        className="py-24 relative overflow-hidden bg-[#050505]"
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+              Common <span className="metallic-text">Questions</span>
+            </h2>
+            <p className="text-gray-400">Everything you need to know about scaling your outreach.</p>
+          </motion.div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: "Is HeyReach safe for my LinkedIn account?",
+                a: "Absolutely. We use enterprise-grade cloud environments and smart rotation to ensure your activity patterns look human. We limit actions per account to stay well within LinkedIn's safety thresholds."
+              },
+              {
+                q: "Can I connect unlimited accounts?",
+                a: "Yes! Unlike other platforms that charge per seat, HeyReach allows you to connect as many LinkedIn accounts as you need on our Scale plans."
+              },
+              {
+                q: "Do I need a LinkedIn Sales Navigator subscription?",
+                a: "While Sales Navigator helps with search granularity, it's not strictly required. You can import leads from CSVs, Apollo, or basic LinkedIn searches."
+              },
+              {
+                q: "How does the Unified Inbox work?",
+                a: "It aggregates all messages from all connected accounts into one dashboard. You can reply, send voice notes, and manage conversations without ever logging into LinkedIn directly."
+              }
+            ].map((faq, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => setActiveFAQ(activeFAQ === i ? null : i)}
+                className="glass-card rounded-2xl border border-white/10 p-6 hover:border-white/30 transition-all cursor-pointer group"
+              >
+                <h3 className="text-lg font-bold flex items-center justify-between">
+                  {faq.q}
+                  <motion.span 
+                    animate={{ rotate: activeFAQ === i ? 45 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="material-icons text-dim-grey group-hover:text-white transition-colors"
+                  >
+                    {activeFAQ === i ? 'close' : 'add'}
+                  </motion.span>
+                </h3>
+                <motion.div
+                  initial={false}
+                  animate={{ height: activeFAQ === i ? "auto" : 0, opacity: activeFAQ === i ? 1 : 0, marginTop: activeFAQ === i ? 16 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {faq.a}
+                  </p>
+                </motion.div>
+              </motion.div>
+            ))}
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-900/10 blur-[120px] rounded-full"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-900/10 blur-[120px] rounded-full"></div>
+      </motion.section>
+
+      {/* Help & Support Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="quirky-blob w-80 h-80 bg-blue-500/5 -bottom-20 -right-20" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="glass-card rounded-3xl p-10 border border-white/10 flex flex-col justify-between group overflow-hidden relative"
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span className="material-icons text-8xl">auto_fix_high</span>
+              </div>
+              <div className="relative z-10">
+                <h3 className="text-3xl font-display font-bold mb-4">Need <span className="text-blue-400">Support?</span></h3>
+                <p className="text-gray-400 mb-8">Outreach is hard, we make it easy. Our team of GTM experts is here 24/7 to help you optimize your sequences.</p>
+                <div className="flex flex-col gap-4">
+                  <Link href="#" className="flex items-center gap-3 text-white hover:text-blue-400 transition-colors">
+                    <span className="material-icons">chat_bubble</span> Live Chat Support
+                  </Link>
+                  <Link href="#" className="flex items-center gap-3 text-white hover:text-blue-400 transition-colors">
+                    <span className="material-icons">description</span> API Documentation
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white/5 rounded-3xl p-10 border border-white/5 flex flex-col justify-between hover:bg-white/[0.07] transition-all group perspective-1000"
+            >
+              <div className="rotate-on-hover transition-transform duration-500">
+                <h3 className="text-3xl font-display font-bold mb-4">Join our <span className="text-purple-400">Community</span></h3>
+                <p className="text-gray-400 mb-8">Connect with 5,000+ outbound experts, agencies, and GTM leaders sharing their winning playbooks.</p>
+                <Link href="#" className="inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-xl shadow-purple-900/20">
+                  <span className="material-icons">groups</span> Join Slack Community
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
       <Footer />
