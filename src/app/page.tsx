@@ -1,8 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from "framer-motion";
+
+function StatItem({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const spring = useSpring(0, { stiffness: 50, damping: 20 });
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (isInView) {
+      spring.set(value);
+    }
+  }, [isInView, spring, value]);
+
+  useEffect(() => {
+    return spring.onChange((latest) => {
+      setDisplayValue(Math.floor(latest));
+    });
+  }, [spring]);
+
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-4xl lg:text-6xl font-display font-bold mb-4 tracking-tight tabular-nums">
+        {displayValue.toLocaleString()}{suffix}
+      </div>
+      <p className="text-dim-grey text-lg font-medium">{label}</p>
+    </div>
+  );
+}
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,7 +56,10 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans">
+    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
+      {/* Visual Effects: Blur Glitch Mask */}
+      <div className="fixed bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background-dark to-transparent z-[60] pointer-events-none backdrop-blur-xs mask-gradient-t"></div>
+
       {/* Navigation */}
       <nav 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 flex justify-center ${
@@ -38,10 +69,10 @@ export default function Home() {
         }`}
       >
         <div 
-          className={`transition-all duration-500 flex items-center justify-between border-white/5 bg-background-dark/80 backdrop-blur-md ${
+          className={`transition-all duration-500 flex items-center justify-between border-white/5 bg-background-dark/95 backdrop-blur-md ${
             isScrolled 
               ? 'w-[70%] rounded-full border px-8 py-3 shadow-2xl' 
-              : 'w-full border-b px-4 sm:px-6 lg:px-8 py-5'
+              : 'w-full border-b px-8 sm:px-12 lg:px-24 py-6'
           }`}
         >
           <div className="flex items-center gap-2">
@@ -230,8 +261,126 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="border-y border-white/5 bg-black py-10">
+        {/* Interactive Process Flowchart Section */}
+        <section className="py-24 relative overflow-hidden bg-[#050505]">
+          <div className="absolute inset-0 grid-bg opacity-10"></div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-20">
+              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+                The <span className="metallic-text">Future of Outbound</span> Architecture
+              </h2>
+              <p className="text-gray-400 text-lg">
+                Visualize how HeyReach turns raw data into high-quality meetings at scale.
+              </p>
+            </div>
+
+            <div className="relative h-[600px] md:h-[400px]">
+              {/* SVG Connecting Lines */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
+                <defs>
+                  <linearGradient id="flow-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#60A5FA" />
+                    <stop offset="50%" stopColor="#818CF8" />
+                    <stop offset="100%" stopColor="#4ADE80" />
+                  </linearGradient>
+                </defs>
+              
+              {/* Path 1 -> 2 */}
+              <motion.path 
+                d="M 120 180 Q 250 180 300 180" 
+                fill="none" stroke="url(#flow-grad)" strokeWidth="2" strokeDasharray="5,5"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, delay: 0.5 }}
+              />
+              {/* Path 2 -> 3 */}
+              <motion.path 
+                d="M 400 180 Q 550 180 600 180" 
+                fill="none" stroke="url(#flow-grad)" strokeWidth="2" strokeDasharray="5,5"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, delay: 1 }}
+              />
+              {/* Path 3 -> 4 */}
+              <motion.path 
+                d="M 700 180 Q 850 180 900 180" 
+                fill="none" stroke="url(#flow-grad)" strokeWidth="2" strokeDasharray="5,5"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, delay: 1.5 }}
+              />
+            </svg>
+
+            {/* Nodes Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 h-full items-center relative z-20">
+              {/* Node 1: Sources */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="glass-card p-6 rounded-2xl border border-white/10 text-center group hover:border-blue-500/50 transition-all"
+              >
+                <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30 group-hover:scale-110 transition-transform">
+                  <span className="material-icons text-blue-400">dataset</span>
+                </div>
+                <h4 className="font-bold text-white mb-2">Sources</h4>
+                <p className="text-xs text-gray-400">Sales Nav, HubSpot, CSVs, Apollo</p>
+              </motion.div>
+
+              {/* Node 2: Automation Hub */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="glass-card p-6 rounded-2xl border border-white/10 text-center group hover:border-indigo-500/50 transition-all shadow-indigo-500/10 shadow-2xl scale-110 z-30 bg-black/60"
+              >
+                <div className="w-14 h-14 bg-indigo-500/20 rounded-xl flex items-center justify-center mx-auto mb-4 border border-indigo-500/30 group-hover:rotate-12 transition-transform">
+                  <span className="material-icons text-indigo-400 text-3xl">bolt</span>
+                </div>
+                <h4 className="font-bold text-white mb-2">Automation Hub</h4>
+                <p className="text-xs text-gray-400">Enrichment, Sequences, Smart Filters</p>
+              </motion.div>
+
+              {/* Node 3: Outreach Engine */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 1 }}
+                className="glass-card p-6 rounded-2xl border border-white/10 text-center group hover:border-purple-500/50 transition-all"
+              >
+                <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mx-auto mb-4 border border-purple-500/30 group-hover:animate-pulse transition-all">
+                  <span className="material-icons text-purple-400">rocket_launch</span>
+                </div>
+                <h4 className="font-bold text-white mb-2">Outreach Engine</h4>
+                <p className="text-xs text-gray-400">Multi-sender Loops, Parallel Send</p>
+              </motion.div>
+
+              {/* Node 4: Victory (CRM) */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 1.5 }}
+                className="glass-card p-6 rounded-2xl border border-white/10 text-center group hover:border-green-500/50 transition-all"
+              >
+                <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mx-auto mb-4 border border-green-500/30 group-hover:scale-125 transition-all">
+                  <span className="material-icons text-green-400">emoji_events</span>
+                </div>
+                <h4 className="font-bold text-white mb-2">Victory</h4>
+                <p className="text-xs text-gray-400">Meetings Booked, Revenue, CRM Sync</p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Marquee Section */}
+      <section className="py-24 border-t border-white/5 bg-black overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm text-dim-grey uppercase tracking-widest mb-8">Trusted by 4,000+ companies</p>
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
@@ -281,23 +430,36 @@ export default function Home() {
                     <span className="material-icons text-5xl text-white drop-shadow-lg">hub</span>
                   </div>
 
-                  {/* Outer Orbit Icons (12 icons total) */}
-                  {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle, i) => (
-                    <div 
-                      key={`orbit-${i}`}
-                      className="absolute inset-0 animate-spin-slow pointer-events-none" 
-                      style={{ transform: `rotate(${angle}deg)` }}
-                    >
-                      <div 
-                        className="absolute top-0 left-1/2 -ml-5 -mt-5 w-10 h-10 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg pointer-events-auto hover:scale-125 transition-transform duration-300"
-                        style={{ transform: `rotate(-${angle}deg)` }}
-                      >
-                        <img 
-                          alt="Sender" 
-                          className="opacity-80 object-cover w-full h-full" 
-                          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=sender-${i}`} 
-                        />
-                      </div>
+                  {/* Multiple Rings of Orbit Icons */}
+                  {[
+                    { ring: 0, count: 8, radius: 140, speed: 'animate-spin-slow' },
+                    { ring: 1, count: 6, radius: 100, speed: 'animate-spin-reverse-slow' }
+                  ].map((orbit, ringIdx) => (
+                    <div key={`ring-${ringIdx}`} className="absolute inset-0">
+                      {Array.from({ length: orbit.count }).map((_, i) => {
+                        const angle = (360 / orbit.count) * i;
+                        return (
+                          <div 
+                            key={`orbit-${ringIdx}-${i}`}
+                            className={`absolute inset-0 ${orbit.speed} pointer-events-none`} 
+                            style={{ transform: `rotate(${angle}deg)` }}
+                          >
+                            <div 
+                              className="absolute top-0 left-1/2 -ml-5 -mt-5 w-10 h-10 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg pointer-events-auto hover:scale-125 transition-transform duration-300"
+                              style={{ 
+                                transform: `rotate(-${angle}deg) translateY(-${orbit.radius}px)`,
+                                marginTop: '50%' 
+                              }}
+                            >
+                              <img 
+                                alt="Sender" 
+                                className="opacity-80 object-cover w-full h-full" 
+                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=sender-${ringIdx}-${i}`} 
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   ))}
                 </div>
@@ -669,14 +831,14 @@ export default function Home() {
       </section>
 
       {/* Conversations Counter Section */}
-      <section className="py-20 text-center relative overflow-hidden bg-black">
+      <section className="py-24 text-center relative overflow-hidden bg-black border-y border-white/5">
         <div className="absolute inset-0 bg-hero-radial opacity-30"></div>
-        <div className="relative z-10">
-            {/* Main Title */}
-            <h1 className="text-6xl lg:text-8xl font-display font-bold mb-8 leading-[1.1] tracking-tight bg-linear-to-r from-white via-white to-white/50 bg-clip-text text-transparent">
-              426,089 <span className="text-4xl md:text-6xl align-top">🔥</span>
-            </h1>
-          <p className="text-dim-grey text-lg font-medium max-w-xl mx-auto">conversations started by GTM operators on HeyReach last month</p>
+        <div className="relative z-10 max-w-7xl mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-12 lg:gap-24">
+            <StatItem value={426089} label="Conversations started last month" suffix=" 🔥" />
+            <StatItem value={12500} label="Active senders using HeyReach" suffix="+" />
+            <StatItem value={98} label="Average deliverability rate" suffix="%" />
+          </div>
         </div>
       </section>
 
