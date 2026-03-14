@@ -923,49 +923,104 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Help & Support Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="quirky-blob w-80 h-80 bg-blue-500/5 -bottom-20 -right-20" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="glass-card rounded-3xl p-10 border border-white/10 flex flex-col justify-between group overflow-hidden relative"
-            >
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <span className="material-icons text-8xl">auto_fix_high</span>
+      {/* Handcrafted Support Section */}
+      <section className="py-24 relative overflow-hidden border-t border-white/5 bg-background-dark">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-end">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-6">
+                <span className="text-[10px] font-bold text-dim-grey uppercase tracking-widest">Human-Led Support</span>
               </div>
-              <div className="relative z-10">
-                <h3 className="text-3xl font-display font-bold mb-4">Need <span className="text-blue-400">Support?</span></h3>
-                <p className="text-gray-400 mb-8">Outreach is hard, we make it easy. Our team of GTM experts is here 24/7 to help you optimize your sequences.</p>
-                <div className="flex flex-col gap-4">
-                  <Link href="#" className="flex items-center gap-3 text-white hover:text-blue-400 transition-colors">
-                    <span className="material-icons">chat_bubble</span> Live Chat Support
-                  </Link>
-                  <Link href="#" className="flex items-center gap-3 text-white hover:text-blue-400 transition-colors">
-                    <span className="material-icons">description</span> API Documentation
-                  </Link>
+              <h2 className="text-5xl lg:text-7xl font-display font-bold mb-8 leading-tight">
+                Not just <span className="metallic-text italic border-b border-white/20">software.</span><br />
+                A partner in <span className="text-blue-400">GTM.</span>
+              </h2>
+              <p className="text-gray-400 text-lg mb-12 max-w-xl">
+                We don&apos;t do generic tickets. Our team consists of actual outbound experts who help you optimize your sequences, verify your domains, and scale your pipeline.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-6">
+                <button className="group relative bg-white text-black px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl">
+                  Talk to an expert
+                  <span className="material-icons group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </button>
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-3">
+                    {[1,2,3].map(i => (
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-gray-800 overflow-hidden">
+                        <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=support-${i}`} alt="Agent" />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-xs">
+                    <div className="font-bold text-white font-quirky text-2xl">Live now</div>
+                    <div className="text-dim-grey uppercase tracking-tighter text-[9px]">Avg response: 4 mins</div>
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-white/5 rounded-3xl p-10 border border-white/5 flex flex-col justify-between hover:bg-white/[0.07] transition-all group perspective-1000"
-            >
-              <div className="rotate-on-hover transition-transform duration-500">
-                <h3 className="text-3xl font-display font-bold mb-4">Join our <span className="text-purple-400">Community</span></h3>
-                <p className="text-gray-400 mb-8">Connect with 5,000+ outbound experts, agencies, and GTM leaders sharing their winning playbooks.</p>
-                <Link href="#" className="inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-xl shadow-purple-900/20">
-                  <span className="material-icons">groups</span> Join Slack Community
-                </Link>
+            <div className="relative">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="glass-card p-6 rounded-3xl border border-white/5 bg-white/2 hover:bg-white/5 transition-all group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center mb-4 border border-blue-500/20">
+                    <span className="material-icons text-blue-400 text-xl">menu_book</span>
+                  </div>
+                  <h4 className="font-bold mb-2">Knowledge Base</h4>
+                  <p className="text-xs text-gray-400 mb-4 text-left">Hand-picked guides on scaling past 100+ accounts.</p>
+                  <Link href="#" className="text-[10px] font-bold flex items-center gap-1 group-hover:gap-2 transition-all text-white uppercase tracking-widest">
+                    Enter Hub <span className="material-icons text-xs">north_east</span>
+                  </Link>
+                </motion.div>
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="glass-card p-6 rounded-3xl border border-white/5 bg-white/2 hover:bg-white/5 transition-all group mt-8 sm:mt-0"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4 border border-purple-500/20">
+                    <span className="material-icons text-purple-400 text-xl">groups</span>
+                  </div>
+                  <h4 className="font-bold mb-2">The Community</h4>
+                  <p className="text-xs text-gray-400 mb-4 text-left">Connect with 4k+ agency owners in our Slack.</p>
+                  <Link href="#" className="text-[10px] font-bold flex items-center gap-1 group-hover:gap-2 transition-all text-white uppercase tracking-widest">
+                    Join Channel <span className="material-icons text-xs">north_east</span>
+                  </Link>
+                </motion.div>
+
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="col-span-1 sm:col-span-2 glass-card p-8 rounded-3xl border border-white/10 bg-linear-to-br from-white/5 to-transparent relative overflow-hidden group"
+                >
+                  <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div>
+                      <h4 className="text-xl font-bold mb-1">GTM Strategy Session</h4>
+                      <p className="text-sm text-gray-400 text-left">Book a 1-on-1 with our team to audit your current outbound flow.</p>
+                    </div>
+                    <button className="whitespace-nowrap bg-linear-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl text-xs font-bold hover:scale-105 active:scale-95 transition-all shadow-xl shadow-blue-900/40">
+                      Reserve a Slot
+                    </button>
+                  </div>
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-[50px] pointer-events-none"></div>
+                </motion.div>
               </div>
-            </motion.div>
+            </div>
+          </div>
+
+          <div className="mt-20 pt-10 border-t border-white/5 flex flex-wrap justify-center gap-x-12 gap-y-6 text-[10px] uppercase tracking-[0.2em] font-medium text-dim-grey">
+            <div className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-green-500"></span> System Status: 100% Operational</div>
+            <div className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-blue-500"></span> 24/7 Human Coverage</div>
+            <div className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-purple-500"></span> Expert-Led Documentation</div>
           </div>
         </div>
       </section>
