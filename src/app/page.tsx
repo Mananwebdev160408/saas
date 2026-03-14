@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useInView } from "framer-motion";
+import { motion, useSpring, useInView } from "framer-motion";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 function StatItem({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
   const ref = useRef(null);
@@ -33,68 +35,23 @@ function StatItem({ value, label, suffix = "" }: { value: number; label: string;
 }
 
 export default function Home() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % 4);
     }, 3000);
 
-    window.addEventListener("scroll", handleScroll);
-    // Initial check for scroll position
-    handleScroll();
-
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       clearInterval(interval);
     };
   }, []);
 
   return (
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
-      {/* Visual Effects: Blur Glitch Mask */}
-      <div className="fixed bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background-dark to-transparent z-[60] pointer-events-none backdrop-blur-xs mask-gradient-t"></div>
+      {/* Visual Effects: Blur Glitch Mask removed */}
 
-      {/* Navigation */}
-      <nav 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 flex justify-center ${
-          isScrolled 
-            ? 'mt-4 px-4' 
-            : 'px-0'
-        }`}
-      >
-        <div 
-          className={`transition-all duration-500 flex items-center justify-between border-white/5 bg-background-dark/95 backdrop-blur-md ${
-            isScrolled 
-              ? 'w-[70%] rounded-full border px-8 py-3 shadow-2xl' 
-              : 'w-full border-b px-8 sm:px-12 lg:px-24 py-6'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 bg-white rounded flex items-center justify-center">
-              <span className="material-icons text-black text-sm font-bold">bolt</span>
-            </div>
-            <span className="font-display font-bold text-xl tracking-tight text-white">heyreach</span>
-          </div>
-          <div className="hidden lg:block">
-            <div className="flex items-baseline space-x-8">
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Product</Link>
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Solutions</Link>
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Pricing</Link>
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="#">Resources</Link>
-            </div>
-          </div>
-          <div className="flex gap-4 items-center">
-            <Link className="text-sm font-medium text-dim-grey hover:text-white hidden sm:block" href="#">Login</Link>
-            <Link className="bg-white text-black px-6 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap" href="#">Start Free Trial</Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
@@ -104,7 +61,7 @@ export default function Home() {
             <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
             <span className="text-xs font-medium text-gray-300 uppercase tracking-wider">New: AI Sequence Generator</span>
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter mb-6 leading-[1.1]">
+          <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter mb-6 leading-[1.1]">
             <span className="metallic-text">10x your LinkedIn</span><br />
             <span className="text-dim-grey">outbound output</span>
           </h1>
@@ -112,7 +69,7 @@ export default function Home() {
             Unlimited senders. One fixed cost. Automate outreach for agencies, sales teams, and GTM experts with absolute precision.
           </p>
           <div className="mt-10 flex justify-center gap-4 flex-col sm:flex-row">
-            <Link className="group relative bg-white text-black px-10 py-5 rounded-lg text-xl font-bold transition-all shadow-2xl hover:scale-105 active:scale-95 overflow-hidden" href="#">
+            <Link className="group relative bg-white text-black px-6 sm:px-10 py-4 sm:py-5 rounded-lg text-lg sm:text-xl font-bold transition-all shadow-2xl hover:scale-105 active:scale-95 overflow-hidden" href="#">
               <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative z-10 flex items-center justify-center gap-2">
                 Try HeyReach free
@@ -171,7 +128,7 @@ export default function Home() {
 
                   {/* Step 2: Connection Request */}
                   <div className="flex flex-col items-center gap-4 relative">
-                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
+                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
                     <div className="relative">
                       <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
                         activeStep >= 1 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
@@ -190,7 +147,7 @@ export default function Home() {
 
                   {/* Step 3: Message / Email */}
                   <div className="flex flex-col items-center gap-4 relative">
-                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
+                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
                     <div className="relative">
                       <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
                         activeStep >= 2 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
@@ -262,7 +219,7 @@ export default function Home() {
       </section>
 
         {/* Interactive Process Flowchart Section */}
-        <section className="py-24 relative overflow-hidden bg-[#050505]">
+        <section className="py-24 relative overflow-hidden bg-background-dark">
           <div className="absolute inset-0 grid-bg opacity-10"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-20">
@@ -274,9 +231,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="relative h-[600px] md:h-[400px]">
-              {/* SVG Connecting Lines */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
+            <div className="relative h-auto md:h-[400px] py-12 md:py-0">
+              {/* SVG Connecting Lines - Hidden on Mobile */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block" style={{ overflow: 'visible' }}>
                 <defs>
                   <linearGradient id="flow-grad" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="#60A5FA" />
@@ -314,8 +271,8 @@ export default function Home() {
               />
             </svg>
 
-            {/* Nodes Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 h-full items-center relative z-20">
+            {/* Nodes Grid - Vertical on Mobile */}
+            <div className="flex flex-col md:grid md:grid-cols-4 gap-12 md:gap-8 h-full items-center relative z-20">
               {/* Node 1: Sources */}
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -418,16 +375,16 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[450px] flex items-center justify-center">
+              <div className="relative min-h-[350px] sm:min-h-[450px] flex items-center justify-center scale-[0.65] sm:scale-90 md:scale-100 transition-transform">
                 {/* Concentric Rotating Rings */}
-                <div className="relative w-80 h-80 flex items-center justify-center">
+                <div className="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
                   {/* Outer Orbit Paths */}
                   <div className="absolute inset-0 rounded-full border border-white/5 bg-linear-to-r from-white/5 to-transparent"></div>
                   <div className="absolute inset-10 rounded-full border border-white/5 bg-linear-to-r from-transparent via-white/5 to-transparent"></div>
                   
                   {/* Central Hub Icon */}
-                  <div className="relative z-10 w-24 h-24 rounded-full bg-linear-to-b from-white/10 to-transparent border border-white/20 flex items-center justify-center shadow-2xl backdrop-blur-xl group-hover:scale-110 transition-transform duration-500">
-                    <span className="material-icons text-5xl text-white drop-shadow-lg">hub</span>
+                  <div className="relative z-10 w-16 h-16 md:w-24 md:h-24 rounded-full bg-linear-to-b from-white/10 to-transparent border border-white/20 flex items-center justify-center shadow-2xl backdrop-blur-xl group-hover:scale-110 transition-transform duration-500">
+                    <span className="material-icons text-3xl md:text-5xl text-white drop-shadow-lg">hub</span>
                   </div>
 
                   {/* Multiple Rings of Orbit Icons */}
@@ -507,7 +464,7 @@ export default function Home() {
                   <span className="material-icons">merge_type</span>
                 </div>
                 <h3 className="text-3xl font-display font-bold mb-4">Combine <span className="text-blue-400">LinkedIn steps</span></h3>
-                <p className="text-gray-400">Automate actions such as connection requests, messages, and profile views. Use 'If Connected' logic for precision.</p>
+                <p className="text-gray-400">Automate actions such as connection requests, messages, and profile views. Use &apos;If Connected&apos; logic for precision.</p>
               </div>
               <div className="mt-auto relative h-48 bg-black/40 rounded-xl border border-white/5 overflow-hidden flex items-center justify-center">
                 <div className="flex items-center gap-2">
@@ -537,7 +494,7 @@ export default function Home() {
             </p>
           </div>
           <div className="glass-card rounded-3xl border border-white/10 p-1 md:p-4 overflow-hidden relative group">
-            <div className="bg-[#050505] rounded-xl border border-white/5 p-8 min-h-[500px] relative overflow-hidden">
+            <div className="bg-background-dark rounded-xl border border-white/5 p-8 min-h-[500px] relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-purple-900/20 via-black to-black transition-all group-hover:from-purple-900/40"></div>
               <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
                 <div className="flex items-center gap-6">
@@ -562,13 +519,13 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="flex gap-12 sm:gap-24 relative mt-12">
-                  <div className="absolute top-0 left-1/4 w-px h-16 bg-gradient-to-b from-white/20 to-transparent -translate-x-1/2"></div>
-                  <div className="absolute top-0 right-1/4 w-px h-16 bg-gradient-to-b from-white/20 to-transparent translate-x-1/2"></div>
+                  <div className="absolute top-0 left-1/4 w-px h-16 bg-linear-to-b from-white/20 to-transparent -translate-x-1/2"></div>
+                  <div className="absolute top-0 right-1/4 w-px h-16 bg-linear-to-b from-white/20 to-transparent translate-x-1/2"></div>
                   <div className="pt-16">
                     <button className="group relative flex items-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
                       <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
                       <span className="font-medium text-gray-300 group-hover:text-white">Add to Smartlead</span>
-                      <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
+                      <div className="absolute -inset-0.5 bg-linear-to-r from-purple-500 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
                     </button>
                   </div>
                   <div className="pt-16">
@@ -590,7 +547,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
-              <div className="glass-card rounded-3xl p-2 border border-white/10 transform rotate-[-2deg] hover:rotate-0 transition-all duration-700 animate-float">
+              <div className="glass-card rounded-3xl p-2 border border-white/10 -rotate-2 hover:rotate-0 transition-all duration-700 animate-float">
                 <div className="bg-black rounded-2xl overflow-hidden border border-white/5 relative h-[500px]">
                   <div className="bg-graphite p-4 border-b border-white/10 flex justify-between items-center">
                     <div className="flex items-center gap-3">
@@ -611,14 +568,14 @@ export default function Home() {
                         <span className="text-sm font-medium group-hover:text-white">Thomas Lean</span>
                         <span className="text-xs text-dim-grey">10:42 AM</span>
                       </div>
-                      <p className="text-xs text-gray-400 truncate">That sounds awesome, I've been looking...</p>
+                      <p className="text-xs text-gray-400 truncate">That sounds awesome, I&apos;ve been looking...</p>
                     </div>
                     <div className="p-3 bg-transparent rounded-lg hover:bg-white/5 cursor-pointer transition-colors group">
                       <div className="flex justify-between mb-1">
                         <span className="text-sm font-medium text-gray-300 group-hover:text-white">Sarah Wilson</span>
                         <span className="text-xs text-dim-grey">Yesterday</span>
                       </div>
-                      <p className="text-xs text-gray-500 truncate">Let's schedule a call for next week.</p>
+                      <p className="text-xs text-gray-500 truncate">Let&apos;s schedule a call for next week.</p>
                     </div>
                     <div className="p-3 bg-transparent rounded-lg hover:bg-white/5 cursor-pointer transition-colors group">
                       <div className="flex justify-between mb-1">
@@ -642,7 +599,7 @@ export default function Home() {
                 <span className="text-xs font-bold text-orange-400 uppercase tracking-wider">Zero Context Switching</span>
               </div>
               <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6">
-                Manage replies in <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-200 to-orange-400">Unified Inbox</span>
+                Manage replies in <span className="bg-clip-text text-transparent bg-linear-to-r from-orange-200 to-orange-400">Unified Inbox</span>
               </h2>
               <p className="text-gray-400 text-lg leading-relaxed mb-8">
                 Handle all LinkedIn messages in one centralized inbox without logging in and out of accounts. Send voice notes from your desktop and reply on behalf of colleagues seamlessly.
@@ -667,8 +624,8 @@ export default function Home() {
           </p>
           </div>
           <div className="glass-card rounded-2xl p-6 md:p-10 border border-white/10 relative overflow-hidden group">
-            <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
-              <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
+              <div className="grid grid-cols-3 gap-4 sm:gap-8 w-full md:w-auto">
                 <div className="text-center hover:scale-105 transition-transform cursor-default">
                   <div className="text-xs text-dim-grey uppercase tracking-wide">Sent</div>
                   <div className="text-2xl font-bold font-display">2,557</div>
@@ -775,8 +732,8 @@ export default function Home() {
 
         {/* Marquee Container */}
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className="absolute inset-y-0 left-0 w-32 bg-linear-to-r from-black to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-black to-transparent z-10"></div>
           
           <motion.div 
             animate={{ x: ["0%", "-50%"] }}
@@ -791,7 +748,7 @@ export default function Home() {
               <div key={idx} className="w-[450px] inline-block whitespace-normal">
                 <div className="glass-card rounded-3xl p-8 border border-white/10 h-full hover:border-white/30 transition-all group">
                   <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/10 to-transparent border border-white/20 overflow-hidden flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-white/10 to-transparent border border-white/20 overflow-hidden flex items-center justify-center">
                       <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item}`} alt="Avatar" className="w-full h-full object-cover" />
                     </div>
                     <div>
@@ -870,69 +827,7 @@ export default function Home() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-900/10 blur-[120px] rounded-full"></div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-black border-t border-white/5 pt-20 pb-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center mb-16">
-            <div className="flex items-center gap-2 mb-6 group cursor-pointer hover:scale-105 transition-transform">
-              <div className="h-8 w-8 bg-white rounded flex items-center justify-center group-hover:bg-primary transition-colors">
-                <span className="material-icons text-black text-sm font-bold">bolt</span>
-              </div>
-              <span className="font-display font-bold text-2xl tracking-tight">heyreach</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-sm">
-            <div>
-              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Join the movement</h4>
-              <ul className="space-y-3 text-dim-grey">
-                <li><Link className="hover:text-white transition-colors" href="#">See pricing</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Try HeyReach free</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Log in to your account</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Join our expert program</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Join our affiliate program</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Product</h4>
-              <ul className="space-y-3 text-dim-grey">
-                <li><Link className="hover:text-white transition-colors" href="#">For Agencies</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">For Sales</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">For Growth</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Multichannel outreach</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Integrations</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Resources</h4>
-              <ul className="space-y-3 text-dim-grey">
-                <li><Link className="hover:text-white transition-colors" href="#">Content Hub</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Outbound Outliers</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Help Center</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Clay templates</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Company</h4>
-              <ul className="space-y-3 text-dim-grey">
-                <li><Link className="hover:text-white transition-colors" href="#">About us</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Careers</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Connect on LinkedIn</Link></li>
-                <li><Link className="hover:text-white transition-colors" href="#">Subscribe to YouTube</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center text-[10px] sm:text-xs text-dim-grey">
-            <p className="mb-6 md:mb-0 text-center md:text-left">HeyReach - LinkedIn automation tool for agencies, sales teams, and GTM operators © 2025</p>
-            <div className="flex gap-6">
-              <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
-              <Link className="hover:text-white transition-colors" href="#">Terms of Service</Link>
-            </div>
-          </div>
-          <div className="mt-8 text-[10px] text-dim-grey text-center opacity-40">
-            HeyReach is not associated with, or endorsed by, the LinkedIn Corporation.
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
