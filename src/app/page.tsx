@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { motion, useSpring, useInView } from "framer-motion";
+import { motion, useSpring, useInView, useScroll, useTransform } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -37,6 +37,57 @@ function StatItem({ value, label, suffix = "" }: { value: number; label: string;
 export default function Home() {
   const [activeStep, setActiveStep] = useState(0);
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const flowRef = useRef(null);
+  const { scrollYProgress: flowProgress } = useScroll({
+    target: flowRef,
+    offset: ["start start", "end end"]
+  });
+
+  const pathHeight = useTransform(flowProgress, [0, 1], ["0%", "100%"]);
+  const step1Opacity = useTransform(flowProgress, [0.05, 0.15, 0.25, 0.35], [0, 1, 1, 0]);
+  const step2Opacity = useTransform(flowProgress, [0.3, 0.4, 0.5, 0.6], [0, 1, 1, 0]);
+  const step3Opacity = useTransform(flowProgress, [0.55, 0.65, 0.75, 0.85], [0, 1, 1, 0]);
+  const step4Opacity = useTransform(flowProgress, [0.8, 0.9, 0.95], [0, 1, 1]);
+
+  const step1X = useTransform(flowProgress, [0.05, 0.15], [-50, 0]);
+  const step2X = useTransform(flowProgress, [0.3, 0.4], [50, 0]);
+  const step3X = useTransform(flowProgress, [0.55, 0.65], [-50, 0]);
+  const step4X = useTransform(flowProgress, [0.8, 0.9], [50, 0]);
+
+  const step1Y = useTransform(flowProgress, [0.25, 0.35], [0, -30]);
+  const step2Y = useTransform(flowProgress, [0.5, 0.6], [0, -30]);
+  const step3Y = useTransform(flowProgress, [0.75, 0.85], [0, -30]);
+  const particleOpacity = useTransform(flowProgress, [0.05, 0.95], [0, 1]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.documentElement.classList.add('no-scrollbar');
+      document.body.classList.add('no-scrollbar');
+    }
+    return () => {
+      if (typeof window !== "undefined") {
+        document.documentElement.classList.remove('no-scrollbar');
+        document.body.classList.remove('no-scrollbar');
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,43 +100,77 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative overflow-x-hidden">
-      {/* Quirky Background Blobs */}
-      <div className="quirky-blob w-96 h-96 bg-purple-600/10 top-20 -left-48" />
-      <div className="quirky-blob w-[500px] h-[500px] bg-blue-600/5 top-[1000px] -right-64 animate-delay-1000" />
-      <div className="quirky-blob w-72 h-72 bg-orange-600/10 top-[2500px] left-20" />
+    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
+      {/* Custom Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-white origin-[0%] z-9999"
+        style={{ scaleX }}
+      />
+      {/* Monochrome Background Blobs */}
+      <div className="quirky-blob w-96 h-96 bg-white/5 top-20 -left-48" />
+      <div className="quirky-blob w-[500px] h-[500px] bg-white/5 top-[1000px] -right-64 animate-delay-1000" />
+      <div className="quirky-blob w-72 h-72 bg-white/5 top-[2500px] left-20" />
 
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
-        {/* Stripe-style Moving Background Strips */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div className="absolute -top-[50%] -left-[10%] w-[120%] h-[150%] skew-y-[-12deg] flex flex-col gap-12">
+        <div className="absolute inset-0 z-0 opacity-80">
+          <img 
+            src="/hero-bg-bw.png" 
+            alt="Hero Texture" 
+            className="w-full h-full object-cover mix-blend-screen"
+          />
+          <div className="absolute inset-0 bg-linear-to-b from-transparent via-background-dark/40 to-background-dark"></div>
+        </div>
+        <div className="noise-bg"></div>
+        {/* Monochrome Moving Background Strips */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-[50%] -left-[10%] w-[120%] h-[150%] -skew-y-12 flex flex-col gap-24 opacity-20">
             <motion.div 
-              animate={{ x: [-100, 100] }} 
-              transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-              className="w-full h-32 bg-linear-to-r from-blue-500/20 via-transparent to-blue-500/20" 
-            />
-            <motion.div 
-              animate={{ x: [100, -100] }} 
+              animate={{ x: [-200, 200] }} 
               transition={{ duration: 25, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-              className="w-full h-48 bg-linear-to-r from-purple-500/20 via-transparent to-purple-500/20" 
+              className="w-full h-48 bg-linear-to-r from-white/10 via-white/5 to-white/10 blur-3xl" 
             />
             <motion.div 
-              animate={{ x: [-150, 150] }} 
-              transition={{ duration: 18, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-              className="w-full h-32 bg-linear-to-r from-indigo-500/20 via-transparent to-indigo-500/20" 
+              animate={{ x: [200, -200] }} 
+              transition={{ duration: 30, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+              className="w-full h-64 bg-linear-to-r from-white/10 via-white/5 to-white/10 blur-3xl" 
+            />
+            <motion.div 
+              animate={{ x: [-300, 300] }} 
+              transition={{ duration: 22, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+              className="w-full h-48 bg-linear-to-r from-white/10 via-white/5 to-white/10 blur-3xl" 
             />
           </div>
         </div>
         
-        <div className="absolute inset-0 grid-bg opacity-30"></div>
+        {/* Animated Monochrome Blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-[10%] w-[400px] h-[400px] bg-white/5 blur-[120px] animate-pulse-glow"></div>
+          <div className="absolute bottom-20 right-[10%] w-[500px] h-[500px] bg-white/5 blur-[150px] animate-pulse-glow animate-delay-1000"></div>
+        </div>
+
+        <div className="absolute inset-0 grid-bg opacity-20"></div>
+
+        {/* Interactive Mouse Glow */}
+        <motion.div 
+          className="absolute inset-0 z-0 pointer-events-none opacity-30 overflow-hidden"
+          animate={{
+            background: `radial-gradient(1000px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 255, 255, 0.05), transparent 80%)`
+          }}
+        />
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          animate={{ 
+            opacity: 1, 
+            y: 0,
+            x: (mousePos.x - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.01,
+            rotateX: (mousePos.y - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) * -0.01,
+            rotateY: (mousePos.x - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.01
+          }}
+          transition={{ duration: 0.8, ease: "easeOut", x: { duration: 0 }, rotateX: { duration: 0 }, rotateY: { duration: 0 } }}
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center perspective-1000"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 animate-float">
             <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
@@ -96,7 +181,10 @@ export default function Home() {
             <span className="text-dim-grey">outbound output</span>
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-400 font-light leading-relaxed">
-            Unlimited senders. One fixed cost. Automate outreach for agencies, sales teams, and GTM experts with absolute precision.
+            For <span className="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-md mx-1 border border-blue-500/30">agencies</span>, 
+            <span className="bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded-md mx-1 border border-orange-500/30">sales teams</span>, and 
+            <span className="bg-green-500/20 text-green-300 px-2 py-0.5 rounded-md mx-1 border border-green-500/30">GTM experts</span> 
+            who want to automate LinkedIn outreach, reach 1000+ leads weekly, and book more meetings.
           </p>
           <div className="mt-10 flex justify-center gap-4 flex-col sm:flex-row">
             <Link className="group relative bg-white text-black px-6 sm:px-10 py-4 sm:py-5 rounded-lg text-lg sm:text-xl font-bold transition-all shadow-2xl hover:scale-105 active:scale-95 overflow-hidden" href="#">
@@ -477,10 +565,9 @@ export default function Home() {
                             style={{ transform: `rotate(${angle}deg)` }}
                           >
                             <div 
-                              className="absolute top-0 left-1/2 -ml-5 -mt-5 w-10 h-10 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg pointer-events-auto hover:scale-125 transition-transform duration-300"
+                              className="absolute top-1/2 left-1/2 w-10 h-10 -ml-5 -mt-5 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg pointer-events-auto hover:scale-125 transition-transform duration-300"
                               style={{ 
-                                transform: `rotate(-${angle}deg) translateY(-${orbit.radius}px)`,
-                                marginTop: '50%' 
+                                transform: `rotate(-${angle}deg) translateY(-${orbit.radius}px)`
                               }}
                             >
                               <img 
@@ -495,8 +582,8 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="50%" cy="50%" fill="none" r="160" stroke="white" strokeDasharray="4 4" strokeWidth="1"></circle>
+                <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] pointer-events-none opacity-20" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="200" cy="200" fill="none" r="160" stroke="white" strokeDasharray="4 4" strokeWidth="1"></circle>
                   <circle cx="20%" cy="20%" fill="white" r="2" className="animate-pulse"></circle>
                   <circle cx="80%" cy="30%" fill="white" r="3" className="animate-pulse" style={{ animationDelay: '1s' }}></circle>
                   <circle cx="10%" cy="70%" fill="white" r="1.5" className="animate-pulse" style={{ animationDelay: '2s' }}></circle>
@@ -539,7 +626,8 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all">
+
+            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all rotate-2 hover:rotate-0">
               <div className="mb-8">
                 <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 border border-white/10 text-white">
                   <span className="material-icons">merge_type</span>
@@ -563,71 +651,136 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Multichannel Outreach Section */}
-      <motion.section 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1 }}
-        className="py-24 bg-linear-to-b from-black to-[#0a0a0a] border-t border-white/5"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-              <span className="bg-clip-text text-transparent bg-linear-to-r from-purple-300 to-indigo-300">Multichannel outreach</span>, done right
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Native integrations with Instantly and Smartlead. Switching between tools is dead-simple, no GTM engineer needed.
-            </p>
+      {/* Multichannel Outreach: Sticky Scroll Flow Simulator */}
+      <section ref={flowRef} className="relative h-[500vh] bg-background-dark border-t border-white/5 z-0">
+        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden z-10">
+          {/* Header */}
+          <div className="absolute top-20 left-0 right-0 z-20 px-4 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
+                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Automated Intelligence</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
+                The <span className="metallic-text">Perfect Workflow</span>
+              </h2>
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+                Our AI orchestrates your entire GTM motion, evolving from simple leads to booked meetings in one seamless loop.
+              </p>
+            </motion.div>
           </div>
-          <div className="glass-card rounded-3xl border border-white/10 p-1 md:p-4 overflow-hidden relative group">
-            <div className="bg-background-dark rounded-xl border border-white/5 p-8 min-h-[500px] relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-purple-900/20 via-black to-black transition-all group-hover:from-purple-900/40"></div>
-              <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
-                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
-                  <div className="p-3 sm:p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-full sm:w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded bg-white/10 flex items-center justify-center">
-                      <span className="material-icons text-white text-base sm:text-xl">email</span>
+
+          <div className="relative w-full max-w-6xl h-full flex flex-col items-center pt-48 pb-20">
+            {/* Vertical Flow Path - Starts lower */}
+            <div className="absolute inset-x-0 top-[35%] bottom-0 flex justify-center pointer-events-none">
+              <div className="w-px h-[90%] bg-white/5 relative">
+                <motion.div 
+                  className="absolute top-0 w-0.5 -left-px bg-linear-to-b from-blue-500 via-purple-500 to-emerald-500 shadow-[0_0_20px_rgba(168,85,247,0.5)]"
+                  style={{ height: pathHeight }}
+                />
+                {/* Moving Pulse Particle */}
+                <motion.div 
+                  className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white shadow-[0_0_25px_#fff] z-20"
+                  style={{ 
+                    top: pathHeight, 
+                    opacity: particleOpacity 
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Stages Grid */}
+            <div className="w-full flex flex-col gap-32 relative z-10">
+              {/* Stage 1: Discovery */}
+              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-48">
+                <motion.div 
+                  style={{ opacity: step1Opacity, x: step1X, y: step1Y }}
+                  className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-blue-500/50 transition-colors"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 group-hover:scale-110 transition-transform">
+                      <span className="material-icons text-blue-400">api</span>
                     </div>
                     <div>
-                      <div className="text-xs sm:text-sm font-bold">Email not found</div>
-                      <div className="text-[10px] text-dim-grey">Switch channel</div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">Phase 01</span>
+                      <h4 className="text-lg font-bold">Smart Discovery</h4>
                     </div>
                   </div>
-                  <div className="hidden md:block h-px w-8 lg:w-12 bg-white/20"></div>
-                  <div className="p-3 sm:p-4 rounded-xl bg-graphite border border-white/10 flex items-center gap-3 w-full sm:w-64 shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded bg-white/10 flex items-center justify-center">
-                      <span className="material-icons text-white text-base sm:text-xl">check</span>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Auto-ingest leads from Sales Navigator, Clay, or Apollo. We scrape and clean data in real-time.
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* Stage 2: AI Enrichment */}
+              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-48">
+                <motion.div 
+                  style={{ opacity: step2Opacity, x: step2X, y: step2Y }}
+                  className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-purple-500/50 transition-colors"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
+                      <span className="material-icons text-purple-400">auto_awesome</span>
                     </div>
                     <div>
-                      <div className="text-xs sm:text-sm font-bold">Email found</div>
-                      <div className="text-[10px] text-dim-grey">Proceed to verify</div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-purple-400">Phase 02</span>
+                      <h4 className="text-lg font-bold">AI Enrichment</h4>
                     </div>
                   </div>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-8 sm:gap-24 relative mt-12 w-full justify-center">
-                  <div className="flex-1 max-w-[280px] relative pt-12 sm:pt-16">
-                    <div className="absolute top-0 left-1/2 w-px h-12 sm:h-16 bg-linear-to-b from-white/20 to-transparent -translate-x-1/2"></div>
-                    <button className="w-full group relative flex items-center justify-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
-                      <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
-                      <span className="font-medium text-gray-300 group-hover:text-white">Add to Smartlead</span>
-                      <div className="absolute -inset-0.5 bg-linear-to-r from-purple-500 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
-                    </button>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Personalize every single icebreaker using GPT-4o. Find verified work emails and mobile numbers automatically.
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* Stage 3: Routing */}
+              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-48">
+                <motion.div 
+                  style={{ opacity: step3Opacity, x: step3X, y: step3Y }}
+                  className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-indigo-500/50 transition-colors"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 group-hover:scale-110 transition-transform">
+                      <span className="material-icons text-indigo-400">alt_route</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Phase 03</span>
+                      <h4 className="text-lg font-bold">Multi-path Routing</h4>
+                    </div>
                   </div>
-                  <div className="flex-1 max-w-[280px] relative pt-12 sm:pt-16">
-                    <div className="absolute top-0 left-1/2 w-px h-12 sm:h-16 bg-linear-to-b from-white/20 to-transparent -translate-x-1/2"></div>
-                    <button className="w-full group relative flex items-center justify-center gap-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 px-6 py-4 rounded-xl transition-all hover:scale-110">
-                      <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
-                      <span className="font-medium text-gray-300 group-hover:text-white">Add to Instantly</span>
-                      <div className="absolute -inset-0.5 bg-linear-to-r from-blue-500 to-cyan-500 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity blur"></div>
-                    </button>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Logic-based execution. If email is bounced, trigger LinkedIn connection. If OOO, delay sequence automatically.
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* Stage 4: CRM Sync */}
+              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-48">
+                <motion.div 
+                  style={{ opacity: step4Opacity, x: step4X }}
+                  className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-emerald-500/50 transition-colors"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                      <span className="material-icons text-emerald-400">task_alt</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Output</span>
+                      <h4 className="text-lg font-bold">Revenue Captured</h4>
+                    </div>
                   </div>
-                </div>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    Sync booked meetings to HubSpot, Pipedrive or Salesforce. 100% data fidelity across your stack.
+                  </p>
+                </motion.div>
               </div>
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Unified Inbox Section */}
       <motion.section 

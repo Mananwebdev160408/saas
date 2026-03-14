@@ -31,10 +31,10 @@ export default function Navbar() {
         }`}
       >
         <div 
-          className={`transition-all duration-500 flex items-center justify-between border-white/5 bg-background-dark/95 backdrop-blur-md ${
+          className={`transition-all duration-500 flex items-center justify-between border-white/10 bg-white/5 backdrop-blur-xl ${
             isScrolled 
-              ? 'w-full md:w-[70%] md:rounded-full border-b md:border px-8 py-4 md:py-3 shadow-2xl' 
-              : 'w-full border-b px-8 sm:px-12 lg:px-24 py-6'
+              ? 'w-full md:w-[75%] md:rounded-full md:border md:mt-4 px-8 py-4 md:py-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] border-b' 
+              : 'w-full border-b px-8 sm:px-12 lg:px-24 py-5 sm:py-6'
           }`}
         >
           <Link href="/" className="flex items-center gap-2">
@@ -45,15 +45,15 @@ export default function Navbar() {
           </Link>
           <div className="hidden lg:block">
             <div className="flex items-baseline space-x-8">
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="/#product">Product</Link>
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="/#solutions">Solutions</Link>
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="/pricing">Pricing</Link>
-              <Link className="text-dim-grey hover:text-white transition-all text-sm font-medium" href="/#resources">Resources</Link>
+              <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/#product">Product</Link>
+              <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/#solutions">Solutions</Link>
+              <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/pricing">Pricing</Link>
+              <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/#resources">Resources</Link>
             </div>
           </div>
           <div className="flex gap-2 sm:gap-4 items-center">
-            <Link className="text-sm font-medium text-dim-grey hover:text-white hidden sm:block" href="#">Login</Link>
-            <Link className="bg-white text-black px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all hover:scale-105 active:scale-95 whitespace-nowrap" href="#">Start Free Trial</Link>
+            <Link className="text-sm font-bold text-white/90 hover:text-white hidden sm:block transition-colors" href="#">Login</Link>
+            <Link className="bg-white text-black px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-black transition-all hover:scale-105 active:scale-95 whitespace-nowrap shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" href="#">Start Free Trial</Link>
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-white flex items-center justify-center">
               <span className="material-icons">{isMobileMenuOpen ? 'close' : 'menu'}</span>
             </button>
