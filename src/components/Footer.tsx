@@ -4,37 +4,34 @@ import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 export default function Footer() {
-  const footerRef = useRef<HTMLElement>(null);
-  const textContainerRef = useRef<HTMLDivElement>(null);
+  const brandSectionRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  // Mouse coordinates relative to the brand section
+  const relX = useMotionValue(0);
+  const relY = useMotionValue(0);
 
-  // Smooth springs for the glow and spotlight
-  const springX = useSpring(mouseX, { stiffness: 150, damping: 25 });
-  const springY = useSpring(mouseY, { stiffness: 150, damping: 25 });
+  // Smooth springs for the spotlight and glow
+  const springX = useSpring(relX, { stiffness: 100, damping: 20 });
+  const springY = useSpring(relY, { stiffness: 100, damping: 20 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!textContainerRef.current) return;
-    const rect = textContainerRef.current.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
+    if (!brandSectionRef.current) return;
+    const rect = brandSectionRef.current.getBoundingClientRect();
+    relX.set(e.clientX - rect.left);
+    relY.set(e.clientY - rect.top);
   };
 
   return (
-    <footer 
-      ref={footerRef}
-      className="relative bg-black pt-20 pb-10 overflow-hidden border-t border-white/5"
-    >
+    <footer className="relative bg-black pt-20 pb-10 overflow-hidden border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* UPPER CONTENT (LOGO & LINKS) */}
         <div className="flex flex-col items-center mb-16">
           <Link href="/" className="flex items-center gap-2 mb-6 group cursor-pointer hover:scale-105 transition-transform">
-            <div className="h-8 w-8 bg-white rounded flex items-center justify-center group-hover:bg-primary transition-colors">
-              <span className="material-icons text-black text-sm font-bold">bolt</span>
+            <div className="h-8 w-8 bg-white rounded flex items-center justify-center group-hover:bg-primary transition-colors text-black">
+              <span className="material-icons text-sm font-bold">bolt</span>
             </div>
-            <span className="font-display font-bold text-2xl tracking-tight text-white">heyreach</span>
+            <span className="font-display font-bold text-2xl tracking-tight text-white uppercase">heyreach</span>
           </Link>
         </div>
 
@@ -81,66 +78,65 @@ export default function Footer() {
 
         {/* INTERACTIVE BRAND SECTION */}
         <div 
-          ref={textContainerRef}
+          ref={brandSectionRef}
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className="relative w-full select-none mt-32 mb-16 cursor-default"
+          className="relative w-full h-[30vw] min-h-[150px] max-h-[300px] flex items-center justify-center select-none mt-24 mb-12 cursor-default"
         >
-          {/* 1. Underlying Outline (Visible when not hovering) */}
+          {/* 1. Underlying Static Outline - More visible now */}
           <h2 
             className="text-[12vw] font-black leading-none text-center uppercase tracking-tighter"
             style={{ 
-              WebkitTextStroke: "1px rgba(255,255,255,0.08)", 
+              WebkitTextStroke: "1.5px rgba(255,255,255,0.25)", 
               color: "transparent" 
             }}
           >
             HEYREACH
           </h2>
 
-          {/* 2. Spotlight Reveal Layer */}
+          {/* 2. Spotlight Reveal Layer - Pure white masked center */}
           <motion.h2 
-            className="absolute inset-0 text-[12vw] font-black leading-none text-center uppercase tracking-tighter z-20 pointer-events-none"
+            className="absolute inset-0 flex items-center justify-center text-[12vw] font-black leading-none text-center uppercase tracking-tighter z-20 pointer-events-none w-full"
             animate={{ 
               opacity: isHovering ? 1 : 0 
             }}
-            transition={{ duration: 0.5, ease: "circOut" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} 
             style={{ 
               color: "white",
               WebkitTextStroke: "1px white",
               clipPath: useTransform(
                 [springX, springY],
-                ([x, y]) => `circle(120px at ${x}px ${y}px)`
+                ([x, y]) => `circle(140px at ${x}px ${y}px)`
               )
             }}
           >
             HEYREACH
           </motion.h2>
 
-          {/* 3. Glowing Background (Centered on Cursor) */}
+          {/* 3. Outer Glow - Removed overflow-hidden from parent so this bleeds naturally */}
           <motion.div 
-             className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/10 blur-[100px] rounded-full z-0 pointer-events-none"
+             className="absolute pointer-events-none z-0 rounded-full bg-blue-500/15 blur-[120px]"
              animate={{ 
                opacity: isHovering ? 1 : 0
              }}
-             transition={{ duration: 0.5, ease: "circOut" }}
+             transition={{ duration: 0.6, ease: "easeOut" }}
              style={{ 
-               x: useTransform(springX, (x) => x - 250),
-               y: useTransform(springY, (y) => y - 250)
+               width: 600,
+               height: 600,
+               x: useTransform(springX, (x) => x - 300),
+               y: useTransform(springY, (y) => y - 300),
              }}
           />
         </div>
 
-        {/* LOWER CONTENT (COPYRIGHT) */}
-        <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center text-[10px] sm:text-xs text-dim-grey relative z-10 font-mono tracking-widest uppercase">
+        {/* LOWER CONTENT */}
+        <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center text-[10px] sm:text-xs text-dim-grey relative z-10 uppercase font-mono tracking-widest">
           <p className="mb-6 md:mb-0 text-center md:text-left">HeyReach - LinkedIn automation tool for agencies, sales teams, and GTM operators © 2025</p>
           <div className="flex gap-6">
             <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
             <Link className="hover:text-white transition-colors" href="#">Terms of Service</Link>
           </div>
-        </div>
-        <div className="mt-8 text-[10px] text-dim-grey text-center opacity-40 relative z-10 font-mono tracking-tighter uppercase">
-          HeyReach is not associated with, or endorsed by, the LinkedIn Corporation.
         </div>
       </div>
     </footer>
