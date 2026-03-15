@@ -334,32 +334,31 @@ export default function Home() {
 
           {/* Right Section: Visual Composition */}
           <div className="relative hidden lg:flex items-center justify-center min-h-[600px]">
-            <div className="relative w-full max-w-[550px] aspect-square flex items-center justify-center translate-y-48">
-              {/* Static Blob Background - Enhanced Wobble */}
+            <div className="relative w-full max-w-[750px] aspect-square flex items-center justify-center">
+              {/* Enormous Background Blob to "Contain" the Image */}
               <motion.img 
                 src="/blob.png"
                 alt="Blob"
-                className="absolute w-[130%] h-[130%] object-contain opacity-40 mix-blend-screen pointer-events-none"
-                animate={{ 
-                  scale: [1, 1.05, 1],
-                  rotate: [0, 5, -5, 0],
-                  x: [0, 10, -10, 0],
-                  y: [0, 5, -5, 0]
-                }}
-                transition={{ 
-                  duration: 12, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
+                className="absolute w-[250%] h-[250%] object-contain opacity-40 mix-blend-screen pointer-events-none z-0 scale-170"
               />
               
-              {/* Hero Image Space (Dashboard to be added later) */}
-              <div className="relative w-full h-full flex items-end justify-center">
-                {/* Empty container preserving space */}
-              </div>
+              {/* Hero Image - img.png (Boundary-free) */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="relative z-10 w-full h-full flex items-center justify-center p-4 active:scale-105 transition-transform"
+              >
+                <motion.img 
+                  src="/img.png" 
+                  alt="HeyReach Interface" 
+                  className="w-full h-auto drop-shadow-[0_0_80px_rgba(255,255,255,0.1)] rounded-2xl"
+                  
+                />
+              </motion.div>
               
-              {/* Subtle Ambient Glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-white/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+              {/* Massive Ambient Glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 blur-[180px] rounded-full pointer-events-none z-0"></div>
             </div>
           </div>
         </motion.div>
