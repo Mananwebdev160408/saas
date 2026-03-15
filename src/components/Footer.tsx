@@ -49,29 +49,29 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Product</h4>
             <ul className="space-y-3 text-dim-grey">
-              <li><Link className="hover:text-white transition-colors" href="#">For Agencies</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">For Sales</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">For Growth</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Multichannel outreach</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Integrations</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/#product">For Agencies</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/#product">For Sales</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/#product">For Growth</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/#solutions">Multichannel outreach</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/integrations">Integrations</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Resources</h4>
             <ul className="space-y-3 text-dim-grey">
-              <li><Link className="hover:text-white transition-colors" href="#">Content Hub</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Outbound Outliers</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Help Center</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Clay templates</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/#resources">Content Hub</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/#resources">Outbound Outliers</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/#resources">Help Center</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/integrations">Clay templates</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Company</h4>
             <ul className="space-y-3 text-dim-grey">
-              <li><Link className="hover:text-white transition-colors" href="#">About us</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Careers</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Connect on LinkedIn</Link></li>
-              <li><Link className="hover:text-white transition-colors" href="#">Subscribe to YouTube</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/about">About us</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/careers">Careers</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="/linkedin">Connect on LinkedIn</Link></li>
+              <li><Link className="hover:text-white transition-colors" href="https://youtube.com">Subscribe to YouTube</Link></li>
             </ul>
           </div>
         </div>
@@ -134,8 +134,8 @@ export default function Footer() {
         <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center text-[10px] sm:text-xs text-dim-grey relative z-10 uppercase font-mono tracking-widest">
           <p className="mb-6 md:mb-0 text-center md:text-left">HeyReach - LinkedIn automation tool for agencies, sales teams, and GTM operators © 2025</p>
           <div className="flex gap-6">
-            <Link className="hover:text-white transition-colors" href="#">Privacy Policy</Link>
-            <Link className="hover:text-white transition-colors" href="#">Terms of Service</Link>
+            <Link className="hover:text-white transition-colors" href="/privacy">Privacy Policy</Link>
+            <Link className="hover:text-white transition-colors" href="/terms">Terms of Service</Link>
           </div>
         </div>
       </div>

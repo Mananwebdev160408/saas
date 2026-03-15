@@ -117,7 +117,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
-        <div className="absolute inset-0 z-0 opacity-80">
+        <div className="absolute inset-0 z-0 opacity-80 scale-x-[-1]">
           <img 
             src="/bg.svg" 
             alt="Hero Texture" 
@@ -172,240 +172,251 @@ export default function Home() {
             rotateY: (mousePos.x - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.01
           }}
           transition={{ duration: 0.8, ease: "easeOut", x: { duration: 0 }, rotateX: { duration: 0 }, rotateY: { duration: 0 } }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center perspective-1000"
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 perspective-1000 grid lg:grid-cols-2 gap-12 items-center"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 animate-float">
-            <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
-            <span className="text-xs font-medium text-gray-300 uppercase tracking-wider">New: AI Sequence Generator</span>
-          </div>
-          <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter mb-6 leading-[1.1]">
-            <span className="metallic-text">10x your LinkedIn</span><br />
-            <span className="text-dim-grey">outbound output</span>
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-400 font-light leading-relaxed">
-            For <span className="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-md mx-1 border border-blue-500/30">agencies</span>, 
-            <span className="bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded-md mx-1 border border-orange-500/30">sales teams</span>, and 
-            <span className="bg-green-500/20 text-green-300 px-2 py-0.5 rounded-md mx-1 border border-green-500/30">GTM experts</span> 
-            who want to automate LinkedIn outreach, reach 1000+ leads weekly, and book more meetings.
-          </p>
-          <div className="mt-10 flex justify-center gap-4 flex-col sm:flex-row">
-            <Link className="group relative bg-white text-black px-6 sm:px-10 py-4 sm:py-5 rounded-lg text-lg sm:text-xl font-bold transition-all shadow-2xl hover:scale-105 active:scale-95 overflow-hidden" href="#">
-              <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                Try HeyReach free
-                <span className="material-icons">rocket_launch</span>
-              </span>
-            </Link>
-            <Link className="group px-8 py-4 rounded-lg text-base font-medium border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2" href="#">
-              <span className="material-icons text-dim-grey group-hover:text-white transition-colors">play_circle</span>
-              View Demo
-            </Link>
-          </div>
-          <div className="mt-6 flex items-center justify-center gap-6 text-sm text-dim-grey">
-            <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
-              <span className="material-icons text-base">credit_card_off</span> No card required
-            </div>
-            <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
-              <span className="material-icons text-base">workspace_premium</span> Premium features
-            </div>
-          </div>
-
-          {/* Floating UI Elements Around Hero */}
-          <div className="absolute inset-0 pointer-events-none hidden xl:block">
-            {/* Connection Request Card */}
+          <div className="text-left py-10">
             <motion.div 
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="absolute top-20 left-10 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float"
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8"
             >
-              <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/20">
-                <span className="material-icons text-blue-400 text-xl">person_add</span>
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-bold">Request Sent</div>
-                <div className="text-xs text-dim-grey">To: Sarah Jenkins</div>
-              </div>
+              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
+              <span className="text-xs font-semibold text-white/90 uppercase tracking-widest">New: AI Sequence Generator</span>
             </motion.div>
-
-            {/* Reply Card */}
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.2, duration: 1 }}
-              className="absolute top-40 right-10 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float animate-delay-1000"
-            >
-              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/20">
-                <span className="material-icons text-green-400 text-xl">reply</span>
+            <h1 className="text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-8 leading-[0.95]">
+              <span className="bg-clip-text text-transparent bg-linear-to-b from-white via-white to-white/40">10x your</span><br />
+              <span className="metallic-text">LinkedIn</span><br />
+              <span className="text-white/20">outbound</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed max-w-xl mb-12">
+              Automate outreach, reach <span className="text-white font-medium">1000+ leads weekly</span>, and scale your GTM motion with precision.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-5 justify-start items-center sm:items-stretch">
+              <Link className="group relative bg-white text-black px-10 py-5 rounded-2xl text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center min-w-[240px]" href="#">
+                <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  Start Free Trial
+                  <span className="material-icons text-2xl">arrow_forward</span>
+                </span>
+              </Link>
+              <Link className="group px-8 py-5 rounded-2xl text-lg font-semibold border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3" href="#">
+                <span className="material-icons text-gray-400 group-hover:text-white transition-colors">play_circle</span>
+                Watch Demo
+              </Link>
+            </div>
+            <div className="mt-10 flex items-center gap-8 text-sm text-dim-grey">
+              <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
+                <span className="material-icons text-lg text-green-500/70">check_circle</span> No credit card
               </div>
-              <div className="text-left">
-                <div className="text-sm font-bold">New Reply!</div>
-                <div className="text-xs text-dim-grey">&quot;Let&apos;s talk tomorrow&quot;</div>
+              <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
+                <span className="material-icons text-lg text-blue-500/70">verified</span> Premium setup
               </div>
-            </motion.div>
-
-            {/* Meeting Booked Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.5, duration: 1 }}
-              className="absolute bottom-32 left-16 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float"
-              style={{ animationDelay: '0.5s' }}
-            >
-              <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center border border-purple-500/20">
-                <span className="material-icons text-purple-400 text-xl">event_available</span>
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-bold">Meeting Booked 🎉</div>
-                <div className="text-xs text-dim-grey">With: Alex @ TechCorp</div>
-              </div>
-            </motion.div>
-
-            {/* Campaign Stats Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.8, duration: 1 }}
-              className="absolute bottom-48 right-16 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float animate-delay-1000"
-              style={{ animationDelay: '1.5s' }}
-            >
-              <div className="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center border border-orange-500/20">
-                <span className="material-icons text-orange-400 text-xl">trending_up</span>
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-bold">+34% Reply Rate</div>
-                <div className="text-xs text-dim-grey">Campaign: Q1 Outbound</div>
-              </div>
-            </motion.div>
-
-            {/* AI Enriched Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2, duration: 1 }}
-              className="absolute top-8 right-56 p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float"
-              style={{ animationDelay: '0.8s' }}
-            >
-              <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/20">
-                <span className="material-icons text-indigo-400 text-xl">auto_awesome</span>
-              </div>
-              <div className="text-left">
-                <div className="text-sm font-bold">AI Enriched</div>
-                <div className="text-xs text-dim-grey">1,240 leads processed</div>
-              </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* Automation Simulation */}
-          <div className="mt-16 relative mx-auto max-w-5xl group">
+          {/* Right Section: Visual Composition */}
+          <div className="relative hidden lg:flex items-center justify-center min-h-[600px]">
+            <div className="relative w-full max-w-[550px] aspect-square flex items-center justify-center">
+              {/* Static Blob Background */}
+              <img 
+                src="/blob.png"
+                alt="Blob"
+                className="absolute w-[130%] h-[130%] object-contain opacity-40 mix-blend-screen pointer-events-none"
+              />
+              
+              {/* Hand/Image emerging from blob - Enhanced Animation */}
+              <div className="relative w-full h-full flex items-end justify-center overflow-hidden">
+                <motion.img 
+                  src="/img.png"
+                  alt="Hand"
+                  className="relative z-10 w-[140%] h-auto max-w-none object-contain drop-shadow-[0_30px_60px_rgba(255,255,255,0.15)] origin-bottom"
+                  initial={{ y: "100%", opacity: 0, scale: 0.9 }}
+                  animate={{ y: "10%", opacity: 1, scale: 1.1 }}
+                  transition={{ 
+                    delay: 0.5, 
+                    duration: 1.5, 
+                    type: "spring",
+                    stiffness: 40,
+                    damping: 15
+                  }}
+                />
+              </div>
+              
+              {/* Subtle Ambient Glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-white/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Floating UI Elements Around Hero - Repositioned for 2-column */}
+        <div className="absolute inset-0 pointer-events-none hidden xl:block z-20">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.5, duration: 1 }}
+            className="absolute top-1/4 left-1/2 -translate-x-[120%] p-4 rounded-2xl glass-card border border-white/10 flex items-center gap-4 animate-float"
+          >
+            <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+              <span className="material-icons text-blue-400 text-xl">person_add</span>
+            </div>
+            <div className="text-left">
+              <div className="text-sm font-bold">Request Sent</div>
+              <div className="text-xs text-dim-grey">To: Sarah Jenkins</div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.8, duration: 1 }}
+            className="absolute top-2/3 right-[5%] p-5 rounded-3xl glass-card border border-white/10 flex items-center gap-5 animate-float animate-delay-1000"
+          >
+            <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+              <span className="material-icons text-green-400 text-2xl">reply</span>
+            </div>
+            <div className="text-left">
+              <div className="text-base font-bold">New Reply!</div>
+              <div className="text-sm text-dim-grey">&quot;Let&apos;s talk tomorrow&quot;</div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Automation Flow Simulation Section */}
+      <section id="product" className="py-24 relative overflow-hidden bg-background-dark border-y border-white/5">
+        <div className="absolute inset-0 grid-bg opacity-10"></div>
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+              Real-time <span className="metallic-text">Automation</span> Logic
+            </h2>
+            <p className="text-gray-400 text-lg">Watch HeyReach process leads and book meetings in the background.</p>
+          </div>
+          
+          <div className="relative group">
             <div className="absolute -inset-1 bg-linear-to-b from-white/10 via-white/5 to-white/10 rounded-3xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
-            <div className="relative glass-card rounded-3xl p-4 md:p-8 border border-white/10 overflow-hidden">
-              <div className="flex items-center justify-between mb-8 px-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
+            <div className="relative glass-card rounded-3xl p-4 md:p-10 border border-white/10 overflow-hidden bg-black/40 backdrop-blur-xl">
+              <div className="flex items-center justify-between mb-10 px-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-3.5 h-3.5 rounded-full bg-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]"></div>
+                  <div className="w-3.5 h-3.5 rounded-full bg-yellow-500/50 shadow-[0_0_10px_rgba(234,179,8,0.3)]"></div>
+                  <div className="w-3.5 h-3.5 rounded-full bg-green-500/50 shadow-[0_0_10px_rgba(34,197,94,0.3)]"></div>
                 </div>
-                <div className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-medium text-dim-grey flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                <div className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[11px] font-bold text-white/70 flex items-center gap-2 uppercase tracking-widest">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                   Campaign: Ultra-Scale Outreach Q1
                 </div>
               </div>
               
-              <div className="relative h-auto min-h-[500px] md:h-[400px] flex items-center justify-center overflow-hidden py-8 md:py-0">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl relative z-10">
+              <div className="relative h-auto min-h-[500px] md:h-[450px] flex items-center justify-center overflow-hidden py-8 md:py-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-4xl relative z-10">
                   {/* Step 1: Profile View */}
-                  <div className="flex flex-col items-center gap-4 group/step">
+                  <div className="flex flex-col items-center gap-5 group/step">
                     <div className="relative">
-                      <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
-                        activeStep >= 0 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
+                      <div className={`w-24 h-24 rounded-3xl border transition-all duration-700 flex items-center justify-center ${
+                        activeStep >= 0 ? "bg-white/10 border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.15)] scale-110" : "bg-white/5 border-white/5"
                       }`}>
-                        <span className={`material-icons text-3xl transition-colors duration-500 ${activeStep >= 0 ? "text-white" : "text-white/20"}`}>visibility</span>
+                        <span className={`material-icons text-4xl transition-colors duration-700 ${activeStep >= 0 ? "text-white" : "text-white/20"}`}>visibility</span>
                       </div>
                       {activeStep === 0 && (
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full animate-ping"></div>
                       )}
                     </div>
                     <div className="text-center">
-                      <div className={`font-bold text-sm mb-1 transition-colors ${activeStep >= 0 ? "text-white" : "text-dim-grey"}`}>Profile Visit</div>
-                      <div className="text-[10px] text-dim-grey">AI-driven viewing</div>
+                      <div className={`font-bold text-lg mb-1 transition-colors ${activeStep >= 0 ? "text-white" : "text-dim-grey"}`}>Profile Visit</div>
+                      <div className="text-xs text-dim-grey uppercase tracking-wider">AI-driven viewing</div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-center gap-4 relative">
-                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
+                  <div className="flex flex-col items-center gap-5 relative pt-12 md:pt-0">
+                    <div className="absolute top-12 -left-1/2 w-full h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
                     <div className="relative">
-                      <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
-                        activeStep >= 1 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
+                      <div className={`w-24 h-24 rounded-3xl border transition-all duration-700 flex items-center justify-center ${
+                        activeStep >= 1 ? "bg-white/10 border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.15)] scale-110" : "bg-white/5 border-white/5"
                       }`}>
-                        <span className={`material-icons text-3xl transition-colors duration-500 ${activeStep >= 1 ? "text-white" : "text-white/20"}`}>person_add</span>
+                        <span className={`material-icons text-4xl transition-colors duration-700 ${activeStep >= 1 ? "text-white" : "text-white/20"}`}>person_add</span>
                       </div>
                       {activeStep === 1 && (
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full animate-ping"></div>
                       )}
                     </div>
                     <div className="text-center">
-                      <div className={`font-bold text-sm mb-1 transition-colors ${activeStep >= 1 ? "text-white" : "text-dim-grey"}`}>Connect</div>
-                      <div className="text-[10px] text-dim-grey">With personalized note</div>
+                      <div className={`font-bold text-lg mb-1 transition-colors ${activeStep >= 1 ? "text-white" : "text-dim-grey"}`}>Connect</div>
+                      <div className="text-xs text-dim-grey uppercase tracking-wider">With personalized note</div>
                     </div>
                   </div>
 
                   {/* Step 3: Message / Email */}
-                  <div className="flex flex-col items-center gap-4 relative">
-                    <div className="absolute top-10 -left-1/2 w-full h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
+                  <div className="flex flex-col items-center gap-5 relative pt-12 md:pt-0">
+                    <div className="absolute top-12 -left-1/2 w-full h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent hidden md:block"></div>
                     <div className="relative">
-                      <div className={`w-20 h-20 rounded-2xl border transition-all duration-500 flex items-center justify-center ${
-                        activeStep >= 2 ? "bg-white/10 border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.1)]" : "bg-white/5 border-white/5"
+                      <div className={`w-24 h-24 rounded-3xl border transition-all duration-700 flex items-center justify-center ${
+                        activeStep >= 2 ? "bg-white/10 border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.15)] scale-110" : "bg-white/5 border-white/5"
                       }`}>
-                        <span className={`material-icons text-3xl transition-colors duration-500 ${activeStep >= 2 ? "text-white" : "text-white/20"}`}>alternate_email</span>
+                        <span className={`material-icons text-4xl transition-colors duration-700 ${activeStep >= 2 ? "text-white" : "text-white/20"}`}>alternate_email</span>
                       </div>
                       {activeStep === 2 && (
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full animate-ping"></div>
                       )}
                     </div>
                     <div className="text-center">
-                      <div className={`font-bold text-sm mb-1 transition-colors ${activeStep >= 2 ? "text-white" : "text-dim-grey"}`}>Multichannel</div>
-                      <div className="text-[10px] text-dim-grey">LinkedIn + Email</div>
+                      <div className={`font-bold text-lg mb-1 transition-colors ${activeStep >= 2 ? "text-white" : "text-dim-grey"}`}>Multichannel</div>
+                      <div className="text-xs text-dim-grey uppercase tracking-wider">LinkedIn + Email</div>
                     </div>
                   </div>
                 </div>
 
+                {/* Meeting Booked Popup in Simulation */}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={activeStep === 2 ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+                  className="absolute top-10 left-10 p-4 rounded-2xl glass-card border-purple-500/30 bg-purple-500/10 backdrop-blur-3xl flex items-center gap-4 z-20 shadow-[0_0_40px_rgba(168,85,247,0.2)]"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center border border-purple-500/30">
+                    <span className="material-icons text-purple-400">event_available</span>
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-white">Meeting Booked 🎉</div>
+                    <div className="text-[10px] text-purple-300">With: Alex @ TechCorp</div>
+                  </div>
+                </motion.div>
+
                 {/* Automation Log Overlay */}
-                <div className="absolute bottom-4 left-4 right-4 h-24 glass-card border-white/5 rounded-xl p-4 overflow-hidden">
-                  <div className="flex flex-col gap-2">
+                <div className="absolute bottom-6 left-6 right-6 h-28 glass-card border-white/10 rounded-2xl p-5 overflow-hidden bg-black/60 shadow-2xl">
+                  <div className="flex flex-col gap-3">
                     {activeStep >= 0 && (
-                      <div className="flex items-center gap-3 text-[10px] animate-fade-in-up">
-                        <span className="text-blue-400 font-mono">[14:26:01]</span>
-                        <span className="text-white">Visiting profile: <b>Sarah Wilson</b> (Head of GTM at ScaleFlow)</span>
-                        <span className="ml-auto text-green-500 flex items-center gap-1">
-                          <span className="material-icons text-[12px]">check_circle</span>
-                          Completed
+                      <div className="flex items-center gap-4 text-xs animate-fade-in-up">
+                        <span className="text-blue-400 font-mono tracking-tighter opacity-70">[14:26:01]</span>
+                        <span className="text-white/90">Visiting profile: <b className="text-white">Sarah Wilson</b> (Head of GTM at ScaleFlow)</span>
+                        <span className="ml-auto text-green-500 flex items-center gap-1.5 font-bold">
+                          <span className="material-icons text-[14px]">check_circle</span>
+                          DONE
                         </span>
                       </div>
                     )}
                     {activeStep >= 1 && (
-                      <div className="flex items-center gap-3 text-[10px] animate-fade-in-up">
-                        <span className="text-blue-400 font-mono">[14:26:05]</span>
-                        <span className="text-white">Sending connection request with AI-personalized note...</span>
-                        <span className="ml-auto text-green-500 flex items-center gap-1">
-                          <span className="material-icons text-[12px]">check_circle</span>
-                          Sent
+                      <div className="flex items-center gap-4 text-xs animate-fade-in-up">
+                        <span className="text-blue-400 font-mono tracking-tighter opacity-70">[14:26:05]</span>
+                        <span className="text-white/90">Generating AI-personalized note and sending request...</span>
+                        <span className="ml-auto text-green-500 flex items-center gap-1.5 font-bold">
+                          <span className="material-icons text-[14px]">check_circle</span>
+                          SENT
                         </span>
                       </div>
                     )}
                     {activeStep >= 2 && (
-                      <div className="flex items-center gap-3 text-[10px] animate-fade-in-up">
-                        <span className="text-blue-400 font-mono">[14:26:12]</span>
-                        <span className="text-white">Lead connected. Initializing multichannel sequence (Email 1)...</span>
-                        <span className="ml-auto text-blue-400 flex items-center gap-1 animate-pulse">
-                          <span className="material-icons text-[12px]">sync</span>
-                          Processing
+                      <div className="flex items-center gap-4 text-xs animate-fade-in-up">
+                        <span className="text-blue-400 font-mono tracking-tighter opacity-70">[14:26:12]</span>
+                        <span className="text-white/90">Connection accepted. Initializing multichannel sequence...</span>
+                        <span className="ml-auto text-blue-400 flex items-center gap-2 font-bold animate-pulse">
+                          <span className="material-icons text-[14px]">sync</span>
+                          PROCESSING
                         </span>
                       </div>
                     )}
                   </div>
                 </div>
-
                 {/* Particle / Connection Lines */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" preserveAspectRatio="none">
                   <defs>
@@ -415,12 +426,12 @@ export default function Home() {
                       <stop offset="100%" stopColor="transparent" />
                     </linearGradient>
                   </defs>
-                  <path d="M 0 200 L 1000 200" stroke="url(#lineGrad)" strokeWidth="1" fill="none" className="animate-draw" />
+                  <path d="M 0 225 L 1000 225" stroke="url(#lineGrad)" strokeWidth="1" fill="none" className="animate-draw" />
                 </svg>
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
         {/* Interactive Process Flowchart Section */}
@@ -649,6 +660,7 @@ export default function Home() {
 
       {/* Feature Grid: Import Leads & Combine Steps */}
       <motion.section 
+        id="solutions"
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -1116,6 +1128,7 @@ export default function Home() {
 
       {/* FAQ Section */}
       <motion.section 
+        id="resources"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
