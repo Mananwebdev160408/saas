@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+  /* Custom xs breakpoint for small mobile devices */
+  --breakpoint-xs: 480px;
+
   --color-primary: #FFFFFF;
   --color-background-light: #F5F5F5;
   --color-background-dark: #050505;

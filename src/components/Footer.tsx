@@ -35,7 +35,7 @@ export default function Footer() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-sm">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16 text-sm">
           <div>
             <h4 className="font-bold text-white mb-6 uppercase tracking-widest text-xs">Join the movement</h4>
             <ul className="space-y-3 text-dim-grey">
@@ -82,7 +82,7 @@ export default function Footer() {
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className="relative w-full h-[30vw] min-h-[150px] max-h-[300px] flex items-center justify-center select-none mt-24 mb-12 cursor-default"
+          className="relative w-full h-[30vw] min-h-[120px] max-h-[300px] flex items-center justify-center select-none mt-16 mb-12 cursor-default"
         >
           {/* 1. Underlying Static Outline - More visible now */}
           <h2 

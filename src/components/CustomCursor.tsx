@@ -13,6 +13,7 @@ export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // Precision dot: immediate following with slight dampening
   const dotX = useSpring(0, { damping: 40, stiffness: 400 });
@@ -54,6 +55,13 @@ export default function CustomCursor() {
   }, []);
 
   useEffect(() => {
+    // Detect touch/mobile devices — skip custom cursor on them
+    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+    if (!hasFinePointer) {
+      setIsTouchDevice(true);
+      return;
+    }
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("click", handleClick);
 
@@ -77,72 +85,77 @@ export default function CustomCursor() {
   }, [handleMouseMove, handleClick]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-99999">
-      {/* Outer Ring */}
-      <motion.div
-        className="fixed w-10 h-10 border border-white/40 rounded-full mix-blend-difference"
-        style={{
-          x: ringX,
-          y: ringY,
-          scale: isHovering ? 1.5 : 1,
-          borderWidth: isHovering ? "1px" : "1.5px",
-          backgroundColor: isHovering ? "rgba(255, 255, 255, 0.1)" : "transparent",
-          backdropFilter: isHovering ? "blur(2px)" : "none",
-        }}
-        transition={{ type: "spring", damping: 15, stiffness: 200 }}
-      />
+    <div className="fixed inset-0 pointer-events-none z-99999 hidden md:block">
+      {/* Only render custom cursor elements if not a touch device */}
+      {!isTouchDevice && (
+        <>
+          {/* Outer Ring */}
+          <motion.div
+            className="fixed w-10 h-10 border border-white/40 rounded-full mix-blend-difference"
+            style={{
+              x: ringX,
+              y: ringY,
+              scale: isHovering ? 1.5 : 1,
+              borderWidth: isHovering ? "1px" : "1.5px",
+              backgroundColor: isHovering ? "rgba(255, 255, 255, 0.1)" : "transparent",
+              backdropFilter: isHovering ? "blur(2px)" : "none",
+            }}
+            transition={{ type: "spring", damping: 15, stiffness: 200 }}
+          />
 
-      {/* Precision Dot */}
-      <motion.div
-        className="fixed w-2 h-2 bg-white rounded-full mix-blend-difference shadow-[0_0_15px_rgba(255,255,255,0.8)]"
-        style={{
-          x: dotX,
-          y: dotY,
-          scale: isHovering ? 0.4 : 1,
-        }}
-      />
+          {/* Precision Dot */}
+          <motion.div
+            className="fixed w-2 h-2 bg-white rounded-full mix-blend-difference shadow-[0_0_15px_rgba(255,255,255,0.8)]"
+            style={{
+              x: dotX,
+              y: dotY,
+              scale: isHovering ? 0.4 : 1,
+            }}
+          />
 
-      {/* Multi-layered Digital Pulse Ripples */}
-      <AnimatePresence>
-        {ripples.map((ripple) => (
-          <React.Fragment key={ripple.id}>
-            {/* Primary Pulse */}
-            <motion.div
-              initial={{ scale: 0, opacity: 0.8 }}
-              animate={{ scale: 6, opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              style={{
-                position: "absolute",
-                left: ripple.x - 10,
-                top: ripple.y - 10,
-                width: 20,
-                height: 20,
-                borderRadius: "50%",
-                border: "1px solid white",
-                mixBlendMode: "difference",
-              }}
-            />
-            {/* Secondary delayed ring */}
-            <motion.div
-              initial={{ scale: 0, opacity: 0.4 }}
-              animate={{ scale: 10, opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, delay: 0.05, ease: "easeOut" }}
-              style={{
-                position: "absolute",
-                left: ripple.x - 10,
-                top: ripple.y - 10,
-                width: 20,
-                height: 20,
-                borderRadius: "50%",
-                border: "0.5px solid white",
-                mixBlendMode: "difference",
-              }}
-            />
-          </React.Fragment>
-        ))}
-      </AnimatePresence>
+          {/* Multi-layered Digital Pulse Ripples */}
+          <AnimatePresence>
+            {ripples.map((ripple) => (
+              <React.Fragment key={ripple.id}>
+                {/* Primary Pulse */}
+                <motion.div
+                  initial={{ scale: 0, opacity: 0.8 }}
+                  animate={{ scale: 6, opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  style={{
+                    position: "absolute",
+                    left: ripple.x - 10,
+                    top: ripple.y - 10,
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    border: "1px solid white",
+                    mixBlendMode: "difference",
+                  }}
+                />
+                {/* Secondary delayed ring */}
+                <motion.div
+                  initial={{ scale: 0, opacity: 0.4 }}
+                  animate={{ scale: 10, opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 0.05, ease: "easeOut" }}
+                  style={{
+                    position: "absolute",
+                    left: ripple.x - 10,
+                    top: ripple.y - 10,
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    border: "0.5px solid white",
+                    mixBlendMode: "difference",
+                  }}
+                />
+              </React.Fragment>
+            ))}
+          </AnimatePresence>
+        </>
+      )}
     </div>
   );
 }

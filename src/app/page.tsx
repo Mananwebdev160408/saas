@@ -26,7 +26,7 @@ function StatItem({ value, label, suffix = "" }: { value: number; label: string;
 
   return (
     <div ref={ref} className="text-center">
-      <div className="text-4xl lg:text-6xl font-display font-bold mb-4 tracking-tight tabular-nums">
+            <div className="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-4 tracking-tight tabular-nums">
         {displayValue.toLocaleString()}{suffix}
       </div>
       <p className="text-dim-grey text-lg font-medium">{label}</p>
@@ -291,7 +291,7 @@ export default function Home() {
           transition={{ duration: 0.8, ease: "easeOut", x: { duration: 0 }, rotateX: { duration: 0 }, rotateY: { duration: 0 } }}
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 perspective-1000 grid lg:grid-cols-2 gap-20 items-center"
         >
-          <div className="text-left py-10">
+          <div className="text-left py-4 sm:py-10">
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -301,28 +301,28 @@ export default function Home() {
               <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
               <span className="text-xs font-semibold text-white/90 uppercase tracking-widest">New: AI Sequence Generator</span>
             </motion.div>
-            <h1 className="text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-8 leading-[0.95]">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-6 sm:mb-8 leading-[0.95]">
               <span className="bg-clip-text text-transparent bg-linear-to-b from-white via-white to-white/40">10x your</span><br />
               <span className="metallic-text">LinkedIn</span><br />
               <span className="text-white/20">outbound</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-400 font-light leading-relaxed max-w-xl mb-12">
+            <p className="text-lg md:text-2xl text-gray-400 font-light leading-relaxed max-w-xl mb-8 sm:mb-12">
               Automate outreach, reach <span className="text-white font-medium">1000+ leads weekly</span>, and scale your GTM motion with precision.
             </p>
             <div className="flex flex-col sm:flex-row gap-5 justify-start items-center sm:items-stretch">
-              <Link className="group relative bg-white text-black px-10 py-5 rounded-2xl text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center min-w-[240px]" href="#">
+              <Link className="group relative bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center w-full sm:min-w-60 sm:w-auto" href="#">
                 <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   Start Free Trial
                   <span className="material-icons text-2xl">arrow_forward</span>
                 </span>
               </Link>
-              <Link className="group px-8 py-5 rounded-2xl text-lg font-semibold border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3" href="#">
+              <Link className="group px-8 py-4 sm:py-5 rounded-2xl text-base sm:text-lg font-semibold border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3 w-full sm:w-auto" href="#">
                 <span className="material-icons text-gray-400 group-hover:text-white transition-colors">play_circle</span>
                 Watch Demo
               </Link>
             </div>
-            <div className="mt-10 flex items-center gap-8 text-sm text-dim-grey">
+            <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-8 text-sm text-dim-grey">
               <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
                 <span className="material-icons text-lg text-green-500/70">check_circle</span> No credit card
               </div>
@@ -347,7 +347,7 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.8, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 1 }}
-                className="relative z-10 w-full h-full flex items-center justify-center p-4 active:scale-105 transition-transform"
+                className="relative z-10 w-full h-full flex items-center justify-center p-4  transition-transform"
               >
                 <motion.img 
                   src="/img.png" 
@@ -358,7 +358,7 @@ export default function Home() {
               </motion.div>
               
               {/* Massive Ambient Glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 blur-[180px] rounded-full pointer-events-none z-0"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-[800px] bg-white/5 blur-[180px] rounded-full pointer-events-none z-0"></div>
             </div>
           </div>
         </motion.div>
@@ -410,7 +410,7 @@ export default function Home() {
           
           <div className="relative group">
             <div className="absolute -inset-1 bg-linear-to-b from-white/10 via-white/5 to-white/10 rounded-3xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
-            <div className="relative glass-card rounded-3xl p-4 md:p-10 border border-white/10 overflow-hidden bg-black/40 backdrop-blur-xl">
+            <div className="relative glass-card rounded-3xl p-3 sm:p-4 md:p-10 border border-white/10 overflow-hidden bg-black/40 backdrop-blur-xl">
               <div className="flex items-center justify-between mb-10 px-4">
                 <div className="flex items-center gap-3">
                   <div className="w-3.5 h-3.5 rounded-full bg-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]"></div>
@@ -501,9 +501,9 @@ export default function Home() {
                   <div className="flex flex-col gap-3">
                     {activeStep >= 0 && (
                       <div className="flex items-center gap-4 text-xs animate-fade-in-up">
-                        <span className="text-blue-400 font-mono tracking-tighter opacity-70">[14:26:01]</span>
-                        <span className="text-white/90">Visiting profile: <b className="text-white">Sarah Wilson</b> (Head of GTM at ScaleFlow)</span>
-                        <span className="ml-auto text-green-500 flex items-center gap-1.5 font-bold">
+                        <span className="text-blue-400 font-mono tracking-tighter opacity-70 shrink-0">[14:26:01]</span>
+                        <span className="text-white/90 truncate">Visiting profile: <b className="text-white">Sarah Wilson</b></span>
+                        <span className="ml-auto text-green-500 flex items-center gap-1.5 font-bold shrink-0">
                           <span className="material-icons text-[14px]">check_circle</span>
                           DONE
                         </span>
@@ -511,9 +511,9 @@ export default function Home() {
                     )}
                     {activeStep >= 1 && (
                       <div className="flex items-center gap-4 text-xs animate-fade-in-up">
-                        <span className="text-blue-400 font-mono tracking-tighter opacity-70">[14:26:05]</span>
-                        <span className="text-white/90">Generating AI-personalized note and sending request...</span>
-                        <span className="ml-auto text-green-500 flex items-center gap-1.5 font-bold">
+                        <span className="text-blue-400 font-mono tracking-tighter opacity-70 shrink-0">[14:26:05]</span>
+                        <span className="text-white/90 truncate">Generating AI-personalized note and sending request...</span>
+                        <span className="ml-auto text-green-500 flex items-center gap-1.5 font-bold shrink-0">
                           <span className="material-icons text-[14px]">check_circle</span>
                           SENT
                         </span>
@@ -521,9 +521,9 @@ export default function Home() {
                     )}
                     {activeStep >= 2 && (
                       <div className="flex items-center gap-4 text-xs animate-fade-in-up">
-                        <span className="text-blue-400 font-mono tracking-tighter opacity-70">[14:26:12]</span>
-                        <span className="text-white/90">Connection accepted. Initializing multichannel sequence...</span>
-                        <span className="ml-auto text-blue-400 flex items-center gap-2 font-bold animate-pulse">
+                        <span className="text-blue-400 font-mono tracking-tighter opacity-70 shrink-0">[14:26:12]</span>
+                        <span className="text-white/90 truncate">Initializing multichannel sequence...</span>
+                        <span className="ml-auto text-blue-400 flex items-center gap-2 font-bold animate-pulse shrink-0">
                           <span className="material-icons text-[14px]">sync</span>
                           PROCESSING
                         </span>
@@ -553,7 +553,7 @@ export default function Home() {
           <div className="absolute inset-0 grid-bg opacity-10"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-20">
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6">
                 The <span className="metallic-text">Future of Outbound</span> Architecture
               </h2>
               <p className="text-gray-400 text-lg">
@@ -693,7 +693,7 @@ export default function Home() {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            className="glass-card rounded-3xl p-8 lg:p-12 border border-white/10 relative overflow-hidden group rotate-1 hover:rotate-0 transition-all duration-500"
+            className="glass-card rounded-3xl p-8 lg:p-12 border border-white/10 relative overflow-hidden group md:rotate-1 md:hover:rotate-0 transition-all duration-500"
           >
             <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none"></div>
             <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -784,7 +784,7 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8">
-            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all -rotate-2 hover:rotate-0">
+            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all md:-rotate-2 md:hover:rotate-0">
               <div className="mb-8">
                 <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 border border-white/10 text-white">
                   <span className="material-icons">download</span>
@@ -807,7 +807,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all rotate-2 hover:rotate-0">
+            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all md:rotate-2 md:hover:rotate-0">
               <div className="mb-8">
                 <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 border border-white/10 text-white">
                   <span className="material-icons">merge_type</span>
@@ -900,7 +900,7 @@ export default function Home() {
               </div>
 
               {/* Stage 2: AI Enrichment */}
-              <div className="flex justify-end w-full px-4 sm:px-6 lg:px-12 xl:px-16">
+              <div className="flex justify-start md:justify-end w-full px-4 sm:px-6 lg:px-12 xl:px-16">
                 <motion.div 
                   style={{ opacity: step2Opacity, x: step2X, y: step2Y }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-purple-500/50 transition-colors"
@@ -942,7 +942,7 @@ export default function Home() {
               </div>
 
               {/* Stage 4: CRM Sync */}
-              <div className="flex justify-end w-full px-4 sm:px-6 lg:px-12 xl:px-16">
+              <div className="flex justify-start md:justify-end w-full px-4 sm:px-6 lg:px-12 xl:px-16">
                 <motion.div 
                   style={{ opacity: step4Opacity, x: step4X }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-emerald-500/50 transition-colors"
@@ -978,7 +978,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
-              <div className="glass-card rounded-3xl p-2 border border-white/10 -rotate-2 hover:rotate-0 transition-all duration-700 animate-float">
+              <div className="glass-card rounded-3xl p-2 border border-white/10 md:-rotate-2 md:hover:rotate-0 transition-all duration-700 animate-float">
                 <div className="bg-black rounded-2xl overflow-hidden border border-white/5 relative h-[500px]">
                   <div className="bg-graphite p-4 border-b border-white/10 flex justify-between items-center">
                     <div className="flex items-center gap-3">
@@ -1047,7 +1047,7 @@ export default function Home() {
       <section className="py-24 bg-black border-y border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6">
               Unlock <span className="bg-white/10 px-2 rounded font-light italic font-serif">key insights</span>
             </h2>
           <p className="text-gray-400">
@@ -1153,7 +1153,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl lg:text-6xl font-display font-bold mb-6"
+            className="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-6"
           >
             Join the <span className="metallic-text">Outbound Outliers</span> movement
           </motion.h2>
@@ -1235,7 +1235,7 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-hero-radial opacity-30"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-12 lg:gap-24">
+          <div className="grid md:grid-cols-3 gap-8 md:gap-12 lg:gap-24">
             <StatItem value={426089} label="Conversations started last month" suffix=" 🔥" />
             <StatItem value={12500} label="Active senders using HeyReach" suffix="+" />
             <StatItem value={98} label="Average deliverability rate" suffix="%" />
@@ -1326,16 +1326,16 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-6">
                 <span className="text-[10px] font-bold text-dim-grey uppercase tracking-widest">Human-Led Support</span>
               </div>
-              <h2 className="text-5xl lg:text-7xl font-display font-bold mb-8 leading-tight">
+              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold mb-8 leading-tight">
                 Not just <span className="metallic-text italic border-b border-white/20">software.</span><br />
                 A partner in <span className="text-blue-400">GTM.</span>
               </h2>
-              <p className="text-gray-400 text-lg mb-12 max-w-xl">
+              <p className="text-gray-400 text-base sm:text-lg mb-10 sm:mb-12 max-w-xl">
                 We don&apos;t do generic tickets. Our team consists of actual outbound experts who help you optimize your sequences, verify your domains, and scale your pipeline.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6">
-                <button className="group relative bg-white text-black px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl">
+                <button className="group relative bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-2xl w-full sm:w-auto">
                   Talk to an expert
                   <span className="material-icons group-hover:translate-x-1 transition-transform">arrow_forward</span>
                 </button>

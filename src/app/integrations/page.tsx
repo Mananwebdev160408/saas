@@ -32,7 +32,7 @@ export default function IntegrationsPage() {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-display font-bold mb-8 metallic-text"
+            className="text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-8 metallic-text"
           >
             Integrations
           </motion.h1>
