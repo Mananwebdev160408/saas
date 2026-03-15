@@ -53,7 +53,11 @@ export default function Home() {
     damping: 30,
     restDelta: 0.001
   });
-
+  // Task List:
+  // - [x] Move the hand and blob down in the hero section <!-- id: 3 -->
+  // - [x] Verify the new positioning <!-- id: 4 -->
+  // - [x] Shift the hand and blob significantly lower (User feedback: "still so high") <!-- id: 5 -->
+  // - [ ] Verify final positioning results <!-- id: 6 -->
   const flowRef = useRef(null);
   const { scrollYProgress: flowProgress } = useScroll({
     target: flowRef,
@@ -109,22 +113,79 @@ export default function Home() {
         style={{ scaleX }}
       />
       {/* Monochrome Background Blobs */}
-      <div className="quirky-blob w-96 h-96 bg-white/5 top-20 -left-48" />
-      <div className="quirky-blob w-[500px] h-[500px] bg-white/5 top-[1000px] -right-64 animate-delay-1000" />
-      <div className="quirky-blob w-72 h-72 bg-white/5 top-[2500px] left-20" />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.1, 1],
+          x: [0, 20, -20, 0],
+          y: [0, -20, 20, 0]
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        className="quirky-blob w-96 h-96 bg-white/5 top-20 -left-48" 
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.15, 1],
+          x: [0, -30, 30, 0],
+          y: [0, 30, -30, 0]
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="quirky-blob w-[500px] h-[500px] bg-white/5 top-[1000px] -right-64" 
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.05, 1],
+          x: [0, 15, -15, 0],
+          y: [0, -15, 15, 0]
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        className="quirky-blob w-72 h-72 bg-white/5 top-[2500px] left-20" 
+      />
 
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
-        <div className="absolute inset-0 z-0 opacity-80 scale-x-[-1]">
+        {/* Animated Background Particles */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white/20 rounded-full"
+              initial={{ 
+                x: Math.random() * 100 + "%", 
+                y: Math.random() * 100 + "%",
+                opacity: Math.random() * 0.5
+              }}
+              animate={{
+                y: [null, (Math.random() * -200 - 100) + "px"],
+                opacity: [0, 0.5, 0],
+                x: [null, (Math.random() * 100 - 50) + "px"]
+              }}
+              transition={{
+                duration: Math.random() * 10 + 10,
+                repeat: Infinity,
+                ease: "linear",
+                delay: Math.random() * 10
+              }}
+            />
+          ))}
+        </div>
+
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.05, 1],
+            opacity: [0.6, 0.8, 0.6]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 z-0 opacity-80 scale-x-[-1]"
+        >
           <img 
             src="/bg.svg" 
             alt="Hero Texture" 
             className="w-full h-full object-cover mix-blend-screen"
           />
           <div className="absolute inset-0 bg-linear-to-b from-transparent via-background-dark/40 to-background-dark"></div>
-        </div>
+        </motion.div>
         <div className="noise-bg"></div>
         {/* Monochrome Moving Background Strips */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -217,22 +278,33 @@ export default function Home() {
 
           {/* Right Section: Visual Composition */}
           <div className="relative hidden lg:flex items-center justify-center min-h-[600px]">
-            <div className="relative w-full max-w-[550px] aspect-square flex items-center justify-center">
-              {/* Static Blob Background */}
-              <img 
+            <div className="relative w-full max-w-[550px] aspect-square flex items-center justify-center translate-y-48">
+              {/* Static Blob Background - Enhanced Wobble */}
+              <motion.img 
                 src="/blob.png"
                 alt="Blob"
                 className="absolute w-[130%] h-[130%] object-contain opacity-40 mix-blend-screen pointer-events-none"
+                animate={{ 
+                  scale: [1, 1.05, 1],
+                  rotate: [0, 5, -5, 0],
+                  x: [0, 10, -10, 0],
+                  y: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 12, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
               />
               
               {/* Hand/Image emerging from blob - Enhanced Animation */}
-              <div className="relative w-full h-full flex items-end justify-center overflow-hidden">
+              <div className="relative w-full h-full flex items-end justify-center">
                 <motion.img 
                   src="/img.png"
                   alt="Hand"
                   className="relative z-10 w-[140%] h-auto max-w-none object-contain drop-shadow-[0_30px_60px_rgba(255,255,255,0.15)] origin-bottom"
-                  initial={{ y: "100%", opacity: 0, scale: 0.9 }}
-                  animate={{ y: "10%", opacity: 1, scale: 1.1 }}
+                  initial={{ y: "100%",x:"-10%", opacity: 0, scale: 0.9 }}
+                  animate={{ y: "1.5%",x:"-10%", opacity: 1, scale: 1 }}
                   transition={{ 
                     delay: 0.5, 
                     duration: 1.5, 
