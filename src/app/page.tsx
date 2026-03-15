@@ -106,7 +106,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
+    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative overflow-x-clip">
       {/* Custom Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-white origin-[0%] z-9999"
@@ -289,7 +289,7 @@ export default function Home() {
             rotateY: (mousePos.x - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.01
           }}
           transition={{ duration: 0.8, ease: "easeOut", x: { duration: 0 }, rotateX: { duration: 0 }, rotateY: { duration: 0 } }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 perspective-1000 grid lg:grid-cols-2 gap-12 items-center"
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 perspective-1000 grid lg:grid-cols-2 gap-20 items-center"
         >
           <div className="text-left py-10">
             <motion.div 
@@ -333,7 +333,7 @@ export default function Home() {
           </div>
 
           {/* Right Section: Visual Composition */}
-          <div className="relative hidden lg:flex  items-center justify-center min-h-[600px]">
+          <div className="relative hidden lg:flex items-center justify-center min-h-[600px] lg:translate-x-12">
             <div className="relative w-full max-w-[750px] aspect-square flex items-center justify-center">
               {/* Enormous Background Blob to "Contain" the Image */}
               <motion.img 
@@ -826,37 +826,37 @@ export default function Home() {
                   <div className="w-8 h-px bg-white/20"></div>
                   <div className="px-3 py-2 rounded bg-blue-500/20 border border-blue-500/30 text-blue-300 text-xs">Message</div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </motion.section>
+      </motion.section>
 
       {/* Multichannel Outreach: Sticky Scroll Flow Simulator */}
       <section ref={flowRef} className="relative h-[650vh] bg-background-dark border-t border-white/5 z-0">
-        <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden z-10">
+        <div className="sticky top-0 h-screen w-full flex flex-col overflow-hidden z-10">
           {/* Header */}
-          <div className="absolute top-20 left-0 right-0 z-20 px-4 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
-                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Automated Intelligence</span>
-              </div>
-              <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
-                The <span className="metallic-text">Perfect Workflow</span>
-              </h2>
-              <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
-                Our AI orchestrates your entire GTM motion, evolving from simple leads to booked meetings in one seamless loop.
-              </p>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative z-20 px-4 pt-20 pb-8 text-center shrink-0"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
+              <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Automated Intelligence</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
+              The <span className="metallic-text">Perfect Workflow</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+              Our AI orchestrates your entire GTM motion, evolving from simple leads to booked meetings in one seamless loop.
+            </p>
+          </motion.div>
 
-          <div className="relative w-full max-w-6xl h-full flex flex-col items-center pt-48 pb-20">
+          <div className="relative w-full flex-1 overflow-hidden">
+            <div className="relative w-full max-w-6xl h-full mx-auto flex flex-col items-center pt-14 pb-20">
             {/* Vertical Flow Path - Starts lower */}
-            <div className="absolute inset-x-0 top-[35%] bottom-0 flex justify-center pointer-events-none">
+            <div className="absolute inset-x-0 top-[19%] bottom-0 flex justify-center pointer-events-none">
               <div className="w-px h-[90%] bg-white/5 relative">
                 <motion.div 
                   className="absolute top-0 w-0.5 -left-px bg-linear-to-b from-blue-500 via-purple-500 to-emerald-500 shadow-[0_0_20px_rgba(168,85,247,0.5)]"
@@ -879,7 +879,7 @@ export default function Home() {
               className="w-full flex flex-col gap-20 relative z-10"
             >
               {/* Stage 1: Discovery */}
-              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-24">
+              <div className="flex justify-start w-full px-4 sm:px-6 lg:px-12 xl:px-16">
                 <motion.div 
                   style={{ opacity: step1Opacity, x: step1X, y: step1Y }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-blue-500/50 transition-colors"
@@ -900,7 +900,7 @@ export default function Home() {
               </div>
 
               {/* Stage 2: AI Enrichment */}
-              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-24">
+              <div className="flex justify-end w-full px-4 sm:px-6 lg:px-12 xl:px-16">
                 <motion.div 
                   style={{ opacity: step2Opacity, x: step2X, y: step2Y }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-purple-500/50 transition-colors"
@@ -921,7 +921,7 @@ export default function Home() {
               </div>
 
               {/* Stage 3: Routing */}
-              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-24">
+              <div className="flex justify-start w-full px-4 sm:px-6 lg:px-12 xl:px-16">
                 <motion.div 
                   style={{ opacity: step3Opacity, x: step3X, y: step3Y }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-indigo-500/50 transition-colors"
@@ -942,7 +942,7 @@ export default function Home() {
               </div>
 
               {/* Stage 4: CRM Sync */}
-              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-24">
+              <div className="flex justify-end w-full px-4 sm:px-6 lg:px-12 xl:px-16">
                 <motion.div 
                   style={{ opacity: step4Opacity, x: step4X }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-emerald-500/50 transition-colors"
@@ -962,6 +962,7 @@ export default function Home() {
                 </motion.div>
               </div>
             </motion.div>
+            </div>
           </div>
         </div>
       </section>
