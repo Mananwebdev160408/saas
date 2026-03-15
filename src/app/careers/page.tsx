@@ -14,21 +14,21 @@ export default function CareersPage() {
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute top-[5%] -right-20 w-[500px] opacity-[0.04] mix-blend-screen"
+          className="absolute top-[5%] -right-20 w-[500px] opacity-[0.2] mix-blend-screen"
           animate={{ rotate: 360, scale: [1, 1.1, 1] }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
         />
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute top-[40%] -left-32 w-[600px] opacity-[0.03] mix-blend-screen"
+          className="absolute top-[40%] -left-32 w-[600px] opacity-[0.15] mix-blend-screen"
           animate={{ y: [0, 40, 0], rotate: [0, -30, 0] }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute bottom-[-10%] right-[10%] w-[400px] opacity-[0.02] mix-blend-screen"
+          className="absolute bottom-[-10%] right-[10%] w-[400px] opacity-[0.12] mix-blend-screen"
           animate={{ scale: [1.2, 1, 1.2], rotate: [0, 45, 0] }}
           transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
         />

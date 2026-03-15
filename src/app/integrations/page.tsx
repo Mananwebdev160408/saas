@@ -14,14 +14,14 @@ export default function IntegrationsPage() {
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute top-[-10%] left-[-20%] w-[600px] opacity-[0.03] mix-blend-screen"
+          className="absolute top-[-10%] left-[-20%] w-[600px] opacity-[0.18] mix-blend-screen"
           animate={{ rotate: 360 }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
         />
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute bottom-[20%] right-[-10%] w-[500px] opacity-[0.02] mix-blend-screen scale-x-[-1]"
+          className="absolute bottom-[20%] right-[-10%] w-[500px] opacity-[0.15] mix-blend-screen scale-x-[-1]"
           animate={{ scale: [1, 1.2, 1], y: [0, -30, 0] }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         />

@@ -144,25 +144,25 @@ export default function Home() {
       {/* Randomized Background Blobs using blob.png */}
       <motion.img 
         src="/blob.png"
-        className="absolute top-[400px] right-[-10%] w-[600px] opacity-[0.03] mix-blend-screen pointer-events-none z-0"
+        className="absolute top-[400px] right-[-10%] w-[600px] opacity-[0.25] mix-blend-screen pointer-events-none z-0"
         animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
         transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
       />
       <motion.img 
         src="/blob.png"
-        className="absolute top-[1800px] left-[-5%] w-[500px] opacity-[0.05] mix-blend-screen pointer-events-none z-0"
+        className="absolute top-[1800px] left-[-5%] w-[500px] opacity-[0.15] mix-blend-screen pointer-events-none z-0"
         animate={{ rotate: [360, 0], scale: [1.1, 1, 1.1] }}
         transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
       />
       <motion.img 
         src="/blob.png"
-        className="absolute top-[3500px] right-[5%] w-[700px] opacity-[0.02] mix-blend-screen pointer-events-none z-0"
+        className="absolute top-[3500px] right-[5%] w-[700px] opacity-[0.12] mix-blend-screen pointer-events-none z-0"
         animate={{ y: [0, 50, 0], x: [0, -30, 0] }}
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.img 
         src="/blob.png"
-        className="absolute top-[800px] left-[20%] w-[300px] opacity-[0.02] mix-blend-screen pointer-events-none z-0"
+        className="absolute top-[800px] left-[20%] w-[300px] opacity-[0.15] mix-blend-screen pointer-events-none z-0"
         animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       />

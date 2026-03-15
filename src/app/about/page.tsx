@@ -14,14 +14,14 @@ export default function AboutPage() {
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute top-[10%] -right-20 w-[600px] opacity-[0.05] mix-blend-screen"
+          className="absolute top-[10%] -right-20 w-[600px] opacity-[0.2] mix-blend-screen"
           animate={{ rotate: 360 }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
         />
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute bottom-[-10%] -left-40 w-[500px] opacity-[0.03] mix-blend-screen"
+          className="absolute bottom-[-10%] -left-40 w-[500px] opacity-[0.15] mix-blend-screen"
           animate={{ scale: [1, 1.2, 1], y: [0, 30, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />

@@ -14,14 +14,14 @@ export default function PrivacyPage() {
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute top-[-5%] left-[-10%] w-[500px] opacity-[0.03] mix-blend-screen"
+          className="absolute top-[-5%] left-[-10%] w-[500px] opacity-[0.18] mix-blend-screen"
           animate={{ rotate: [360, 0] }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
         />
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute bottom-[20%] right-[-15%] w-[600px] opacity-[0.02] mix-blend-screen scale-x-[-1]"
+          className="absolute bottom-[20%] right-[-15%] w-[600px] opacity-[0.15] mix-blend-screen scale-x-[-1]"
           animate={{ scale: [1, 1.1, 1], x: [0, -40, 0] }}
           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
         />

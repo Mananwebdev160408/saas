@@ -14,7 +14,7 @@ export default function LinkedInPage() {
         <motion.img 
           src="/blob.png"
           alt=""
-          className="absolute top-[40%] -left-32 w-[700px] opacity-[0.04] mix-blend-screen"
+          className="absolute top-[40%] -left-32 w-[700px] opacity-[0.2] mix-blend-screen"
           animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
           transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
         />
