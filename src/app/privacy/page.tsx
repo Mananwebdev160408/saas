@@ -9,7 +9,25 @@ export default function PrivacyPage() {
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
       <Navbar />
       
-      <section className="pt-40 pb-20 px-4">
+      {/* Randomized Decorative Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute top-[-5%] left-[-10%] w-[500px] opacity-[0.03] mix-blend-screen"
+          animate={{ rotate: [360, 0] }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute bottom-[20%] right-[-15%] w-[600px] opacity-[0.02] mix-blend-screen scale-x-[-1]"
+          animate={{ scale: [1, 1.1, 1], x: [0, -40, 0] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
+      <section className="pt-40 pb-20 px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-left">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}

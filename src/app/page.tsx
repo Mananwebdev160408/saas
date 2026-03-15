@@ -141,6 +141,62 @@ export default function Home() {
         className="quirky-blob w-72 h-72 bg-white/5 top-[2500px] left-20" 
       />
 
+      {/* Randomized Background Blobs using blob.png */}
+      <motion.img 
+        src="/blob.png"
+        className="absolute top-[400px] right-[-10%] w-[600px] opacity-[0.03] mix-blend-screen pointer-events-none z-0"
+        animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
+        transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute top-[1800px] left-[-5%] w-[500px] opacity-[0.05] mix-blend-screen pointer-events-none z-0"
+        animate={{ rotate: [360, 0], scale: [1.1, 1, 1.1] }}
+        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute top-[3500px] right-[5%] w-[700px] opacity-[0.02] mix-blend-screen pointer-events-none z-0"
+        animate={{ y: [0, 50, 0], x: [0, -30, 0] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute top-[800px] left-[20%] w-[300px] opacity-[0.02] mix-blend-screen pointer-events-none z-0"
+        animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute top-[1500px] right-[15%] w-[400px] opacity-[0.03] mix-blend-screen pointer-events-none z-0"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute top-[2800px] left-[5%] w-[500px] opacity-[0.02] mix-blend-screen pointer-events-none z-0"
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute top-[4200px] right-[-5%] w-[600px] opacity-[0.02] mix-blend-screen pointer-events-none z-0"
+        animate={{ y: [0, 60, 0], x: [0, -40, 0] }}
+        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute bottom-[2000px] left-[10%] w-[350px] opacity-[0.03] mix-blend-screen pointer-events-none z-0"
+        animate={{ rotate: [0, -360] }}
+        transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.img 
+        src="/blob.png"
+        className="absolute bottom-[1000px] right-[10%] w-[450px] opacity-[0.03] mix-blend-screen pointer-events-none z-0"
+        animate={{ scale: [1, 1.1, 1], rotate: [0, -45, 0] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+      />
+
       <Navbar />
 
       {/* Hero Section */}
@@ -297,22 +353,9 @@ export default function Home() {
                 }}
               />
               
-              {/* Hand/Image emerging from blob - Enhanced Animation */}
+              {/* Hero Image Space (Dashboard to be added later) */}
               <div className="relative w-full h-full flex items-end justify-center">
-                <motion.img 
-                  src="/img.png"
-                  alt="Hand"
-                  className="relative z-10 w-[140%] h-auto max-w-none object-contain drop-shadow-[0_30px_60px_rgba(255,255,255,0.15)] origin-bottom"
-                  initial={{ y: "100%",x:"-10%", opacity: 0, scale: 0.9 }}
-                  animate={{ y: "1.5%",x:"-10%", opacity: 1, scale: 1 }}
-                  transition={{ 
-                    delay: 0.5, 
-                    duration: 1.5, 
-                    type: "spring",
-                    stiffness: 40,
-                    damping: 15
-                  }}
-                />
+                {/* Empty container preserving space */}
               </div>
               
               {/* Subtle Ambient Glow */}
@@ -675,6 +718,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="relative min-h-[350px] sm:min-h-[450px] flex items-center justify-center scale-[0.65] sm:scale-90 md:scale-100 transition-transform">
+                {/* Content aligned centrally */}
                 {/* Concentric Rotating Rings */}
                 <div className="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
                   {/* Outer Orbit Paths */}
@@ -773,7 +817,8 @@ export default function Home() {
                 <p className="text-gray-400">Automate actions such as connection requests, messages, and profile views. Use &apos;If Connected&apos; logic for precision.</p>
               </div>
               <div className="mt-auto relative h-48 bg-black/40 rounded-xl border border-white/5 overflow-hidden flex items-center justify-center">
-                <div className="flex items-center gap-2">
+                <div className="absolute inset-0 grid-bg opacity-20"></div>
+                <div className="flex items-center gap-2 relative z-10">
                   <div className="px-3 py-2 rounded bg-white/10 border border-white/10 text-xs">Connection</div>
                   <div className="w-8 h-px bg-white/20"></div>
                   <div className="px-3 py-2 rounded bg-white/10 border border-white/10 text-xs flex flex-col items-center gap-1">
@@ -782,11 +827,11 @@ export default function Home() {
                   <div className="w-8 h-px bg-white/20"></div>
                   <div className="px-3 py-2 rounded bg-blue-500/20 border border-blue-500/30 text-blue-300 text-xs">Message</div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
-      </motion.section>
+      </div>
+    </motion.section>
 
       {/* Multichannel Outreach: Sticky Scroll Flow Simulator */}
       <section ref={flowRef} className="relative h-[650vh] bg-background-dark border-t border-white/5 z-0">
@@ -835,7 +880,7 @@ export default function Home() {
               className="w-full flex flex-col gap-20 relative z-10"
             >
               {/* Stage 1: Discovery */}
-              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-48">
+              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-24">
                 <motion.div 
                   style={{ opacity: step1Opacity, x: step1X, y: step1Y }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-blue-500/50 transition-colors"
@@ -856,7 +901,7 @@ export default function Home() {
               </div>
 
               {/* Stage 2: AI Enrichment */}
-              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-48">
+              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-24">
                 <motion.div 
                   style={{ opacity: step2Opacity, x: step2X, y: step2Y }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-purple-500/50 transition-colors"
@@ -877,7 +922,7 @@ export default function Home() {
               </div>
 
               {/* Stage 3: Routing */}
-              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-48">
+              <div className="flex justify-start w-full px-4 md:px-0 lg:-ml-24">
                 <motion.div 
                   style={{ opacity: step3Opacity, x: step3X, y: step3Y }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-indigo-500/50 transition-colors"
@@ -898,7 +943,7 @@ export default function Home() {
               </div>
 
               {/* Stage 4: CRM Sync */}
-              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-48">
+              <div className="flex justify-end w-full px-4 md:px-0 lg:-mr-24">
                 <motion.div 
                   style={{ opacity: step4Opacity, x: step4X }}
                   className="glass-card p-6 rounded-2xl border border-white/10 w-full md:w-[340px] relative group hover:border-emerald-500/50 transition-colors"

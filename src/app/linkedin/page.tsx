@@ -9,7 +9,18 @@ export default function LinkedInPage() {
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
       <Navbar />
       
-      <section className="pt-40 pb-20 px-4">
+      {/* Randomized Decorative Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute top-[40%] -left-32 w-[700px] opacity-[0.04] mix-blend-screen"
+          animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
+
+      <section className="pt-40 pb-20 px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}

@@ -9,6 +9,24 @@ export default function IntegrationsPage() {
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
       <Navbar />
       
+      {/* Randomized Decorative Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute top-[-10%] left-[-20%] w-[600px] opacity-[0.03] mix-blend-screen"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute bottom-[20%] right-[-10%] w-[500px] opacity-[0.02] mix-blend-screen scale-x-[-1]"
+          animate={{ scale: [1, 1.2, 1], y: [0, -30, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+      
       <section className="pt-40 pb-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <motion.h1 

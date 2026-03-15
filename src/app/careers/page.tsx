@@ -9,7 +9,32 @@ export default function CareersPage() {
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
       <Navbar />
       
-      <section className="pt-40 pb-20 px-4">
+      {/* Randomized Decorative Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute top-[5%] -right-20 w-[500px] opacity-[0.04] mix-blend-screen"
+          animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute top-[40%] -left-32 w-[600px] opacity-[0.03] mix-blend-screen"
+          animate={{ y: [0, 40, 0], rotate: [0, -30, 0] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute bottom-[-10%] right-[10%] w-[400px] opacity-[0.02] mix-blend-screen"
+          animate={{ scale: [1.2, 1, 1.2], rotate: [0, 45, 0] }}
+          transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
+      <section className="pt-40 pb-20 px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}

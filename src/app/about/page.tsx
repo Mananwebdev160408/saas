@@ -9,7 +9,25 @@ export default function AboutPage() {
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
       <Navbar />
       
-      <section className="pt-40 pb-20 px-4">
+      {/* Randomized Decorative Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute top-[10%] -right-20 w-[600px] opacity-[0.05] mix-blend-screen"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.img 
+          src="/blob.png"
+          alt=""
+          className="absolute bottom-[-10%] -left-40 w-[500px] opacity-[0.03] mix-blend-screen"
+          animate={{ scale: [1, 1.2, 1], y: [0, 30, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
+      <section className="pt-40 pb-20 px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
