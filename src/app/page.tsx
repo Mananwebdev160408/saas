@@ -119,7 +119,7 @@ export default function Home() {
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
         <div className="absolute inset-0 z-0 opacity-80">
           <img 
-            src="/hero-bg-bw.png" 
+            src="/bg.svg" 
             alt="Hero Texture" 
             className="w-full h-full object-cover mix-blend-screen"
           />
