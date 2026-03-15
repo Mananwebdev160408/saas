@@ -333,7 +333,7 @@ export default function Home() {
           </div>
 
           {/* Right Section: Visual Composition */}
-          <div className="relative hidden lg:flex items-center justify-center min-h-[600px]">
+          <div className="relative hidden lg:flex  items-center justify-center min-h-[600px]">
             <div className="relative w-full max-w-[750px] aspect-square flex items-center justify-center">
               {/* Enormous Background Blob to "Contain" the Image */}
               <motion.img 

@@ -31,7 +31,7 @@ export default function Navbar() {
         }`}
       >
         <div 
-          className={`transition-all duration-500 flex items-center justify-between border-white/10 bg-white/5 backdrop-blur-xl ${
+          className={`transition-all duration-500 flex items-center justify-between border-white/10 bg-black/40 backdrop-blur-xl ${
             isScrolled 
               ? 'w-full md:w-[75%] md:rounded-full md:border md:mt-4 px-8 py-4 md:py-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] border-b' 
               : 'w-full border-b px-8 sm:px-12 lg:px-24 py-5 sm:py-6'

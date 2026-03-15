@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative">
+    <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative overflow-x-hidden">
       <Navbar />
       
       {/* Randomized Decorative Blobs */}
