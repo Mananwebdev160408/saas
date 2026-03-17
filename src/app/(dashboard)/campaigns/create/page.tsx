@@ -51,17 +51,17 @@ export default function CreateCampaignPage() {
       </Link>
 
       {/* Progress Stepper */}
-      <div className="flex items-center justify-between mb-12 relative">
-        <div className="absolute top-1/2 left-0 w-full h-px bg-white/5 -z-10"></div>
+      <div className="flex items-center justify-between mb-16 relative px-4">
+        <div className="absolute top-[1.25rem] left-0 w-full h-px bg-white/5 -z-10"></div>
         {[1, 2, 3, 4].map((s) => (
-          <div key={s} className="flex flex-col items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all border ${
-              step === s ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.3)] scale-110" : 
-              step > s ? "bg-green-500 text-white border-green-500" : "bg-background-dark text-dim-grey border-white/10"
+          <div key={s} className="flex flex-col items-center gap-3">
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold font-display transition-all border ${
+              step === s ? "bg-white text-black border-white shadow-[0_0_25px_rgba(255,255,255,0.2)] scale-110" : 
+              step > s ? "bg-green-500 text-white border-green-500" : "bg-black/40 text-dim-grey border-white/5"
             }`}>
               {step > s ? <Check size={20} /> : s}
             </div>
-            <span className={`text-[10px] uppercase tracking-widest font-bold ${step === s ? "text-white" : "text-dim-grey"}`}>
+            <span className={`text-[9px] uppercase tracking-[0.2em] font-bold ${step === s ? "text-white" : "text-dim-grey"}`}>
                 {s === 1 ? "Details" : s === 2 ? "Agents" : s === 3 ? "Leads" : "Review"}
             </span>
           </div>
@@ -84,20 +84,20 @@ export default function CreateCampaignPage() {
 
             <div className="space-y-6">
                 <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-dim-grey ml-1">Campaign Name</label>
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-dim-grey ml-1">Campaign Name</label>
                     <input 
                         type="text" 
                         placeholder="e.g. Q2 Outreach - SaaS Founders"
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+                        className="w-full bg-white/2 border border-white/5 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-white/20 focus:bg-white/5 transition-all placeholder:text-dim-grey/50"
                     />
                 </div>
-
+ 
                 <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-dim-grey ml-1">Description (Optional)</label>
+                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-dim-grey ml-1">Description (Optional)</label>
                     <textarea 
                         placeholder="What's the goal of this campaign?"
                         rows={4}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
+                        className="w-full bg-white/2 border border-white/5 rounded-2xl py-4 px-6 text-white focus:outline-none focus:border-white/20 focus:bg-white/5 transition-all placeholder:text-dim-grey/50"
                     />
                 </div>
             </div>
@@ -352,76 +352,59 @@ export default function CreateCampaignPage() {
                             </div>
                         </div>
 
-                        {/* Technical Auth UI */}
-                        <div className="grid lg:grid-cols-5 gap-6">
-                            <div className="lg:col-span-3 space-y-4">
-                                <div className="border border-white/10 rounded-2xl overflow-hidden bg-black/40 shadow-inner group">
-                                    <div className="bg-white/5 px-4 py-2 text-[10px] font-bold text-dim-grey flex items-center justify-between border-b border-white/5">
-                                        <div className="flex items-center gap-2">
-                                            <Monitor size={12} /> SECURE_BROWSER_INSTANCE
-                                        </div>
-                                        <div className="flex gap-1.5 font-bold">
-                                            <span className="w-2 h-2 rounded-full bg-red-500/30"></span>
-                                            <span className="w-2 h-2 rounded-full bg-yellow-500/30"></span>
-                                            <span className="w-2 h-2 rounded-full bg-green-500/30"></span>
-                                        </div>
-                                    </div>
-                                    <div className="p-8 space-y-4">
-                                        <div className="space-y-2">
-                                            <div className="text-[10px] font-mono text-dim-grey">URL: linkedin.com/login</div>
-                                            <div className="h-10 bg-white/5 border border-white/5 rounded-xl w-full flex items-center px-4 animate-pulse">
-                                                <div className="h-2 w-1/3 bg-white/10 rounded-full"></div>
-                                            </div>
-                                            <div className="h-10 bg-white/5 border border-white/5 rounded-xl w-full flex items-center px-4">
-                                                <div className="h-2 w-1/4 bg-white/10 rounded-full"></div>
-                                            </div>
-                                        </div>
-                                        <button 
-                                            onClick={addAgent}
-                                            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_10px_20px_rgba(37,99,235,0.2)] flex items-center justify-center gap-2 group/btn"
-                                        >
-                                            Complete Login <Linkedin size={18} className="group-hover/btn:rotate-12 transition-transform" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="text-[10px] text-center text-dim-grey flex items-center justify-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                                    Playwright Engine: v1.1.2 Initializing Session...
+                        {/* Premium Connect UI */}
+                        <div className="relative py-12 flex flex-col items-center justify-center space-y-8 overflow-hidden">
+                            {/* Animated Background Aura */}
+                            <div className="absolute inset-0 flex items-center justify-center -z-10">
+                                <motion.div 
+                                    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] }}
+                                    transition={{ duration: 4, repeat: Infinity }}
+                                    className="w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[80px]"
+                                />
+                            </div>
+
+                            <div className="relative">
+                                <motion.div 
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                    className="absolute -inset-8 border border-dashed border-blue-500/20 rounded-full"
+                                />
+                                <div className="w-24 h-24 rounded-3xl bg-blue-600 flex items-center justify-center shadow-[0_0_50px_rgba(37,99,235,0.3)] relative z-10">
+                                    <Linkedin size={40} className="text-white" />
                                 </div>
                             </div>
 
-                            <div className="lg:col-span-2 space-y-4">
-                                <div className="h-full bg-black border border-white/10 rounded-2xl p-4 font-mono text-[10px] space-y-2 overflow-hidden relative">
-                                    <div className="text-dim-grey"># Generating auth.json</div>
-                                    <div className="text-blue-400"> chromium.launch()</div>
-                                    <div className="text-white"> context.newPage()</div>
-                                    <div className="text-white"> page.goto(LI_LOGIN)</div>
-                                    <div className="text-yellow-400 animate-pulse"># WAITING_FOR_MANUAL_LOGIN</div>
-                                    
-                                    <motion.div 
-                                        initial={{ y: 0 }}
-                                        animate={{ y: [0, -2, 0] }}
-                                        transition={{ repeat: Infinity, duration: 2 }}
-                                        className="absolute bottom-4 right-4"
-                                    >
-                                        <FileJson size={24} className="text-white/20" />
-                                    </motion.div>
-                                    {agents.length > 0 && (
-                                        <div className="text-green-400 flex items-center gap-1">
-                                            <Check size={10} /> storageState(auth.json)
-                                        </div>
-                                    )}
+                            <div className="text-center space-y-3 z-10">
+                                <div className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.3em] text-blue-400">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                    Ready to sync
                                 </div>
+                                <h4 className="text-xl font-display font-medium text-white/90">Click below to open the secure login window</h4>
+                            </div>
+
+                            <div className="w-full max-w-sm space-y-4 pt-4 z-10">
+                                <button 
+                                    onClick={addAgent}
+                                    className="w-full bg-white text-black font-extrabold py-5 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] flex items-center justify-center gap-3 group/btn"
+                                >
+                                    Open LinkedIn Secure Portal <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                                </button>
+                                
+                                <p className="text-[10px] text-center text-dim-grey uppercase tracking-widest leading-relaxed">
+                                    Protected by 256-bit AES Encryption
+                                </p>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5">
-                            <div className="p-2 rounded-lg bg-blue-500/10">
-                                <Info size={16} className="text-blue-400" />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="p-4 rounded-2xl bg-white/2 border border-white/5 flex items-center gap-3">
+                                <Monitor size={16} className="text-dim-grey" />
+                                <span className="text-[10px] font-bold text-dim-grey uppercase tracking-wider">Cloud Instance: US-EAST-1</span>
                             </div>
-                            <p className="text-[11px] text-dim-grey leading-relaxed">
-                                We securely capture your session state using Playwright. No passwords are stored; only the encrypted session tokens required for automation.
-                            </p>
+                            <div className="p-4 rounded-2xl bg-white/2 border border-white/5 flex items-center gap-3">
+                                <Check size={16} className="text-green-500" />
+                                <span className="text-[10px] font-bold text-dim-grey uppercase tracking-wider">Playwright Runtime Active</span>
+                            </div>
                         </div>
 
                         <button 

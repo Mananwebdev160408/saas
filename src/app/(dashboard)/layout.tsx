@@ -71,8 +71,8 @@ export default function DashboardLayout({
                 href={item.href}
                 className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all group relative overflow-hidden ${
                   isActive 
-                  ? "bg-white text-black font-bold shadow-[0_4px_20px_rgba(255,255,255,0.1)]" 
-                  : "text-dim-grey hover:text-white hover:bg-white/5"
+                  ? "text-white bg-white/5 border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)]" 
+                  : "text-dim-grey hover:text-white hover:bg-white/2"
                 }`}
               >
                 <item.icon size={20} className="shrink-0" />
@@ -88,7 +88,7 @@ export default function DashboardLayout({
                 {isActive && (
                     <motion.div 
                         layoutId="activeNav"
-                        className="absolute inset-0 bg-linear-to-r from-blue-400/10 to-purple-400/10 opacity-50"
+                        className="absolute inset-0 bg-linear-to-r from-blue-500/10 via-purple-500/10 to-transparent opacity-100"
                     />
                 )}
               </Link>
@@ -120,12 +120,12 @@ export default function DashboardLayout({
       <div className="flex-grow flex flex-col relative overflow-hidden">
          {/* Top Header */}
          <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 relative z-40 bg-black/20 backdrop-blur-xl">
-            <div className="flex items-center gap-4 bg-white/5 px-4 py-2 rounded-2xl border border-white/10 w-full max-w-md">
-                <Search size={18} className="text-dim-grey" />
+            <div className="flex items-center gap-4 bg-white/2 px-5 py-2.5 rounded-2xl border border-white/5 w-full max-w-md focus-within:border-white/20 focus-within:bg-white/5 transition-all group">
+                <Search size={18} className="text-dim-grey group-focus-within:text-white transition-colors" />
                 <input 
                     type="text" 
                     placeholder="Search campaigns, agents..." 
-                    className="bg-transparent border-none outline-none text-sm w-full placeholder:text-white/20"
+                    className="bg-transparent border-none outline-none text-sm w-full placeholder:text-dim-grey text-white"
                 />
             </div>
 
@@ -137,11 +137,13 @@ export default function DashboardLayout({
 
                 <div className="flex items-center gap-3 pl-6 border-l border-white/5">
                     <div className="text-right">
-                        <div className="text-sm font-bold">Alex Johnson</div>
-                        <div className="text-[10px] text-dim-grey uppercase tracking-wider font-bold">Pro Plan</div>
+                        <div className="text-sm font-bold metallic-text">Alex Johnson</div>
+                        <div className="text-[9px] text-dim-grey uppercase tracking-[0.2em] font-bold">Pro Plan</div>
                     </div>
-                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-400 to-purple-400 border border-white/10">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" className="w-full h-full p-1" />
+                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-white/10 to-transparent border border-white/20 p-0.5 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                        <div className="w-full h-full rounded-full overflow-hidden bg-black/40">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" className="w-full h-full" />
+                        </div>
                     </div>
                 </div>
             </div>

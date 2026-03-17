@@ -81,32 +81,27 @@ export default function CampaignsPage() {
       </div>
 
       {/* Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6">
         {[
-            { label: "Total Active", value: "2", icon: Play, color: "text-green-400" },
-            { label: "Total Leads", value: "4,950", icon: Target, color: "text-blue-400" },
-            { label: "Total Sent", value: "2,460", icon: Send, color: "text-purple-400" },
-            { label: "Accepted Rate", value: "18.5%", icon: UserCheck, color: "text-amber-400" },
+            { label: "Total Active", value: "2", icon: Play, color: "text-green-500", glow: "shadow-[0_0_15px_rgba(34,197,94,0.1)]" },
+            { label: "Total Leads", value: "4,950", icon: Target, color: "text-blue-500", glow: "shadow-[0_0_15px_rgba(59,130,246,0.1)]" },
+            { label: "Total Sent", value: "2,460", icon: Send, color: "text-purple-500", glow: "shadow-[0_0_15px_rgba(168,85,247,0.1)]" },
+            { label: "Accepted Rate", value: "18.5%", icon: UserCheck, color: "text-white", glow: "shadow-[0_0_15px_rgba(255,255,255,0.1)]" },
         ].map((stat, i) => (
             <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="glass-card p-6 rounded-3xl border border-white/5 bg-white/2 relative group overflow-hidden"
+                transition={{ delay: i * 0.05 }}
+                className={`glass-card p-6 rounded-[2rem] border border-white/5 bg-white/2 relative group overflow-hidden ${stat.glow} hover:border-white/20 transition-all`}
             >
                 <div className="flex items-center justify-between mb-4">
-                    <div className={`p-3 rounded-xl bg-white/5 border border-white/5 ${stat.color}`}>
-                        <stat.icon size={20} />
-                    </div>
-                    <div className="text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded-lg flex items-center gap-1">
-                        <ArrowUpRight size={12} />
-                        +12%
+                    <div className={`p-2.5 rounded-xl bg-white/5 border border-white/5 ${stat.color}`}>
+                        <stat.icon size={18} />
                     </div>
                 </div>
-                <div className="text-2xl font-bold font-display">{stat.value}</div>
-                <div className="text-xs text-dim-grey uppercase tracking-widest font-bold mt-1">{stat.label}</div>
-                <div className="absolute inset-x-0 bottom-0 h-[2px] bg-linear-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="text-3xl font-bold font-display tracking-tight">{stat.value}</div>
+                <div className="text-[10px] text-dim-grey uppercase tracking-[0.2em] font-bold mt-1">{stat.label}</div>
             </motion.div>
         ))}
       </div>
@@ -124,20 +119,20 @@ export default function CampaignsPage() {
                 <div className="flex items-start justify-between mb-6">
                     <div className="space-y-1">
                         <div className="flex items-center gap-3">
-                            <h3 className="text-xl font-bold">{campaign.name}</h3>
-                            <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${
-                                campaign.status === "Running" ? "bg-green-500/10 text-green-400 border border-green-500/20" :
+                            <h3 className="text-xl font-bold font-display group-hover:metallic-text transition-all">{campaign.name}</h3>
+                            <span className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest ${
+                                campaign.status === "Running" ? "bg-green-500/10 text-green-400 border border-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.1)]" :
                                 campaign.status === "Paused" ? "bg-amber-500/10 text-amber-400 border border-amber-500/20" :
                                 "bg-blue-500/10 text-blue-400 border border-blue-500/20"
                             }`}>
                                 {campaign.status}
                             </span>
                         </div>
-                        <p className="text-xs text-dim-grey flex items-center gap-2">
-                             <Timer size={12} /> Last active: {campaign.lastActive}
+                        <p className="text-[11px] text-dim-grey flex items-center gap-2">
+                             <Timer size={12} className="opacity-50" /> Last active: {campaign.lastActive}
                         </p>
                     </div>
-                    <button className="p-2 hover:bg-white/5 rounded-xl transition-colors text-dim-grey">
+                    <button className="p-2 hover:bg-white/5 rounded-xl transition-colors text-dim-grey hover:text-white">
                         <MoreVertical size={20} />
                     </button>
                 </div>
@@ -209,14 +204,18 @@ export default function CampaignsPage() {
         {/* Create Card Placeholder */}
         <Link 
             href="/campaigns/create"
-            className="glass-card p-8 rounded-[2.5rem] border border-dashed border-white/10 hover:border-white/40 hover:bg-white/2 transition-all group flex flex-col items-center justify-center min-h-[350px] space-y-4"
+            className="group relative p-8 rounded-[2.5rem] border border-white/5 bg-white/2 hover:bg-white/5 hover:border-white/20 transition-all flex flex-col items-center justify-center min-h-[350px] space-y-6 overflow-hidden"
         >
-            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
-                <Plus size={32} />
+            <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="w-16 h-16 rounded-3xl bg-white/2 flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-white/5 transition-all shadow-xl">
+                <Plus size={32} strokeWidth={1.5} />
             </div>
-            <div className="text-center">
-                <h3 className="text-xl font-bold text-white/60 group-hover:text-white transition-colors">Start New Campaign</h3>
-                <p className="text-sm text-dim-grey mt-1">Scale your outreach today</p>
+            <div className="text-center relative z-10">
+                <h3 className="text-xl font-bold font-display group-hover:text-white transition-colors">Start New Campaign</h3>
+                <p className="text-sm text-dim-grey mt-2 font-light">Scale your outreach today with AI-driven precision</p>
+            </div>
+            <div className="absolute bottom-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-dim-grey group-hover:text-white transition-colors">
+                Quick Setup <ArrowUpRight size={12} />
             </div>
         </Link>
       </div>
