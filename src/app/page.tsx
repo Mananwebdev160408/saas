@@ -79,7 +79,7 @@ export default function Home() {
   const step2Y = useTransform(flowProgress, [0.45, 0.5], [0, -30]);
   const step3Y = useTransform(flowProgress, [0.65, 0.7], [0, -30]);
   
-  const gridY = useTransform(flowProgress, [0.1, 0.8], ["0%", "-40%"]);
+  const gridY = useTransform(flowProgress, [0.1, 0.8], ["0%", "-65%"]);
   const particleOpacity = useTransform(flowProgress, [0.05, 0.95], [0, 1]);
 
   useEffect(() => {
@@ -310,7 +310,7 @@ export default function Home() {
               Automate outreach, reach <span className="text-white font-medium">1000+ leads weekly</span>, and scale your GTM motion with precision.
             </p>
             <div className="flex flex-col sm:flex-row gap-5 justify-start items-center sm:items-stretch">
-              <Link className="group relative bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center w-full sm:min-w-60 sm:w-auto" href="#">
+              <Link className="group relative bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center w-full sm:min-w-60 sm:w-auto" href="/signup">
                 <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   Start Free Trial
@@ -497,7 +497,7 @@ export default function Home() {
                 </motion.div>
 
                 {/* Automation Log Overlay */}
-                <div className="absolute bottom-6 left-6 right-6 h-28 glass-card border-white/10 rounded-2xl p-5 overflow-hidden bg-black/60 shadow-2xl">
+                <div className="absolute bottom-6 left-6 right-6 h-32 glass-card border-white/10 rounded-2xl p-5 overflow-hidden bg-black/60 shadow-2xl">
                   <div className="flex flex-col gap-3">
                     {activeStep >= 0 && (
                       <div className="flex items-center gap-4 text-xs animate-fade-in-up">
@@ -832,8 +832,85 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* Multichannel Outreach: Static Mobile Layout */}
+      <section className="bg-background-dark border-t border-white/5 py-24 md:hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
+            <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Automated Intelligence</span>
+          </div>
+          <h2 className="text-4xl font-display font-bold mb-6">
+            The <span className="metallic-text">Perfect Workflow</span>
+          </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+            Our AI orchestrates your entire GTM motion, evolving from simple leads to booked meetings in one seamless loop.
+          </p>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 flex flex-col gap-6">
+          <div className="glass-card p-6 rounded-2xl border border-white/10 w-full relative group hover:border-blue-500/50 transition-colors">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                <span className="material-icons text-blue-400">api</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400">Phase 01</span>
+                <h4 className="text-lg font-bold">Smart Discovery</h4>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Auto-ingest leads from Sales Navigator, Clay, or Apollo. We scrape and clean data in real-time.
+            </p>
+          </div>
+
+          <div className="glass-card p-6 rounded-2xl border border-white/10 w-full relative group hover:border-purple-500/50 transition-colors">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                <span className="material-icons text-purple-400">auto_awesome</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-400">Phase 02</span>
+                <h4 className="text-lg font-bold">AI Enrichment</h4>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Personalize every single icebreaker using GPT-4o. Find verified work emails and mobile numbers automatically.
+            </p>
+          </div>
+
+          <div className="glass-card p-6 rounded-2xl border border-white/10 w-full relative group hover:border-indigo-500/50 transition-colors">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
+                <span className="material-icons text-indigo-400">alt_route</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Phase 03</span>
+                <h4 className="text-lg font-bold">Multi-path Routing</h4>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Logic-based execution. If email is bounced, trigger LinkedIn connection. If OOO, delay sequence automatically.
+            </p>
+          </div>
+
+          <div className="glass-card p-6 rounded-2xl border border-white/10 w-full relative group hover:border-emerald-500/50 transition-colors">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                <span className="material-icons text-emerald-400">task_alt</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Output</span>
+                <h4 className="text-lg font-bold">Revenue Captured</h4>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Sync booked meetings to HubSpot, Pipedrive or Salesforce. 100% data fidelity across your stack.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Multichannel Outreach: Sticky Scroll Flow Simulator */}
-      <section ref={flowRef} className="relative h-[650vh] bg-background-dark border-t border-white/5 z-0">
+      <section ref={flowRef} className="relative hidden md:block h-[650vh] bg-background-dark border-t border-white/5 z-0">
         <div className="sticky top-0 h-screen w-full flex flex-col overflow-hidden z-10">
           {/* Header */}
           <motion.div
