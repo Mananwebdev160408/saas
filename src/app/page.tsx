@@ -37,15 +37,6 @@ function StatItem({ value, label, suffix = "" }: { value: number; label: string;
 export default function Home() {
   const [activeStep, setActiveStep] = useState(0);
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -200,7 +191,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-hero-radial">
+      <section className="relative pt-24 pb-16 lg:pt-28 lg:pb-20 overflow-hidden bg-hero-radial">
         {/* Animated Background Particles */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           {[...Array(20)].map((_, i) => (
@@ -272,35 +263,16 @@ export default function Home() {
 
         <div className="absolute inset-0 grid-bg opacity-20"></div>
 
-        {/* Interactive Mouse Glow */}
-        <motion.div 
-          className="absolute inset-0 z-0 pointer-events-none opacity-30 overflow-hidden"
-          animate={{
-            background: `radial-gradient(1000px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 255, 255, 0.05), transparent 80%)`
-          }}
-        />
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ 
             opacity: 1, 
-            y: 0,
-            x: (mousePos.x - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.01,
-            rotateX: (mousePos.y - (typeof window !== 'undefined' ? window.innerHeight / 2 : 0)) * -0.01,
-            rotateY: (mousePos.x - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)) * 0.01
+            y: 0
           }}
-          transition={{ duration: 0.8, ease: "easeOut", x: { duration: 0 }, rotateX: { duration: 0 }, rotateY: { duration: 0 } }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 perspective-1000 grid lg:grid-cols-2 gap-20 items-center"
         >
           <div className="text-left py-4 sm:py-10">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8"
-            >
-              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
-              <span className="text-xs font-semibold text-white/90 uppercase tracking-widest">New: AI Sequence Generator</span>
-            </motion.div>
             <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-6 sm:mb-8 leading-[0.95]">
               <span className="bg-clip-text text-transparent bg-linear-to-b from-white via-white to-white/40">10x your</span><br />
               <span className="metallic-text">LinkedIn</span><br />
@@ -333,13 +305,13 @@ export default function Home() {
           </div>
 
           {/* Right Section: Visual Composition */}
-          <div className="relative hidden lg:flex items-center justify-center min-h-[600px] lg:translate-x-12">
+          <div className="relative hidden lg:flex items-center justify-center min-h-[500px] lg:translate-x-12">
             <div className="relative w-full max-w-[750px] aspect-square flex items-center justify-center">
               {/* Enormous Background Blob to "Contain" the Image */}
               <motion.img 
                 src="/blob.png"
                 alt="Blob"
-                className="absolute w-[250%] h-[250%] object-contain opacity-40 mix-blend-screen pointer-events-none z-0 scale-170"
+                className="absolute w-[250%] h-[250%] object-contain opacity-40 mix-blend-screen pointer-events-none z-0 scale-150"
               />
               
               {/* Hero Image - img.png (Boundary-free) */}
@@ -364,7 +336,7 @@ export default function Home() {
         </motion.div>
 
         {/* Floating UI Elements Around Hero - Repositioned for 2-column */}
-        <div className="absolute inset-0 pointer-events-none hidden xl:block z-20">
+        <div className="absolute inset-0 pointer-events-none hidden xl:block z-0">
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -416,10 +388,6 @@ export default function Home() {
                   <div className="w-3.5 h-3.5 rounded-full bg-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]"></div>
                   <div className="w-3.5 h-3.5 rounded-full bg-yellow-500/50 shadow-[0_0_10px_rgba(234,179,8,0.3)]"></div>
                   <div className="w-3.5 h-3.5 rounded-full bg-green-500/50 shadow-[0_0_10px_rgba(34,197,94,0.3)]"></div>
-                </div>
-                <div className="px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[11px] font-bold text-white/70 flex items-center gap-2 uppercase tracking-widest">
-                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                  Campaign: Ultra-Scale Outreach Q1
                 </div>
               </div>
               
@@ -919,9 +887,6 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="relative z-20 px-4 pt-20 pb-8 text-center shrink-0"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
-              <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Automated Intelligence</span>
-            </div>
             <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
               The <span className="metallic-text">Perfect Workflow</span>
             </h2>
@@ -1400,9 +1365,6 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-end">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 mb-6">
-                <span className="text-[10px] font-bold text-dim-grey uppercase tracking-widest">Human-Led Support</span>
-              </div>
               <h2 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold mb-8 leading-tight">
                 Not just <span className="metallic-text italic border-b border-white/20">software.</span><br />
                 A partner in <span className="text-blue-400">GTM.</span>
