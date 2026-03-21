@@ -31,7 +31,9 @@ export default function DashboardLayout({
     { name: "Campaigns", icon: Rocket, href: "/campaigns" },
     { name: "New Campaign", icon: PlusCircle, href: "/campaigns/create" },
     { name: "Agents", icon: Users, href: "/agents" },
+    { name: "Connectors", icon: PlusCircle, href: "/connectors" },
     { name: "Analytics", icon: BarChart3, href: "/analytics" },
+    { name: "Billing", icon: Settings, href: "/billing" },
     { name: "Settings", icon: Settings, href: "/settings" },
   ];
 
@@ -117,7 +119,7 @@ export default function DashboardLayout({
       </motion.aside>
 
       {/* Main Content Area */}
-      <div className="flex-grow flex flex-col relative overflow-hidden">
+      <div className="grow flex flex-col relative overflow-hidden">
          {/* Top Header */}
          <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 relative z-40 bg-black/20 backdrop-blur-xl">
             <div className="flex items-center gap-4 bg-white/2 px-5 py-2.5 rounded-2xl border border-white/5 w-full max-w-md focus-within:border-white/20 focus-within:bg-white/5 transition-all group">
@@ -135,7 +137,7 @@ export default function DashboardLayout({
                     <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
                 </button>
 
-                <div className="flex items-center gap-3 pl-6 border-l border-white/5">
+                <Link href="/profile" className="flex items-center gap-3 pl-6 border-l border-white/5 hover:opacity-80 transition-opacity">
                     <div className="text-right">
                         <div className="text-sm font-bold metallic-text">Alex Johnson</div>
                         <div className="text-[9px] text-dim-grey uppercase tracking-[0.2em] font-bold">Pro Plan</div>
@@ -145,7 +147,7 @@ export default function DashboardLayout({
                             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" className="w-full h-full" />
                         </div>
                     </div>
-                </div>
+                </Link>
             </div>
          </header>
 

@@ -46,7 +46,8 @@ export default function Navbar() {
           <div className="hidden lg:block">
             <div className="flex items-baseline space-x-8">
               <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/#product">Product</Link>
-              <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/#solutions">Solutions</Link>
+              <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/company">Company</Link>
+              <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/community">Community</Link>
               <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/pricing">Pricing</Link>
               <Link className="text-white/80 hover:text-white transition-all text-sm font-medium" href="/#resources">Resources</Link>
             </div>
@@ -72,7 +73,8 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-8 text-center">
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/#product">Product</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/#solutions">Solutions</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/company">Company</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/community">Community</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/pricing">Pricing</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/#resources">Resources</Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-bold mt-8 text-dim-grey" href="/login">Login</Link>

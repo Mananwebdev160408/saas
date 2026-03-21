@@ -93,7 +93,7 @@ export default function CampaignsPage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className={`glass-card p-6 rounded-[2rem] border border-white/5 bg-white/2 relative group overflow-hidden ${stat.glow} hover:border-white/20 transition-all`}
+                className={`glass-card p-6 rounded-4xl border border-white/5 bg-white/2 relative group overflow-hidden ${stat.glow} hover:border-white/20 transition-all`}
             >
                 <div className="flex items-center justify-between mb-4">
                     <div className={`p-2.5 rounded-xl bg-white/5 border border-white/5 ${stat.color}`}>
@@ -200,24 +200,6 @@ export default function CampaignsPage() {
                 </svg>
             </motion.div>
         ))}
-
-        {/* Create Card Placeholder */}
-        <Link 
-            href="/campaigns/create"
-            className="group relative p-8 rounded-[2.5rem] border border-white/5 bg-white/2 hover:bg-white/5 hover:border-white/20 transition-all flex flex-col items-center justify-center min-h-[350px] space-y-6 overflow-hidden"
-        >
-            <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="w-16 h-16 rounded-3xl bg-white/2 flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-white/5 transition-all shadow-xl">
-                <Plus size={32} strokeWidth={1.5} />
-            </div>
-            <div className="text-center relative z-10">
-                <h3 className="text-xl font-bold font-display group-hover:text-white transition-colors">Start New Campaign</h3>
-                <p className="text-sm text-dim-grey mt-2 font-light">Scale your outreach today with AI-driven precision</p>
-            </div>
-            <div className="absolute bottom-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-dim-grey group-hover:text-white transition-colors">
-                Quick Setup <ArrowUpRight size={12} />
-            </div>
-        </Link>
       </div>
     </div>
   );
