@@ -24,19 +24,44 @@ export default function CreateCampaignPage() {
   const [agents, setAgents] = useState<{ id: string; name: string; status: string }[]>([]);
   const [showAgentModal, setShowAgentModal] = useState(false);
   const [leadMethod, setLeadMethod] = useState<"manual" | "mass">("mass");
+  const [isCapturingAuth, setIsCapturingAuth] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
-  const addAgent = () => {
-    // Simulating agent addition after "auth"
-    const newAgent = { 
-        id: Math.random().toString(36).substr(2, 9), 
-        name: `LinkedIn Agent ${agents.length + 1}`, 
-        status: "Authenticated" 
-    };
-    setAgents([...agents, newAgent]);
-    setShowAgentModal(false);
+  const addAgent = async () => {
+    setIsCapturingAuth(true);
+    setAuthError(null);
+
+    try {
+      const response = await fetch("/api/linkedin/auth", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to capture LinkedIn auth session.");
+      }
+
+      // Requested behavior: print auth.json payload in browser console after login.
+      console.log("LinkedIn auth.json", data.authJson);
+
+      setAgents((prev) => [
+        ...prev,
+        {
+          id: Math.random().toString(36).slice(2, 11),
+          name: `LinkedIn Agent ${prev.length + 1}`,
+          status: "Authenticated",
+        },
+      ]);
+      setShowAgentModal(false);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Something went wrong while linking LinkedIn.";
+      setAuthError(message);
+    } finally {
+      setIsCapturingAuth(false);
+    }
   };
 
   return (
@@ -383,12 +408,17 @@ export default function CreateCampaignPage() {
                             </div>
 
                             <div className="w-full max-w-sm space-y-4 pt-4 z-10">
-                                <button 
+                                <button
                                     onClick={addAgent}
+                                    disabled={isCapturingAuth}
                                     className="w-full bg-white text-black font-extrabold py-5 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] flex items-center justify-center gap-3 group/btn"
                                 >
-                                    Open LinkedIn Secure Portal <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                                    {isCapturingAuth ? "Waiting for LinkedIn login..." : "Open LinkedIn Secure Portal"}
+                                    <ArrowRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
                                 </button>
+                                {authError && (
+                                  <p className="text-xs text-red-400 text-center">{authError}</p>
+                                )}
                                 
                                 <p className="text-[10px] text-center text-dim-grey uppercase tracking-widest leading-relaxed">
                                     Protected by 256-bit AES Encryption

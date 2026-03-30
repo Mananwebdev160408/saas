@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, 
@@ -19,7 +19,8 @@ import {
 import Link from "next/link";
 import CampaignChart from "@/components/CampaignChart";
 
-export default function CampaignDetailPage({ params }: { params: { id: string } }) {
+export default function CampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [isRunning, setIsRunning] = useState(true);
   const [showCampaigns, setShowCampaigns] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState("all");
@@ -31,7 +32,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
     { id: "4", name: "Tech Talent Hunt" }
   ];
 
-  const currentCampaign = campaigns.find(c => c.id === params.id) || campaigns[0];
+  const currentCampaign = campaigns.find(c => c.id === id) || campaigns[0];
 
   const chartData = [
     { day: "Mon", sent: 45, accepted: 12 },
@@ -89,7 +90,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
                                     <button 
                                         key={c.id}
                                         onClick={() => setShowCampaigns(false)}
-                                        className={`w-full px-5 py-4 text-left hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 ${c.id === params.id ? "text-white font-bold bg-white/5" : "text-dim-grey"}`}
+                                        className={`w-full px-5 py-4 text-left hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 ${c.id === id ? "text-white font-bold bg-white/5" : "text-dim-grey"}`}
                                     >
                                         {c.name}
                                     </button>
