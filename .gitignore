@@ -41,3 +41,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 skills-lock.json
+
+# LinkedIn session (contains sensitive tokens)
+auth.json

@@ -117,20 +117,20 @@ export default function ProfilePage() {
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
-        className="glass-card p-8 rounded-[3rem] border border-blue-500/20 bg-blue-500/5 flex flex-col md:flex-row items-center justify-between gap-8"
+        className="glass-card p-6 sm:p-8 rounded-[2.5rem] sm:rounded-[3rem] border border-blue-500/20 bg-blue-500/5 flex flex-col lg:flex-row items-center justify-between gap-8"
       >
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6">
             <div className="p-4 rounded-2xl bg-blue-500/10 text-blue-400">
                 <CreditCard size={32} />
             </div>
             <div>
-                <h3 className="text-2xl font-bold mb-1">Professional Plan</h3>
+                <h3 className="text-xl sm:text-2xl font-bold mb-1">Professional Plan</h3>
                 <p className="text-dim-grey text-sm">Scale your outreach with our most popular plan.</p>
             </div>
         </div>
-        <div className="flex items-center gap-4">
-            <button className="px-6 py-3 rounded-xl bg-white text-black font-bold hover:scale-105 transition-all">Manage Billing</button>
-            <button className="text-sm font-bold text-dim-grey hover:text-white transition-colors px-4 py-3">View History</button>
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+            <button className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white text-black font-bold hover:scale-105 transition-all text-sm">Manage Billing</button>
+            <button className="w-full sm:w-auto text-sm font-bold text-dim-grey hover:text-white transition-colors px-4 py-3">View History</button>
         </div>
       </motion.div>
     </div>

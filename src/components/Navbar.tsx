@@ -54,9 +54,9 @@ export default function Navbar() {
           </div>
           <div className="flex gap-2 sm:gap-4 items-center">
             <Link className="text-sm font-bold text-white/90 hover:text-white hidden sm:block transition-colors" href="/login">Login</Link>
-            <Link className="bg-white text-black px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-black transition-all hover:scale-105 active:scale-95 whitespace-nowrap shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" href="/signup">Start Free Trial</Link>
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-white flex items-center justify-center">
-              <span className="material-icons">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+            <Link className="bg-white text-black px-4 sm:px-7 py-2 rounded-full text-[10px] sm:text-sm font-black transition-all hover:scale-105 active:scale-95 whitespace-nowrap shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" href="/signup">Start Free Trial</Link>
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden text-white flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 ml-1">
+              <span className="material-icons text-xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
             </button>
           </div>
         </div>
@@ -71,13 +71,13 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-8 lg:hidden"
           >
-            <div className="flex flex-col gap-8 text-center">
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/#product">Product</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/company">Company</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/community">Community</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/pricing">Pricing</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-display font-bold" href="/#resources">Resources</Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-bold mt-8 text-dim-grey" href="/login">Login</Link>
+            <div className="flex flex-col gap-6 sm:gap-8 text-center">
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-3xl sm:text-4xl font-display font-bold hover:text-white transition-colors" href="/#product">Product</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-3xl sm:text-4xl font-display font-bold hover:text-white transition-colors" href="/company">Company</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-3xl sm:text-4xl font-display font-bold hover:text-white transition-colors" href="/community">Community</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-3xl sm:text-4xl font-display font-bold hover:text-white transition-colors" href="/pricing">Pricing</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-3xl sm:text-4xl font-display font-bold hover:text-white transition-colors" href="/#resources">Resources</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} className="text-xl sm:text-2xl font-bold mt-4 text-dim-grey hover:text-white transition-colors" href="/login">Login</Link>
             </div>
           </motion.div>
         )}

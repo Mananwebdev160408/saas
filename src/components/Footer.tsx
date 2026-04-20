@@ -87,7 +87,7 @@ export default function Footer() {
         >
           {/* 1. Underlying Static Outline - More visible now */}
           <h2 
-            className="text-[12vw] font-black leading-none text-center uppercase tracking-tighter"
+            className="text-[14vw] sm:text-[12vw] font-black leading-none text-center uppercase tracking-tighter"
             style={{ 
               WebkitTextStroke: "1.5px rgba(255,255,255,0.25)", 
               color: "transparent" 
@@ -98,7 +98,7 @@ export default function Footer() {
 
           {/* 2. Spotlight Reveal Layer - Pure white masked center */}
           <motion.h2 
-            className="absolute inset-0 flex items-center justify-center text-[12vw] font-black leading-none text-center uppercase tracking-tighter z-20 pointer-events-none w-full"
+            className="absolute inset-0 flex items-center justify-center text-[14vw] sm:text-[12vw] font-black leading-none text-center uppercase tracking-tighter z-20 pointer-events-none w-full"
             animate={{ 
               opacity: isHovering ? 1 : 0 
             }}
@@ -108,7 +108,7 @@ export default function Footer() {
               WebkitTextStroke: "1px white",
               clipPath: useTransform(
                 [springX, springY],
-                ([x, y]) => `circle(140px at ${x}px ${y}px)`
+                ([x, y]) => `circle(${typeof window !== 'undefined' && window.innerWidth < 640 ? 80 : 140}px at ${x}px ${y}px)`
               )
             }}
           >

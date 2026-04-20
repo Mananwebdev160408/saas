@@ -66,17 +66,17 @@ export default function CampaignsPage() {
   return (
     <div className="space-y-8 pb-12">
       {/* Header Section */}
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div>
-            <h1 className="text-4xl font-display font-bold mb-2">My Campaigns</h1>
-            <p className="text-dim-grey">Manage and monitor your LinkedIn automation workflows</p>
+            <h1 className="text-3xl sm:text-4xl font-display font-bold mb-2">My Campaigns</h1>
+            <p className="text-dim-grey text-sm sm:text-base">Manage and monitor your LinkedIn automation workflows</p>
         </div>
         <Link 
             href="/campaigns/create"
-            className="flex items-center gap-2 bg-white text-black font-bold px-6 py-3 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)]"
+            className="flex items-center justify-center gap-2 bg-white text-black font-bold px-6 py-3.5 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] text-sm sm:text-base"
         >
-            <Plus size={20} />
-            Create New Campaign
+            <Plus size={18} />
+            Create Campaign
         </Link>
       </div>
 
@@ -175,23 +175,25 @@ export default function CampaignsPage() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                     <Link 
                         href={`/campaigns/${campaign.id}`}
-                        className="grow flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-2xl font-bold transition-all text-sm"
+                        className="flex-1 min-w-[120px] flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-2xl font-bold transition-all text-sm"
                     >
                         View Stats <ArrowUpRight size={16} />
                     </Link>
-                    <button className={`p-3 rounded-2xl border transition-all ${
-                        campaign.status === "Running" 
-                        ? "bg-amber-500/5 border-amber-500/20 text-amber-400 hover:bg-amber-500/10" 
-                        : "bg-green-500/5 border-green-500/20 text-green-400 hover:bg-green-500/10"
-                    }`}>
-                        {campaign.status === "Running" ? <Pause size={20} /> : <Play size={20} />}
-                    </button>
-                    <button className="p-3 bg-white/5 border border-white/10 rounded-2xl text-dim-grey hover:text-white transition-all">
-                        <MoreHorizontal size={20} />
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button className={`p-3 rounded-2xl border transition-all ${
+                            campaign.status === "Running" 
+                            ? "bg-amber-500/5 border-amber-500/20 text-amber-400 hover:bg-amber-500/10" 
+                            : "bg-green-500/5 border-green-500/20 text-green-400 hover:bg-green-500/10"
+                        }`}>
+                            {campaign.status === "Running" ? <Pause size={20} /> : <Play size={20} />}
+                        </button>
+                        <button className="p-3 bg-white/5 border border-white/10 rounded-2xl text-dim-grey hover:text-white transition-all">
+                            <MoreHorizontal size={20} />
+                        </button>
+                    </div>
                 </div>
                 
                 {/* Decorative Pattern */}

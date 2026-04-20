@@ -272,16 +272,16 @@ export default function Home() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 perspective-1000 grid lg:grid-cols-2 gap-20 items-center"
         >
-          <div className="text-left py-4 sm:py-10">
-            <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-6 sm:mb-8 leading-[0.95]">
+          <div className="text-center sm:text-left py-4 sm:py-10">
+            <h1 className="text-[12vw] sm:text-6xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-6 sm:mb-8 leading-[1.05] sm:leading-[0.95]">
               <span className="bg-clip-text text-transparent bg-linear-to-b from-white via-white to-white/40">10x your</span><br />
               <span className="metallic-text">LinkedIn</span><br />
               <span className="text-white/20">outbound</span>
             </h1>
-            <p className="text-lg md:text-2xl text-gray-400 font-light leading-relaxed max-w-xl mb-8 sm:mb-12">
+            <p className="text-base sm:text-lg md:text-2xl text-gray-400 font-light leading-relaxed max-w-xl mx-auto sm:mx-0 mb-10 sm:mb-12">
               Automate outreach, reach <span className="text-white font-medium">1000+ leads weekly</span>, and scale your GTM motion with precision.
             </p>
-            <div className="flex flex-col sm:flex-row gap-5 justify-start items-center sm:items-stretch">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center sm:justify-start items-center sm:items-stretch">
               <Link className="group relative bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center w-full sm:min-w-60 sm:w-auto" href="/signup">
                 <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative z-10 flex items-center justify-center gap-3">
@@ -294,12 +294,12 @@ export default function Home() {
                 Watch Demo
               </Link>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-8 text-sm text-dim-grey">
+            <div className="mt-10 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-8 text-xs sm:text-sm text-dim-grey">
               <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
-                <span className="material-icons text-lg text-green-500/70">check_circle</span> No credit card
+                <span className="material-icons text-lg text-green-500/70">check_circle</span> No credit card required
               </div>
               <div className="flex items-center gap-2 hover:text-white transition-colors cursor-default">
-                <span className="material-icons text-lg text-blue-500/70">verified</span> Premium setup
+                <span className="material-icons text-lg text-blue-500/70">verified</span> Premium setup included
               </div>
             </div>
           </div>
@@ -373,11 +373,11 @@ export default function Home() {
       <section id="product" className="py-24 relative overflow-hidden bg-background-dark border-y border-white/5">
         <div className="absolute inset-0 grid-bg opacity-10"></div>
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
               Real-time <span className="metallic-text">Automation</span> Logic
             </h2>
-            <p className="text-gray-400 text-lg">Watch HeyReach process leads and book meetings in the background.</p>
+            <p className="text-gray-400 text-base sm:text-lg">Watch HeyReach process leads and book meetings in the background.</p>
           </div>
           
           <div className="relative group">
@@ -391,8 +391,8 @@ export default function Home() {
                 </div>
               </div>
               
-              <div className="relative h-auto min-h-[500px] md:h-[450px] flex items-center justify-center overflow-hidden py-8 md:py-0">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-4xl relative z-10">
+              <div className="relative h-auto min-h-[750px] sm:min-h-[500px] md:h-[450px] flex items-center justify-center overflow-hidden py-12 md:py-0 pb-36 md:pb-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 w-full max-w-4xl relative z-10">
                   {/* Step 1: Profile View */}
                   <div className="flex flex-col items-center gap-5 group/step">
                     <div className="relative">
@@ -405,9 +405,9 @@ export default function Home() {
                         <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full animate-ping"></div>
                       )}
                     </div>
-                    <div className="text-center">
-                      <div className={`font-bold text-lg mb-1 transition-colors ${activeStep >= 0 ? "text-white" : "text-dim-grey"}`}>Profile Visit</div>
-                      <div className="text-xs text-dim-grey uppercase tracking-wider">AI-driven viewing</div>
+                    <div className="text-center w-full px-2">
+                      <div className={`font-bold text-base sm:text-lg mb-1 transition-colors ${activeStep >= 0 ? "text-white" : "text-dim-grey"}`}>Profile Visit</div>
+                      <div className="text-[10px] text-dim-grey uppercase tracking-wider">AI-driven viewing</div>
                     </div>
                   </div>
 
@@ -423,9 +423,9 @@ export default function Home() {
                         <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full animate-ping"></div>
                       )}
                     </div>
-                    <div className="text-center">
-                      <div className={`font-bold text-lg mb-1 transition-colors ${activeStep >= 1 ? "text-white" : "text-dim-grey"}`}>Connect</div>
-                      <div className="text-xs text-dim-grey uppercase tracking-wider">With personalized note</div>
+                    <div className="text-center w-full px-2">
+                      <div className={`font-bold text-base sm:text-lg mb-1 transition-colors ${activeStep >= 1 ? "text-white" : "text-dim-grey"}`}>Connect</div>
+                      <div className="text-[10px] text-dim-grey uppercase tracking-wider">With personalized note</div>
                     </div>
                   </div>
 
@@ -442,9 +442,9 @@ export default function Home() {
                         <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full animate-ping"></div>
                       )}
                     </div>
-                    <div className="text-center">
-                      <div className={`font-bold text-lg mb-1 transition-colors ${activeStep >= 2 ? "text-white" : "text-dim-grey"}`}>Multichannel</div>
-                      <div className="text-xs text-dim-grey uppercase tracking-wider">LinkedIn + Email</div>
+                    <div className="text-center w-full px-2">
+                      <div className={`font-bold text-base sm:text-lg mb-1 transition-colors ${activeStep >= 2 ? "text-white" : "text-dim-grey"}`}>Multichannel</div>
+                      <div className="text-[10px] text-dim-grey uppercase tracking-wider">LinkedIn + Email</div>
                     </div>
                   </div>
                 </div>
@@ -453,19 +453,19 @@ export default function Home() {
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={activeStep === 2 ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
-                  className="absolute top-10 left-10 p-4 rounded-2xl glass-card border-purple-500/30 bg-purple-500/10 backdrop-blur-3xl flex items-center gap-4 z-20 shadow-[0_0_40px_rgba(168,85,247,0.2)]"
+                  className="absolute top-4 left-4 sm:top-10 sm:left-10 p-3 sm:p-4 rounded-2xl glass-card border-purple-500/30 bg-purple-500/10 backdrop-blur-3xl flex items-center gap-3 sm:gap-4 z-20 shadow-[0_0_40px_rgba(168,85,247,0.2)] max-w-[200px] sm:max-w-none"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center border border-purple-500/30">
-                    <span className="material-icons text-purple-400">event_available</span>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-500/20 flex items-center justify-center border border-purple-500/30 shrink-0">
+                    <span className="material-icons text-purple-400 text-xl sm:text-2xl">event_available</span>
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-white">Meeting Booked 🎉</div>
-                    <div className="text-[10px] text-purple-300">With: Alex @ TechCorp</div>
+                    <div className="text-xs sm:text-sm font-bold text-white">Meeting Booked 🎉</div>
+                    <div className="text-[9px] sm:text-[10px] text-purple-300">With: Alex @ TechCorp</div>
                   </div>
                 </motion.div>
 
                 {/* Automation Log Overlay */}
-                <div className="absolute bottom-6 left-6 right-6 h-32 glass-card border-white/10 rounded-2xl p-5 overflow-hidden bg-black/60 shadow-2xl">
+                <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 h-28 sm:h-32 glass-card border-white/10 rounded-2xl p-4 sm:p-5 overflow-hidden bg-black/60 shadow-2xl">
                   <div className="flex flex-col gap-3">
                     {activeStep >= 0 && (
                       <div className="flex items-center gap-4 text-xs animate-fade-in-up">
@@ -529,7 +529,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="relative h-auto md:h-[400px] py-12 md:py-0">
+            <div className="relative h-auto md:h-[400px] py-20 md:py-0">
               {/* SVG Connecting Lines - Hidden on Mobile */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none hidden md:block" style={{ overflow: 'visible' }}>
                 <defs>
@@ -665,42 +665,42 @@ export default function Home() {
           >
             <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-br from-white/5 to-transparent rounded-bl-full pointer-events-none"></div>
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="relative z-10">
+              <div className="relative z-10 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
                   <span className="text-xs font-bold text-white uppercase tracking-wider">Smart Rotation</span>
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
                   Auto-rotate <span className="bg-clip-text text-transparent bg-linear-to-r from-white via-gray-400 to-gray-600">LinkedIn senders</span>
                 </h2>
-                <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
                   Connect unlimited LinkedIn accounts for one flat fee. We automatically rotate sending between them to maximize reach while keeping accounts safe under the radar.
                 </p>
-                <div className="flex gap-4">
-                  <Link href="#" className="bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition-colors hover:scale-105 active:scale-95 shadow-lg">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <Link href="#" className="bg-white text-black px-6 py-3 rounded-lg font-bold hover:bg-gray-200 transition-colors hover:scale-105 active:scale-95 shadow-lg text-center">
                     Try HeyReach for free
                   </Link>
-                  <div className="flex items-center gap-2 text-sm text-dim-grey px-4">
+                  <div className="flex items-center gap-2 text-sm text-dim-grey px-4 justify-center sm:justify-start">
                     <span className="material-icons text-green-500 text-base animate-pulse">check</span> Unlimited senders
                   </div>
                 </div>
               </div>
-              <div className="relative min-h-[350px] sm:min-h-[450px] flex items-center justify-center scale-[0.65] sm:scale-90 md:scale-100 transition-transform">
+              <div className="relative min-h-[300px] sm:min-h-[450px] flex items-center justify-center scale-[0.5] sm:scale-90 md:scale-100 transition-transform">
                 {/* Content aligned centrally */}
                 {/* Concentric Rotating Rings */}
-                <div className="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+                <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
                   {/* Outer Orbit Paths */}
                   <div className="absolute inset-0 rounded-full border border-white/5 bg-linear-to-r from-white/5 to-transparent"></div>
-                  <div className="absolute inset-10 rounded-full border border-white/5 bg-linear-to-r from-transparent via-white/5 to-transparent"></div>
+                  <div className="absolute inset-8 sm:inset-10 rounded-full border border-white/5 bg-linear-to-r from-transparent via-white/5 to-transparent"></div>
                   
                   {/* Central Hub Icon */}
                   <div className="relative z-10 w-16 h-16 md:w-24 md:h-24 rounded-full bg-linear-to-b from-white/10 to-transparent border border-white/20 flex items-center justify-center shadow-2xl backdrop-blur-xl group-hover:scale-110 transition-transform duration-500">
                     <span className="material-icons text-3xl md:text-5xl text-white drop-shadow-lg">hub</span>
                   </div>
-
+ 
                   {/* Multiple Rings of Orbit Icons */}
                   {[
-                    { ring: 0, count: 8, radius: 130, speed: 'animate-spin-slow' },
-                    { ring: 1, count: 6, radius: 90, speed: 'animate-spin-reverse-slow' }
+                    { ring: 0, count: 8, radius: 110, smRadius: 130, speed: 'animate-spin-slow' },
+                    { ring: 1, count: 6, radius: 70, smRadius: 90, speed: 'animate-spin-reverse-slow' }
                   ].map((orbit, ringIdx) => (
                     <div key={`ring-${ringIdx}`} className="absolute inset-0">
                       {Array.from({ length: orbit.count }).map((_, i) => {
@@ -712,9 +712,9 @@ export default function Home() {
                             style={{ transform: `rotate(${angle}deg)` }}
                           >
                             <div 
-                              className="absolute top-1/2 left-1/2 w-10 h-10 -ml-5 -mt-5 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg pointer-events-auto hover:scale-125 transition-transform duration-300"
+                              className="absolute top-1/2 left-1/2 w-8 h-8 sm:w-10 sm:h-10 -ml-4 -mt-4 sm:-ml-5 sm:-mt-5 rounded-full bg-black border border-white/20 overflow-hidden shadow-lg pointer-events-auto hover:scale-125 transition-transform duration-300"
                               style={{ 
-                                transform: `rotate(-${angle}deg) translateY(-${orbit.radius}px)`
+                                transform: `rotate(-${angle}deg) translateY(-${orbit.smRadius}px)`
                               }}
                             >
                               <img 
@@ -1021,7 +1021,7 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1 relative">
               <div className="glass-card rounded-3xl p-2 border border-white/10 md:-rotate-2 md:hover:rotate-0 transition-all duration-700 animate-float">
-                <div className="bg-black rounded-2xl overflow-hidden border border-white/5 relative h-[500px]">
+                <div className="bg-black rounded-2xl overflow-hidden border border-white/5 relative h-[400px] sm:h-[500px]">
                   <div className="bg-graphite p-4 border-b border-white/10 flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-gray-600 relative overflow-hidden">
@@ -1067,17 +1067,17 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="order-1 lg:order-2">
+            <div className="order-1 lg:order-2 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6">
                 <span className="text-xs font-bold text-orange-400 uppercase tracking-wider">Zero Context Switching</span>
               </div>
-              <h2 className="text-4xl lg:text-5xl font-display font-bold mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold mb-6">
                 Manage replies in <span className="bg-clip-text text-transparent bg-linear-to-r from-orange-200 to-orange-400">Unified Inbox</span>
               </h2>
-              <p className="text-gray-400 text-lg leading-relaxed mb-8">
+              <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
                 Handle all LinkedIn messages in one centralized inbox without logging in and out of accounts. Send voice notes from your desktop and reply on behalf of colleagues seamlessly.
               </p>
-              <Link className="inline-flex items-center gap-2 text-white font-bold hover:gap-3 transition-all group" href="#">
+              <Link className="inline-flex items-center gap-2 text-white font-bold hover:gap-3 transition-all group justify-center lg:justify-start" href="#">
                 Learn more about Inbox <span className="material-icons text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </Link>
             </div>
@@ -1222,7 +1222,7 @@ export default function Home() {
               ease: "linear", 
               repeat: Infinity 
             }}
-            className="flex gap-4 md:gap-8 whitespace-nowrap w-max px-4"
+            className="flex gap-4 md:gap-8 whitespace-nowrap w-max px-2 sm:px-4"
           >
             {[1, 2, 3, 4, 1, 2, 3, 4].map((item, idx) => (
               <div key={idx} className="w-[300px] sm:w-[450px] inline-block whitespace-normal">
@@ -1364,12 +1364,12 @@ export default function Home() {
       <section className="py-24 relative overflow-hidden border-t border-white/5 bg-background-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-end">
-            <div>
-              <h2 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold mb-8 leading-tight">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl sm:text-5xl lg:text-7xl font-display font-bold mb-8 leading-tight">
                 Not just <span className="metallic-text italic border-b border-white/20">software.</span><br />
                 A partner in <span className="text-blue-400">GTM.</span>
               </h2>
-              <p className="text-gray-400 text-base sm:text-lg mb-10 sm:mb-12 max-w-xl">
+              <p className="text-gray-400 text-base sm:text-lg mb-10 sm:mb-12 max-w-xl mx-auto lg:mx-0">
                 We don&apos;t do generic tickets. Our team consists of actual outbound experts who help you optimize your sequences, verify your domains, and scale your pipeline.
               </p>
               

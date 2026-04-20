@@ -6,10 +6,10 @@ import { CreditCard, CheckCircle2 } from "lucide-react";
 export default function BillingPage() {
   return (
     <div className="space-y-8 pb-12">
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-display font-bold mb-2">Billing & Subscription</h1>
-          <p className="text-dim-grey">Manage your plan and payment methods</p>
+          <h1 className="text-3xl sm:text-4xl font-display font-bold mb-2">Billing & Subscription</h1>
+          <p className="text-dim-grey text-sm sm:text-base">Manage your plan and payment methods</p>
         </div>
       </div>
 
