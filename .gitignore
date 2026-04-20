@@ -44,3 +44,5 @@ skills-lock.json
 
 # LinkedIn session (contains sensitive tokens)
 auth.json
+
+/src/generated/prisma

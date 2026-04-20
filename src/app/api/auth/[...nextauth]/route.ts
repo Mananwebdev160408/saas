@@ -1,7 +1,19 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/lib/prisma";
+
+// ─── Detect if a database is configured ──────────────────────────────────────
+// The app runs in JWT mode (no DB) until DATABASE_URL is set.
+// Once you have PostgreSQL running, set DATABASE_URL in .env.local,
+// run `npx prisma migrate dev`, and the adapter switches on automatically.
+
+const hasDatabase = !!process.env.DATABASE_URL;
 
 export const authOptions: NextAuthOptions = {
+  // ── Adapter (only active when DATABASE_URL is set) ────────────────────────
+  ...(hasDatabase ? { adapter: PrismaAdapter(prisma) as any } : {}),
+
   // ── Providers ─────────────────────────────────────────────────────────────
   providers: [
     GoogleProvider({
@@ -10,44 +22,39 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
-  // ── Session strategy: JWT (no database required) ──────────────────────────
-  // When you add a database, switch to: strategy: "database"
-  // and add a database adapter (e.g. PrismaAdapter, DrizzleAdapter, etc.)
+  // ── Session strategy ──────────────────────────────────────────────────────
+  // "jwt"      → cookie-based, no DB needed (current default)
+  // "database" → DB-backed sessions via Prisma (auto-switches when DB is set)
   session: {
-    strategy: "jwt",
+    strategy: hasDatabase ? "database" : "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 
   // ── Custom pages ──────────────────────────────────────────────────────────
   pages: {
     signIn: "/login",
-    error: "/login",   // Redirect auth errors to login page (query: ?error=...)
+    error: "/login",
   },
 
   // ── Callbacks ─────────────────────────────────────────────────────────────
   callbacks: {
-    // Expose user id in the session object on the client
-    async session({ session, token }) {
-      if (session.user && token.sub) {
-        (session.user as any).id = token.sub;
+    async session({ session, token, user }) {
+      if (session.user) {
+        // JWT mode: user id comes from token.sub
+        // DB mode: user id comes from user.id
+        (session.user as any).id = hasDatabase ? user?.id : token?.sub;
       }
       return session;
     },
 
-    // Forward extra token fields to JWT
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
+      if (user) token.id = user.id;
       return token;
     },
   },
 
   // ── Secret ────────────────────────────────────────────────────────────────
-  // Must match NEXTAUTH_SECRET in .env.local
   secret: process.env.NEXTAUTH_SECRET,
-
-  // ── Debug in development ───────────────────────────────────────────────────
   debug: process.env.NODE_ENV === "development",
 };
 
