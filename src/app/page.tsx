@@ -190,8 +190,8 @@ export default function Home() {
 
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-16 lg:pt-28 lg:pb-20 overflow-hidden bg-hero-radial">
+      {/* Desktop Hero Section */}
+      <section className="hidden sm:block relative pt-24 pb-16 lg:pt-28 lg:pb-20 overflow-hidden bg-hero-radial">
         {/* Animated Background Particles */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
           {[...Array(20)].map((_, i) => (
@@ -273,23 +273,23 @@ export default function Home() {
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 perspective-1000 grid lg:grid-cols-2 gap-20 items-center"
         >
           <div className="text-center sm:text-left py-4 sm:py-10">
-            <h1 className="text-[12vw] sm:text-6xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-6 sm:mb-8 leading-[1.05] sm:leading-[0.95]">
+            <h1 className="text-5xl xs:text-6xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-9xl font-display font-bold tracking-tighter mb-6 sm:mb-8 leading-[1.1] sm:leading-[0.95]">
               <span className="bg-clip-text text-transparent bg-linear-to-b from-white via-white to-white/40">10x your</span><br />
               <span className="metallic-text">LinkedIn</span><br />
-              <span className="text-white/20">outbound</span>
+              <span className="text-white/40">outbound</span>
             </h1>
-            <p className="text-base sm:text-lg md:text-2xl text-gray-400 font-light leading-relaxed max-w-xl mx-auto sm:mx-0 mb-10 sm:mb-12">
+            <p className="text-base sm:text-lg md:text-2xl text-gray-400 font-light leading-relaxed max-w-xl mx-auto sm:mx-0 mb-8 sm:mb-12">
               Automate outreach, reach <span className="text-white font-medium">1000+ leads weekly</span>, and scale your GTM motion with precision.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center sm:justify-start items-center sm:items-stretch">
-              <Link className="group relative bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center w-full sm:min-w-60 sm:w-auto" href="/signup">
+              <Link className="group relative bg-white text-black px-6 sm:px-10 py-3.5 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:scale-105 active:scale-95 overflow-hidden text-center w-full sm:min-w-60 sm:w-auto" href="/signup">
                 <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   Start Free Trial
-                  <span className="material-icons text-2xl">arrow_forward</span>
+                  <span className="material-icons text-xl sm:text-2xl">arrow_forward</span>
                 </span>
               </Link>
-              <Link className="group px-8 py-4 sm:py-5 rounded-2xl text-base sm:text-lg font-semibold border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3 w-full sm:w-auto" href="#">
+              <Link className="group px-6 py-3.5 sm:py-5 rounded-2xl text-base sm:text-lg font-semibold border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3 w-full sm:w-auto" href="#">
                 <span className="material-icons text-gray-400 group-hover:text-white transition-colors">play_circle</span>
                 Watch Demo
               </Link>
@@ -367,6 +367,68 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* Mobile-Only Hero Section (New) */}
+      <section className="sm:hidden relative pt-24 pb-16 overflow-hidden bg-background-dark min-h-[90vh] flex flex-col items-center justify-center text-center px-6">
+        {/* Massive background accent */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[70vw] font-black text-white/5 pointer-events-none select-none z-0">10X</div>
+        
+        {/* Animated Mobile Blobs */}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute top-1/4 left-0 w-64 h-64 bg-white/5 blur-[80px] rounded-full z-0"
+        />
+        <motion.div 
+          animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 12, repeat: Infinity }}
+          className="absolute bottom-1/4 right-0 w-80 h-80 bg-white/5 blur-[100px] rounded-full z-0"
+        />
+
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 w-full"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Next-Gen Outbound</span>
+          </div>
+          
+          <h1 className="text-6xl font-display font-bold tracking-tight mb-6 leading-[0.95]">
+            <span className="text-white">10x your</span><br />
+            <span className="metallic-text text-7xl">LinkedIn</span><br />
+            <span className="text-white/40">outbound</span>
+          </h1>
+          
+          <p className="text-lg text-gray-400 mb-12 leading-relaxed font-light max-w-sm mx-auto">
+            Automate outreach, reach <span className="text-white font-medium">1000+ leads weekly</span>, and scale your GTM motion with precision.
+          </p>
+
+          <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
+            <Link className="group relative bg-white text-black py-4.5 rounded-2xl text-xl font-bold transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] active:scale-95 overflow-hidden flex items-center justify-center gap-3" href="/signup">
+              Start Free Trial
+              <span className="material-icons text-2xl">arrow_forward</span>
+            </Link>
+            <Link className="group py-4.5 rounded-2xl text-lg font-semibold border border-white/10 active:scale-95 flex items-center justify-center gap-3 bg-white/5 backdrop-blur-md" href="#">
+              <span className="material-icons text-gray-400 group-hover:text-white transition-colors">play_circle</span>
+              Watch Demo
+            </Link>
+          </div>
+          
+          <div className="mt-16 grid grid-cols-2 gap-4 text-[10px] text-dim-grey">
+            <div className="flex flex-col items-center gap-2 p-4 glass-card rounded-2xl border-white/5">
+              <span className="material-icons text-green-500/70 text-xl">check_circle</span>
+              <span>No credit card</span>
+            </div>
+            <div className="flex flex-col items-center gap-2 p-4 glass-card rounded-2xl border-white/5">
+              <span className="material-icons text-blue-500/70 text-xl">verified</span>
+              <span>Premium setup</span>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Automation Flow Simulation Section */}
@@ -750,9 +812,9 @@ export default function Home() {
         transition={{ duration: 0.8 }}
         className="pb-24"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden lg:overflow-visible">
           <div className="grid lg:grid-cols-2 gap-8">
-            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all md:-rotate-2 md:hover:rotate-0">
+            <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all lg:-rotate-2 lg:hover:rotate-0">
               <div className="mb-8">
                 <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 border border-white/10 text-white">
                   <span className="material-icons">download</span>
@@ -775,7 +837,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="glass-card rounded-3xl p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all md:rotate-2 md:hover:rotate-0">
+            <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 flex flex-col justify-between group hover:border-white/20 transition-all lg:rotate-2 lg:hover:rotate-0">
               <div className="mb-8">
                 <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6 border border-white/10 text-white">
                   <span className="material-icons">merge_type</span>
@@ -785,14 +847,14 @@ export default function Home() {
               </div>
               <div className="mt-auto relative h-48 bg-black/40 rounded-xl border border-white/5 overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 grid-bg opacity-20"></div>
-                <div className="flex items-center gap-2 relative z-10">
-                  <div className="px-3 py-2 rounded bg-white/10 border border-white/10 text-xs">Connection</div>
-                  <div className="w-8 h-px bg-white/20"></div>
-                  <div className="px-3 py-2 rounded bg-white/10 border border-white/10 text-xs flex flex-col items-center gap-1">
+                <div className="flex items-center gap-1 sm:gap-2 relative z-10 scale-90 sm:scale-100">
+                  <div className="px-2 sm:px-3 py-1.5 sm:py-2 rounded bg-white/10 border border-white/10 text-[10px] sm:text-xs">Connection</div>
+                  <div className="w-4 sm:w-8 h-px bg-white/20"></div>
+                  <div className="px-2 sm:px-3 py-1.5 sm:py-2 rounded bg-white/10 border border-white/10 text-[10px] sm:text-xs flex flex-col items-center gap-1">
                     <span>Condition</span>
                   </div>
-                  <div className="w-8 h-px bg-white/20"></div>
-                  <div className="px-3 py-2 rounded bg-blue-500/20 border border-blue-500/30 text-blue-300 text-xs">Message</div>
+                  <div className="w-4 sm:w-8 h-px bg-white/20"></div>
+                  <div className="px-2 sm:px-3 py-1.5 sm:py-2 rounded bg-blue-500/20 border border-blue-500/30 text-blue-300 text-[10px] sm:text-xs">Message</div>
                 </div>
               </div>
             </div>
