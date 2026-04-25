@@ -50,10 +50,10 @@ export default function CareersPage() {
             className="prose prose-invert max-w-none text-gray-400 text-lg leading-relaxed space-y-6"
           >
             <p className="text-xl text-white font-medium">
-              We're looking for outliers to help us build the future of outbound.
+              We&apos;re looking for outliers to help us build the future of outbound.
             </p>
             <p>
-              At HeyReach, we value curiosity, autonomy, and high-impact work. We're a remote-first team of engineers, designers, and growth experts passionate about building tools that people love.
+              At HeyReach, we value curiosity, autonomy, and high-impact work. We&apos;re a remote-first team of engineers, designers, and growth experts passionate about building tools that people love.
             </p>
             
             <div className="mt-16 space-y-4">

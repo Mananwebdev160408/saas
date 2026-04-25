@@ -34,7 +34,7 @@ export default function TermsPage() {
             <div className="glass-card p-8 rounded-2xl border border-white/10">
               <h2 className="text-white font-bold text-xl mb-4">2. Use of Services</h2>
               <p>
-                You are responsible for your use of HeyReach and any content you provide. You must comply with all applicable laws and regulations, including LinkedIn's terms of service.
+                You are responsible for your use of HeyReach and any content you provide. You must comply with all applicable laws and regulations, including LinkedIn&apos;s terms of service.
               </p>
             </div>
 

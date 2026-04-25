@@ -19,6 +19,9 @@ function GoogleIcon({ size = 20 }: { size?: number }) {
   );
 }
 
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+
 export default function LoginPage() {
   const router = useRouter();
   const { status } = useSession();
@@ -26,9 +29,22 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const loginMutation = useMutation({
+    mutationFn: (data: Record<string, unknown>) => api.auth.login(data),
+    onSuccess: () => {
+      // Handle session storage if not using next-auth properly or 
+      // just redirect if the Go backend handles cookies.
+      router.push("/campaigns");
+    },
+    onError: (err: Error) => {
+      setError(err.message);
+    }
+  });
+
+  const loading = loginMutation.isPending;
 
   // Redirect if already signed in
   if (status === "authenticated") {
@@ -48,18 +64,10 @@ export default function LoginPage() {
     }
   };
 
-  // ── Email/password sign-in (stub — wire to your DB when ready) ──
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) { setError("Please fill in all fields."); return; }
-    setLoading(true);
-    setError("");
-
-    // TODO: Replace this with NextAuth credentials provider or your own API call
-    // For now, redirect directly (no real auth)
-    setTimeout(() => {
-      router.push("/campaigns");
-    }, 800);
+    loginMutation.mutate({ email, password });
   };
 
   return (

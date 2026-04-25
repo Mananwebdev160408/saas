@@ -1,61 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
 import { 
-  Users, 
   Plus, 
   Shield, 
   ShieldCheck, 
-  ShieldAlert,
   MoreVertical,
   Search,
   Settings2,
   ExternalLink
 } from "lucide-react";
 
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+
 export default function AgentsPage() {
-  const agents = [
-    { 
-        id: 1, 
-        name: "Alex Johnson (Primary)", 
-        email: "alex.j@company.com", 
-        status: "Active", 
-        health: "Healthy", 
-        accounts: 1, 
-        dailyLimit: "75/100",
-        lastActivity: "Active now"
-    },
-    { 
-        id: 2, 
-        name: "Growth Bot #1", 
-        email: "bot1@heyreach.io", 
-        status: "Active", 
-        health: "Healthy", 
-        accounts: 3, 
-        dailyLimit: "120/150",
-        lastActivity: "2 mins ago"
-    },
-    { 
-        id: 3, 
-        name: "Sales Agent - Maria", 
-        email: "maria.s@sales.com", 
-        status: "Warning", 
-        health: "Restricted", 
-        accounts: 1, 
-        dailyLimit: "10/50",
-        lastActivity: "Blocked 1h ago"
-    },
-    { 
-        id: 4, 
-        name: "Support Outreach", 
-        email: "outreach@heyreach.io", 
-        status: "Paused", 
-        health: "Healthy", 
-        accounts: 2, 
-        dailyLimit: "0/80",
-        lastActivity: "Paused yesterday"
-    },
-  ];
+  const { data: agentsData, isLoading } = useQuery({
+    queryKey: ["agents"],
+    queryFn: () => api.agents.list(""), // Global list
+  });
+
+  const agents = agentsData?.agents || [];
+
+  if (isLoading) {
+    return (
+        <div className="flex items-center justify-center min-h-[400px]">
+            <div className="w-8 h-8 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+        </div>
+    );
+  }
 
   return (
     <div className="space-y-8 pb-12">
@@ -88,68 +63,67 @@ export default function AgentsPage() {
 
       {/* Agents List */}
       <div className="grid grid-cols-1 gap-4">
-        {agents.map((agent, i) => (
-          <motion.div
-            key={agent.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="glass-card p-6 rounded-[2rem] border border-white/10 bg-black/40 hover:bg-white/2 hover:border-white/20 transition-all group"
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-white/10 to-transparent border border-white/20 p-0.5 relative">
-                  <div className="w-full h-full rounded-2xl overflow-hidden bg-black/40">
-                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${agent.name}`} alt="Avatar" className="w-full h-full" />
+        {agents.map((sessionPath: string, i: number) => {
+          const agentName = sessionPath.split('/').pop() || `Agent ${i + 1}`;
+          return (
+            <motion.div
+              key={sessionPath}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="glass-card p-6 rounded-[2rem] border border-white/10 bg-black/40 hover:bg-white/2 hover:border-white/20 transition-all group"
+            >
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div className="flex items-center gap-5">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-white/10 to-transparent border border-white/20 p-0.5 relative">
+                    <div className="w-full h-full rounded-2xl overflow-hidden bg-black/40">
+                      <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${agentName}`} alt="Avatar" width={56} height={56} className="w-full h-full" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black bg-green-500" />
                   </div>
-                  <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black ${
-                    agent.status === "Active" ? "bg-green-500" : agent.status === "Warning" ? "bg-amber-500" : "bg-gray-500"
-                  }`} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold flex items-center gap-2">
-                    {agent.name}
-                    <ExternalLink size={14} className="text-dim-grey opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" />
-                  </h3>
-                  <p className="text-xs text-dim-grey">{agent.email}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 lg:px-8 lg:border-l lg:border-white/5">
-                <div className="space-y-1 text-center lg:text-left">
-                  <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Status</div>
-                  <div className={`text-sm font-bold ${
-                    agent.status === "Active" ? "text-green-400" : agent.status === "Warning" ? "text-amber-400" : "text-gray-400"
-                  }`}>{agent.status}</div>
-                </div>
-                <div className="space-y-1 text-center lg:text-left">
-                  <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Health</div>
-                  <div className="flex items-center justify-center lg:justify-start gap-1.5">
-                    {agent.health === "Healthy" ? <ShieldCheck size={14} className="text-green-400" /> : <ShieldAlert size={14} className="text-amber-400" />}
-                    <span className="text-sm font-bold">{agent.health}</span>
+                  <div>
+                    <h3 className="text-lg font-bold flex items-center gap-2">
+                      {agentName}
+                      <ExternalLink size={14} className="text-dim-grey opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" />
+                    </h3>
+                    <p className="text-xs text-dim-grey">Connected via Cloud</p>
                   </div>
                 </div>
-                <div className="space-y-1 text-center lg:text-left">
-                  <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Limit</div>
-                  <div className="text-sm font-bold">{agent.dailyLimit}</div>
+  
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 lg:px-8 lg:border-l lg:border-white/5">
+                  <div className="space-y-1 text-center lg:text-left">
+                    <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Status</div>
+                    <div className="text-sm font-bold text-green-400">Active</div>
+                  </div>
+                  <div className="space-y-1 text-center lg:text-left">
+                    <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Health</div>
+                    <div className="flex items-center justify-center lg:justify-start gap-1.5">
+                      <ShieldCheck size={14} className="text-green-400" />
+                      <span className="text-sm font-bold">Healthy</span>
+                    </div>
+                  </div>
+                  <div className="space-y-1 text-center lg:text-left">
+                    <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Limit</div>
+                    <div className="text-sm font-bold">100/100</div>
+                  </div>
+                  <div className="space-y-1 text-center lg:text-left">
+                    <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Last Seen</div>
+                    <div className="text-sm font-bold whitespace-nowrap">Active now</div>
+                  </div>
                 </div>
-                <div className="space-y-1 text-center lg:text-left">
-                  <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Last Seen</div>
-                  <div className="text-sm font-bold whitespace-nowrap">{agent.lastActivity}</div>
+  
+                <div className="flex items-center justify-end gap-3">
+                  <button className="px-4 py-2 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 text-xs font-bold transition-all text-dim-grey hover:text-white">
+                      Logs
+                  </button>
+                  <button className="p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 text-dim-grey hover:text-white transition-all">
+                      <MoreVertical size={18} />
+                  </button>
                 </div>
               </div>
-
-              <div className="flex items-center justify-end gap-3">
-                <button className="px-4 py-2 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 text-xs font-bold transition-all text-dim-grey hover:text-white">
-                    Logs
-                </button>
-                <button className="p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 text-dim-grey hover:text-white transition-all">
-                    <MoreVertical size={18} />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
       </div>
 
       <motion.div 
@@ -175,4 +149,3 @@ export default function AgentsPage() {
   );
 }
 
-import Link from "next/link";

@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { motion, useSpring, useInView, useScroll, useTransform } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+const MotionImage = motion(Image);
 
 function StatItem({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
   const ref = useRef(null);
@@ -96,6 +99,35 @@ export default function Home() {
     };
   }, []);
 
+  interface Particle {
+    id: number;
+    x: string;
+    y: string;
+    opacity: number;
+    animateY: string;
+    animateX: string;
+    duration: number;
+    delay: number;
+  }
+
+  const [particles, setParticles] = useState<Particle[]>([]);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setParticles([...Array(20)].map((_, i) => ({
+        id: i,
+        x: Math.random() * 100 + "%",
+        y: Math.random() * 100 + "%",
+        opacity: Math.random() * 0.5,
+        animateY: (Math.random() * -200 - 100) + "px",
+        animateX: (Math.random() * 100 - 50) + "px",
+        duration: Math.random() * 10 + 10,
+        delay: Math.random() * 10
+      })));
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <main className="min-h-screen bg-background-dark text-white selection:bg-white selection:text-black font-sans relative overflow-x-clip">
       {/* Custom Scroll Progress Bar */}
@@ -133,14 +165,20 @@ export default function Home() {
       />
 
       {/* Randomized Background Blobs using blob.png */}
-      <motion.img 
+      <MotionImage 
         src="/blob.png"
+        width={600}
+        height={600}
+        alt=""
         className="absolute top-[400px] right-[-10%] w-[600px] opacity-[0.25] mix-blend-screen pointer-events-none z-0"
         animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
         transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
       />
-      <motion.img 
+      <MotionImage 
         src="/blob.png"
+        width={500}
+        height={500}
+        alt=""
         className="absolute top-[1800px] left-[-5%] w-[500px] opacity-[0.15] mix-blend-screen pointer-events-none z-0"
         animate={{ rotate: [360, 0], scale: [1.1, 1, 1.1] }}
         transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
@@ -194,25 +232,25 @@ export default function Home() {
       <section className="hidden sm:block relative pt-24 pb-16 lg:pt-28 lg:pb-20 overflow-hidden bg-hero-radial">
         {/* Animated Background Particles */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
+          {particles.map((p) => (
             <motion.div
-              key={i}
+              key={p.id}
               className="absolute w-1 h-1 bg-white/20 rounded-full"
               initial={{ 
-                x: Math.random() * 100 + "%", 
-                y: Math.random() * 100 + "%",
-                opacity: Math.random() * 0.5
+                x: p.x, 
+                y: p.y,
+                opacity: p.opacity
               }}
               animate={{
-                y: [null, (Math.random() * -200 - 100) + "px"],
+                y: [null, p.animateY],
                 opacity: [0, 0.5, 0],
-                x: [null, (Math.random() * 100 - 50) + "px"]
+                x: [null, p.animateX]
               }}
               transition={{
-                duration: Math.random() * 10 + 10,
+                duration: p.duration,
                 repeat: Infinity,
                 ease: "linear",
-                delay: Math.random() * 10
+                delay: p.delay
               }}
             />
           ))}
@@ -1372,7 +1410,7 @@ export default function Home() {
             {[
               {
                 q: "Is HeyReach safe for my LinkedIn account?",
-                a: "Absolutely. We use enterprise-grade cloud environments and smart rotation to ensure your activity patterns look human. We limit actions per account to stay well within LinkedIn's safety thresholds."
+                a: "Absolutely. We use enterprise-grade cloud environments and smart rotation to ensure your activity patterns look human. We limit actions per account to stay well within LinkedIn&apos;s safety thresholds."
               },
               {
                 q: "Can I connect unlimited accounts?",
@@ -1380,7 +1418,7 @@ export default function Home() {
               },
               {
                 q: "Do I need a LinkedIn Sales Navigator subscription?",
-                a: "While Sales Navigator helps with search granularity, it's not strictly required. You can import leads from CSVs, Apollo, or basic LinkedIn searches."
+                a: "While Sales Navigator helps with search granularity, it&apos;s not strictly required. You can import leads from CSVs, Apollo, or basic LinkedIn searches."
               },
               {
                 q: "How does the Unified Inbox work?",

@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowLeft, 
@@ -11,28 +11,52 @@ import {
   Settings,
   Users,
   Target,
-  Send,
   UserCheck,
   Zap,
   MoreHorizontal
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import CampaignChart from "@/components/CampaignChart";
 
-export default function CampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
-  const [isRunning, setIsRunning] = useState(true);
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+import { useParams } from "next/navigation";
+import { Campaign, Stats } from "@/lib/types";
+
+export default function CampaignDetailPage() {
+  const { id } = useParams() as { id: string };
   const [showCampaigns, setShowCampaigns] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState("all");
+  const queryClient = useQueryClient();
 
-  const campaigns = [
-    { id: "1", name: "Q1 Outreach - Fintech" },
-    { id: "2", name: "Outbound Lead Gen - SaaS" },
-    { id: "3", name: "Series B Founders List" },
-    { id: "4", name: "Tech Talent Hunt" }
-  ];
+  const { data: campaign, isLoading: isLoadingCampaign } = useQuery<Campaign>({
+    queryKey: ["campaign", id],
+    queryFn: () => api.campaigns.get(id),
+  });
 
-  const currentCampaign = campaigns.find(c => c.id === id) || campaigns[0];
+  const { data: stats, isLoading: isLoadingStats } = useQuery<Stats>({
+    queryKey: ["stats", id],
+    queryFn: () => api.stats.get(id),
+  });
+
+  const { data: agents, isLoading: isLoadingAgents } = useQuery<{ agents: string[] }>({
+    queryKey: ["agents", id],
+    queryFn: () => api.agents.list(id),
+  });
+
+  const statusMutation = useMutation({
+    mutationFn: (status: string) => api.campaigns.updateStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["campaign", id] });
+    },
+  });
+
+  const isRunning = campaign?.status === "active";
+
+  const toggleStatus = () => {
+    const nextStatus = isRunning ? "paused" : "active";
+    statusMutation.mutate(nextStatus);
+  };
 
   const chartData = [
     { day: "Mon", sent: 45, accepted: 12 },
@@ -43,6 +67,10 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     { day: "Sat", sent: 55, accepted: 28 },
     { day: "Sun", sent: 40, accepted: 15 },
   ];
+
+  if (isLoadingCampaign || isLoadingStats || isLoadingAgents) {
+    return <div className="p-8 text-center">Loading campaign details...</div>;
+  }
 
   return (
     <div className="space-y-8 pb-20">
@@ -64,7 +92,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                     <div className="text-left">
                         <div className="text-[10px] text-dim-grey font-bold uppercase tracking-widest">Active Campaign</div>
                         <div className="text-lg font-bold flex items-center gap-2">
-                            {currentCampaign.name}
+                            {campaign?.name || "Campaign"}
                             <ChevronDown size={16} className={`text-dim-grey group-hover:text-white transition-transform ${showCampaigns ? "rotate-180" : ""}`} />
                         </div>
                     </div>
@@ -86,15 +114,14 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                                 exit={{ opacity: 0, scale: 0.95, y: 10 }}
                                 className="absolute top-full left-0 mt-2 w-64 bg-background-dark border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
                             >
-                                {campaigns.map(c => (
-                                    <button 
-                                        key={c.id}
-                                        onClick={() => setShowCampaigns(false)}
-                                        className={`w-full px-5 py-4 text-left hover:bg-white/5 transition-colors border-b border-white/5 last:border-0 ${c.id === id ? "text-white font-bold bg-white/5" : "text-dim-grey"}`}
-                                    >
-                                        {c.name}
-                                    </button>
-                                ))}
+                                {/* This list should ideally be fetched as well */}
+                                <div className="px-5 py-4 text-dim-grey text-xs uppercase font-bold border-b border-white/5">Switch Campaign</div>
+                                <Link 
+                                    href="/campaigns"
+                                    className="block px-5 py-3 text-sm text-dim-grey hover:bg-white/5 hover:text-white transition-colors"
+                                >
+                                    Back to list
+                                </Link>
                             </motion.div>
                         </>
                     )}
@@ -104,12 +131,13 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
 
         <div className="flex items-center gap-3">
              <button 
-                onClick={() => setIsRunning(!isRunning)}
+                onClick={toggleStatus}
+                disabled={statusMutation.isPending}
                 className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all shadow-lg ${
                     isRunning 
                     ? "bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20" 
                     : "bg-green-500 text-black shadow-[0_10px_20px_rgba(34,197,94,0.3)] hover:scale-105"
-                }`}
+                } ${statusMutation.isPending ? "opacity-50 cursor-not-allowed" : ""}`}
              >
                 {isRunning ? (
                     <><Pause size={18} /> Stop Campaign</>
@@ -136,20 +164,6 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                         <h3 className="text-xl font-bold">Campaign Performance</h3>
                         <p className="text-xs text-dim-grey">Daily sentiment and acceptance rates</p>
                     </div>
-                    <div className="flex items-center gap-4 bg-white/5 p-1 rounded-xl border border-white/5">
-                        <button 
-                            onClick={() => setSelectedAgent("all")}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${selectedAgent === "all" ? "bg-white text-black" : "text-dim-grey hover:text-white"}`}
-                        >
-                            All Agents
-                        </button>
-                        <button 
-                            onClick={() => setSelectedAgent("agent1")}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${selectedAgent === "agent1" ? "bg-white text-black" : "text-dim-grey hover:text-white"}`}
-                        >
-                            Agent 1
-                        </button>
-                    </div>
                 </div>
 
                 <CampaignChart data={chartData} />
@@ -168,9 +182,9 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {[
-                    { label: "Reach", value: "1,250", icon: Target, trend: "+12%" },
-                    { label: "Replies", value: "32", icon: Zap, trend: "+5%" },
-                    { label: "Booked", value: "8", icon: UserCheck, trend: "+100%" },
+                    { label: "Total Leads", value: stats?.totalLeads || 0, icon: Target, trend: "" },
+                    { label: "Connections Sent", value: stats?.statusCounts?.CONNECTION_SENT || 0, icon: Zap, trend: "" },
+                    { label: "Accepted", value: stats?.statusCounts?.CONNECTED || 0, icon: UserCheck, trend: "" },
                 ].map((item, i) => (
                     <div key={i} className="glass-card p-6 rounded-3xl border border-white/5 bg-white/2 flex items-center justify-between">
                         <div className="space-y-1">
@@ -192,23 +206,25 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                 <h3 className="text-lg font-bold">Campaign Status</h3>
                 
                 <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 rounded-2xl bg-green-500/5 border border-green-500/10">
+                    <div className={`flex items-center justify-between p-4 rounded-2xl border ${isRunning ? "bg-green-500/5 border-green-500/10" : "bg-amber-500/5 border-amber-500/10"}`}>
                         <div className="flex items-center gap-3">
-                            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                            <span className="text-sm font-bold text-green-400 uppercase tracking-widest">Active Now</span>
+                            <div className={`w-2 h-2 rounded-full animate-pulse ${isRunning ? "bg-green-400" : "bg-amber-400"}`}></div>
+                            <span className={`text-sm font-bold uppercase tracking-widest ${isRunning ? "text-green-400" : "text-amber-400"}`}>
+                                {isRunning ? "Active Now" : "Paused"}
+                            </span>
                         </div>
-                        <span className="text-xs text-dim-grey">Uptime: 4h 22m</span>
+                        <span className="text-xs text-dim-grey">{campaign?.executionStatus}</span>
                     </div>
 
                     <div className="space-y-3">
                         <div className="flex items-center justify-between text-xs font-bold text-dim-grey uppercase tracking-widest">
-                            <span>Leads Processed</span>
-                            <span className="text-white">450 / 1,250</span>
+                            <span>Progress</span>
+                            <span className="text-white">{stats?.statusCounts?.ENRICHMENT_DONE || 0} / {stats?.totalLeads || 0}</span>
                         </div>
                         <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                             <motion.div 
                                 initial={{ width: 0 }}
-                                animate={{ width: "36%" }}
+                                animate={{ width: `${((stats?.statusCounts?.ENRICHMENT_DONE || 0) / (stats?.totalLeads || 1)) * 100}%` }}
                                 className="h-full bg-linear-to-r from-blue-400 to-indigo-500"
                             />
                         </div>
@@ -221,14 +237,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                             <Users size={16} />
                             <span className="text-xs font-bold uppercase tracking-widest">Active Agents</span>
                          </div>
-                         <span className="text-sm font-bold">5 Agents</span>
-                     </div>
-                     <div className="flex items-center justify-between">
-                         <div className="flex items-center gap-2 text-dim-grey">
-                            <Send size={16} />
-                            <span className="text-xs font-bold uppercase tracking-widest">Rate Limit</span>
-                         </div>
-                         <span className="text-sm font-bold">35 / hour</span>
+                         <span className="text-sm font-bold">{(agents?.agents?.length) || 0} Agents</span>
                      </div>
                 </div>
             </div>
@@ -243,27 +252,26 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
                  </div>
 
                  <div className="space-y-4">
-                    {[1, 2, 3].map(i => (
+                    {(agents?.agents || []).map((agent: string, i: number) => (
                         <div key={i} className="flex items-center justify-between group p-2 hover:bg-white/5 rounded-2xl transition-all">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full border border-white/10 overflow-hidden relative">
-                                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=agent-${i}`} alt="Agent" />
+                                    <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=agent-${i}`} alt="Agent" width={40} height={40} />
                                     <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-background-dark rounded-full"></div>
                                 </div>
                                 <div>
-                                    <div className="text-xs font-bold">LinkedIn Agent {i}</div>
-                                    <div className="text-[10px] text-dim-grey">12 accepted today</div>
+                                    <div className="text-xs font-bold">{agent.split('/').pop()}</div>
+                                    <div className="text-[10px] text-dim-grey">Connected</div>
                                 </div>
                             </div>
-                            <div className="text-[10px] font-bold text-green-400">+4%</div>
                         </div>
                     ))}
                  </div>
 
-                 <button className="w-full py-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-xs font-bold uppercase tracking-widest transition-all">
+                  <Link href="/agents" className="block w-full py-3 text-center rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 text-xs font-bold uppercase tracking-widest transition-all">
                     View All Agents
-                 </button>
-            </div>
+                  </Link>
+             </div>
         </div>
       </div>
     </div>

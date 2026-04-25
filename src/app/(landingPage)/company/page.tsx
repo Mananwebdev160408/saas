@@ -44,10 +44,10 @@ export default function CompanyPage() {
                   Born out of the frustration of manual LinkedIn outreach, HeyReach was founded with a single mission: to make high-volume B2B outreach safe, scalable, and effective.
                 </p>
                 <p>
-                  We started in a small apartment in Berlin, and today, we're a global team of 50+ experts dedicated to building the most advanced automation engine on the planet.
+                  We started in a small apartment in Berlin, and today, we&apos;re a global team of 50+ experts dedicated to building the most advanced automation engine on the planet.
                 </p>
                 <p>
-                  Our technology isn't just about sending messages; it's about creating meaningful connections at scale.
+                  Our technology isn&apos;t just about sending messages; it&apos;s about creating meaningful connections at scale.
                 </p>
               </div>
               <div className="relative">

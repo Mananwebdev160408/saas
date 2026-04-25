@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { 
   TrendingUp, 
   Users, 
@@ -11,7 +12,6 @@ import {
   Activity,
   Zap
 } from "lucide-react";
-import Link from "next/link";
 
 export default function DashboardPage() {
   const stats = [
@@ -124,7 +124,7 @@ export default function DashboardPage() {
               <div key={item.id} className="flex items-start gap-4 group cursor-default">
                 <div className="w-10 h-10 rounded-full bg-linear-to-br from-white/10 to-transparent border border-white/20 p-0.5 shadow-lg group-hover:scale-110 transition-transform">
                   <div className="w-full h-full rounded-full overflow-hidden bg-black/40">
-                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.user}`} alt="Avatar" className="w-full h-full" />
+                    <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.user}`} alt="Avatar" width={40} height={40} className="w-full h-full" />
                   </div>
                 </div>
                 <div className="grow space-y-0.5">

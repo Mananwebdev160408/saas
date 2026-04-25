@@ -10,7 +10,7 @@ export default function CommunityPage() {
     {
       name: "Sarah Chen",
       role: "CEO at GrowthScale",
-      content: "HeyReach's consulting team helped us triple our outbound volume while maintaining a 25% acceptance rate. Unbelievable results.",
+      content: "HeyReach&apos;s consulting team helped us triple our outbound volume while maintaining a 25% acceptance rate. Unbelievable results.",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
     },
     {
@@ -71,7 +71,7 @@ export default function CommunityPage() {
               },
               {
                 title: "End-to-End Outreach",
-                description: "Don't want to lift a finger? Our team handles everything from lead sourcing to closing meetings.",
+                description: "Don&apos;t want to lift a finger? Our team handles everything from lead sourcing to closing meetings.",
                 icon: Star,
                 color: "text-purple-400"
               },
@@ -113,7 +113,7 @@ export default function CommunityPage() {
                   <div className="absolute top-0 right-0 p-8 opacity-5">
                     <Star size={80} fill="currentColor" />
                   </div>
-                  <p className="text-lg italic text-gray-300 mb-8 relative z-10">"{t.content}"</p>
+                  <p className="text-lg italic text-gray-300 mb-8 relative z-10">&quot;{t.content}&quot;</p>
                   <div className="flex items-center gap-4">
                     <img src={t.avatar} alt={t.name} className="w-12 h-12 rounded-full border border-white/10" />
                     <div>
@@ -135,7 +135,7 @@ export default function CommunityPage() {
           >
             <div className="absolute inset-0 bg-linear-to-b from-blue-500/10 to-transparent pointer-events-none" />
             <h2 className="text-4xl font-display font-bold mb-6">Ready to Scale Your Outreach?</h2>
-            <p className="text-dim-grey mb-10 max-w-2xl mx-auto">Get in touch with our team today and let's build your outbound engine together.</p>
+            <p className="text-dim-grey mb-10 max-w-2xl mx-auto">Get in touch with our team today and let&apos;s build your outbound engine together.</p>
             <button className="bg-white text-black font-black px-10 py-4 rounded-full text-lg hover:scale-105 active:scale-95 transition-all shadow-xl">
               Talk to an Expert
             </button>

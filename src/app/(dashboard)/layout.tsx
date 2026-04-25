@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, 
@@ -17,7 +18,7 @@ import {
   Menu,
   X
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function DashboardLayout({
@@ -28,11 +29,6 @@ export default function DashboardLayout({
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [pathname]);
 
   const navItems = [
     { name: "Overview", icon: LayoutDashboard, href: "/dashboard" },
@@ -86,7 +82,12 @@ export default function DashboardLayout({
                   <X size={24} />
                 </button>
               </div>
-              <NavContent navItems={navItems} pathname={pathname} collapsed={false} />
+              <NavContent 
+                navItems={navItems} 
+                pathname={pathname} 
+                collapsed={false} 
+                onItemClick={() => setMobileMenuOpen(false)} 
+              />
               <UserSection collapsed={false} />
             </motion.aside>
           </>
@@ -128,7 +129,7 @@ export default function DashboardLayout({
                     </div>
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-linear-to-br from-white/10 to-transparent border border-white/20 p-0.5">
                         <div className="w-full h-full rounded-full overflow-hidden bg-black/40">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" className="w-full h-full" />
+                            <Image src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" width={40} height={40} className="w-full h-full" />
                         </div>
                     </div>
                 </Link>
@@ -171,15 +172,23 @@ function LogoSection({ collapsed }: { collapsed: boolean }) {
   );
 }
 
-function NavContent({ navItems, pathname, collapsed }: any) {
+interface NavContentProps {
+  navItems: { name: string; icon: React.ElementType; href: string }[];
+  pathname: string;
+  collapsed: boolean;
+  onItemClick?: () => void;
+}
+
+function NavContent({ navItems, pathname, collapsed, onItemClick }: NavContentProps) {
   return (
     <nav className="grow p-4 space-y-2 mt-4 overflow-y-auto no-scrollbar">
-      {navItems.map((item: any) => {
+      {navItems.map((item) => {
         const isActive = pathname.startsWith(item.href);
         return (
           <Link 
             key={item.href} 
             href={item.href}
+            onClick={() => onItemClick?.()}
             className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all group relative overflow-hidden ${
               isActive 
               ? "text-white bg-white/5 border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.05)]" 
@@ -223,7 +232,12 @@ function UserSection({ collapsed }: { collapsed: boolean }) {
   );
 }
 
-function ToggleButton({ collapsed, setCollapsed }: any) {
+interface ToggleButtonProps {
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
+}
+
+function ToggleButton({ collapsed, setCollapsed }: ToggleButtonProps) {
   return (
     <button 
       onClick={() => setCollapsed(!collapsed)}

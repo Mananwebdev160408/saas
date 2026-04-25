@@ -15,53 +15,24 @@ import {
   Timer
 } from "lucide-react";
 
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+import { Campaign } from "@/lib/types";
+import { useSession } from "next-auth/react";
+
 export default function CampaignsPage() {
-  const campaigns = [
-    { 
-        id: "1", 
-        name: "Q1 Outreach - Fintech", 
-        status: "Running", 
-        agents: 5, 
-        leads: 1250, 
-        sent: 450, 
-        accepted: 82, 
-        progress: 36,
-        lastActive: "2 mins ago"
-    },
-    { 
-        id: "2", 
-        name: "Outbound Lead Gen - SaaS", 
-        status: "Paused", 
-        agents: 3, 
-        leads: 800, 
-        sent: 210, 
-        accepted: 45, 
-        progress: 26,
-        lastActive: "5 hours ago"
-    },
-    { 
-        id: "3", 
-        name: "Series B Founders List", 
-        status: "Queued", 
-        agents: 2, 
-        leads: 500, 
-        sent: 0, 
-        accepted: 0, 
-        progress: 0,
-        lastActive: "Pending"
-    },
-    { 
-        id: "4", 
-        name: "Tech Talent Hunt", 
-        status: "Running", 
-        agents: 8, 
-        leads: 2400, 
-        sent: 1800, 
-        accepted: 320, 
-        progress: 75,
-        lastActive: "Active now"
-    }
-  ];
+  const { data: session } = useSession();
+  const accountId = session?.user?.email || "acc_xxx"; 
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["campaigns", accountId],
+    queryFn: () => api.campaigns.list(accountId),
+  });
+
+  const campaigns = (data as Campaign[]) || []; 
+  
+  if (isLoading) return <div className="p-8 text-center">Loading campaigns...</div>;
+  if (error) return <div className="p-8 text-center text-red-500">Error loading campaigns: {(error as Error).message}</div>;
 
   return (
     <div className="space-y-8 pb-12">
@@ -107,8 +78,8 @@ export default function CampaignsPage() {
       </div>
 
       {/* Campaigns Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-        {campaigns.map((campaign, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {campaigns.map((campaign: Campaign, i: number) => (
             <motion.div 
                 key={campaign.id}
                 initial={{ opacity: 0, scale: 0.95 }}

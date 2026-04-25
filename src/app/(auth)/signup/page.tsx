@@ -17,12 +17,42 @@ function GoogleIcon({ size = 20 }: { size?: number }) {
   );
 }
 
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
+
 export default function SignupPage() {
+  const router = useRouter();
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const signupMutation = useMutation({
+    mutationFn: (data: Record<string, unknown>) => api.auth.signup(data),
+    onSuccess: () => {
+      router.push("/login");
+    },
+    onError: (err: Error) => {
+      setError(err.message);
+    }
+  });
+
+  const loading = signupMutation.isPending;
 
   const handleGoogleSignUp = async () => {
     setGoogleLoading(true);
     await signIn("google", { callbackUrl: "/campaigns" });
+  };
+
+  const handleEmailSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    signupMutation.mutate({ name, email, password });
   };
 
   return (
@@ -41,7 +71,12 @@ export default function SignupPage() {
           <p className="text-dim-grey text-sm">Join 4,000+ companies scaling with HeyReach</p>
         </div>
 
-        <div className="space-y-5 relative z-10">
+        <form onSubmit={handleEmailSignUp} className="space-y-5 relative z-10">
+          {error && (
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center">
+              {error}
+            </div>
+          )}
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-widest text-dim-grey ml-1">Full Name</label>
             <div className="relative group">
@@ -50,6 +85,8 @@ export default function SignupPage() {
               </div>
               <input 
                 type="text" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Alex Johnson"
                 className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-white/20 focus:bg-white/10 transition-all"
               />
@@ -64,6 +101,8 @@ export default function SignupPage() {
               </div>
               <input 
                 type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@company.com"
                 className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-white/20 focus:bg-white/10 transition-all"
               />
@@ -78,6 +117,8 @@ export default function SignupPage() {
               </div>
               <input 
                 type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-white/20 focus:bg-white/10 transition-all"
               />
@@ -90,6 +131,7 @@ export default function SignupPage() {
               <input 
                 type="checkbox" 
                 id="terms"
+                required
                 className="peer appearance-none w-5 h-5 bg-white/5 border border-white/10 rounded-lg checked:bg-white transition-all cursor-pointer"
               />
               <Check className="absolute text-black opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity left-0.5" size={16} />
@@ -100,15 +142,16 @@ export default function SignupPage() {
           </div>
 
           <button
-            type="button"
-            onClick={() => {}}
+            type="submit"
+            disabled={loading}
             className="group relative w-full bg-white text-black font-bold py-4 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] overflow-hidden"
           >
             <div className="absolute inset-0 bg-linear-to-r from-blue-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             <span className="relative z-10 flex items-center justify-center gap-2">
-              Create Account <ArrowRight size={18} />
+              {loading ? <Loader2 size={18} className="animate-spin" /> : <>Create Account <ArrowRight size={18} /></>}
             </span>
           </button>
+        </form>
 
           <div className="relative py-4 flex items-center">
             <div className="grow border-t border-white/5"></div>
@@ -127,7 +170,6 @@ export default function SignupPage() {
             {googleLoading ? "Redirecting to Google…" : "Continue with Google"}
           </button>
         </div>
-      </div>
 
       <p className="text-center mt-8 text-dim-grey">
         Already have an account? <Link href="/login" className="text-white font-bold hover:underline underline-offset-4">Sign in</Link>

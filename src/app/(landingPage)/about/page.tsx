@@ -52,7 +52,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="glass-card p-6 rounded-2xl border border-white/10">
                   <h3 className="text-white font-bold mb-2">Innovation</h3>
-                  <p className="text-sm">Constantly pushing the boundaries of what's possible in automation.</p>
+                  <p className="text-sm">Constantly pushing the boundaries of what&apos;s possible in automation.</p>
                 </div>
                 <div className="glass-card p-6 rounded-2xl border border-white/10">
                   <h3 className="text-white font-bold mb-2">Safety</h3>

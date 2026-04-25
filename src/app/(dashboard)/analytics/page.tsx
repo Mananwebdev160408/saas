@@ -2,13 +2,10 @@
 
 import { motion } from "framer-motion";
 import { 
-  BarChart3, 
   TrendingUp, 
   Target, 
-  Users, 
   MousePointer2, 
   Mail,
-  Filter,
   Download,
   Calendar,
   ChevronDown

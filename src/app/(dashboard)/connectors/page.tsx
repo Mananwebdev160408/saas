@@ -19,17 +19,12 @@ import {
   Monitor,
   WifiOff,
 } from "lucide-react";
+import Image from "next/image";
+import { api } from "@/lib/api";
+
+import { Agent } from "@/lib/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-
-type Agent = {
-  id: string;
-  addedAt: string;
-  provider: "linkedin_oauth" | "playwright";
-  expiresAt?: string | null;
-  isExpired?: boolean;
-  profile: { id: string; name: string; email: string; picture: string };
-};
 
 type CaptureStatus =
   | "idle"
@@ -86,19 +81,18 @@ export default function ConnectorsPage() {
   // Removal
   const [removingId, setRemovingId] = useState<string | null>(null);
 
-  // ── Fetch agents ──
   const fetchAgents = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/linkedin/auth");
-      if (res.ok) {
-        const data = await res.json();
-        setAgents(data.agents ?? []);
-        setIsProduction(data.isProduction ?? false);
-        setPlaywrightDisabled(data.playwrightDisabled ?? false);
-      }
-    } catch {}
-    finally { setLoading(false); }
+      const data = await api.linkedin.getAuth();
+      setAgents(data.agents ?? []);
+      setIsProduction(data.isProduction ?? false);
+      setPlaywrightDisabled(data.playwrightDisabled ?? false);
+    } catch (err) {
+      console.error("Failed to fetch agents", err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { fetchAgents(); }, [fetchAgents]);
@@ -117,21 +111,23 @@ export default function ConnectorsPage() {
 
     pollRef.current = setInterval(async () => {
       try {
-        const res = await fetch(`/api/linkedin/capture?jobId=${id}`);
-        if (!res.ok) { stopPolling(); setCaptureStatus("error"); setCaptureMsg("Job lost."); return; }
-
-        const data = await res.json();
-        setCaptureStatus(data.status);
+        const data = await api.linkedin.getCaptureStatus(id);
+        const status = data.status as CaptureStatus;
+        setCaptureStatus(status);
         setCaptureMsg(data.message || "");
         setCaptureError(data.error || "");
         if (data.profileName) setCaptureProfile(data.profileName);
 
-        if (TERMINAL.includes(data.status)) {
+        if (TERMINAL.includes(status)) {
           stopPolling();
           setCapturing(false);
           if (data.status === "success") fetchAgents();
         }
-      } catch {}
+      } catch (_err) {
+        stopPolling();
+        setCaptureStatus("error");
+        setCaptureMsg("Job lost or server unreachable.");
+      }
     }, 1500);
   }, [stopPolling, fetchAgents]);
 
@@ -144,22 +140,15 @@ export default function ConnectorsPage() {
     setCaptureError("");
 
     try {
-      const res = await fetch("/api/linkedin/capture", { method: "POST" });
-      const data = await res.json();
-
-      if (!res.ok) {
-        setCapturing(false);
-        setCaptureStatus("error");
-        setCaptureMsg(data.error || "Failed to start capture.");
-        setCaptureError(data.suggestion || "");
-        return;
-      }
-
+      const data = await api.linkedin.startCapture();
       startPolling(data.jobId);
-    } catch (err: any) {
+    } catch (err) {
       setCapturing(false);
       setCaptureStatus("error");
-      setCaptureMsg(err.message || "Network error.");
+      const axiosError = err as import("axios").AxiosError<{ error: string; suggestion: string }>;
+      const message = axiosError.response?.data?.error || axiosError.message || "Failed to start capture.";
+      setCaptureMsg(message);
+      setCaptureError(axiosError.response?.data?.suggestion || "");
     }
   };
 
@@ -177,9 +166,13 @@ export default function ConnectorsPage() {
     if (!confirm(`Remove agent "${name}"?`)) return;
     setRemovingId(agentId);
     try {
-      await fetch(`/api/linkedin/auth?agentId=${agentId}`, { method: "DELETE" });
+      await api.linkedin.removeAgent(agentId);
       fetchAgents();
-    } finally { setRemovingId(null); }
+    } catch (err) {
+      console.error("Failed to remove agent", err);
+    } finally {
+      setRemovingId(null);
+    }
   };
 
   // ── Step index helper ──
@@ -208,7 +201,7 @@ export default function ConnectorsPage() {
         <div className="p-5 flex items-start gap-4">
           <div className="relative shrink-0">
             {agent.profile.picture ? (
-              <img src={agent.profile.picture} alt={agent.profile.name}
+              <Image src={agent.profile.picture} alt={agent.profile.name} width={48} height={48}
                 className="w-12 h-12 rounded-xl border border-white/15 object-cover" />
             ) : (
               <div className="w-12 h-12 rounded-xl bg-[#0077B5]/20 border border-[#0077B5]/30 flex items-center justify-center">
