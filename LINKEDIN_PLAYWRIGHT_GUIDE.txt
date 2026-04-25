@@ -1,0 +1,543 @@
+================================================================================
+  LINKEDIN PLAYWRIGHT SESSION CAPTURE — DEVELOPER GUIDE
+  For the Next Developer Connecting This to a Production Database
+================================================================================
+
+LAST UPDATED: April 2026
+WRITTEN BY: Antigravity AI (project AI coding assistant)
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+  1.  How the Current System Works
+  2.  Current File Structure
+  3.  Why We Use Playwright (Not LinkedIn's Official API)
+  4.  Environment Variables Reference
+  5.  Production Server Setup (Ubuntu/Linux VPS)
+  6.  Migrating Storage from auth.json → PostgreSQL
+  7.  Migrating Storage from auth.json → MongoDB
+  8.  Multi-User Architecture (One auth.json per user)
+  9.  Encrypting Session Cookies (Security)
+  10. Using the li_at Cookie for LinkedIn Automation
+  11. Rate Limiting & Account Safety
+  12. Troubleshooting Common Issues
+
+--------------------------------------------------------------------------------
+1. HOW THE CURRENT SYSTEM WORKS
+--------------------------------------------------------------------------------
+
+The LinkedIn authentication flow uses Playwright (a browser automation library)
+to open a real Chromium browser window, let the user log in to LinkedIn manually,
+then capture the browser's session cookies — specifically the `li_at` cookie,
+which is LinkedIn's main session token.
+
+Flow:
+  User clicks "Add LinkedIn Agent"
+    → POST /api/linkedin/capture
+    → Server starts a Playwright job (async, fire-and-forget)
+    → Returns a jobId immediately
+    → Frontend polls GET /api/linkedin/capture?jobId=xxx every 1.5 seconds
+    → Playwright opens a real Chromium window
+    → User logs in on LinkedIn (including 2FA if needed)
+    → Playwright detects the redirect to /feed
+    → Captures all cookies via context.storageState()
+    → Validates li_at cookie exists
+    → Saves agent to auth.json
+    → Job status → "success"
+    → Frontend refreshes the agents list
+
+Storage (CURRENT, DEV ONLY):
+  All agents are stored in /auth.json at the project root.
+  This is a JSON file with the following structure:
+
+    {
+      "version": 2,
+      "agents": [
+        {
+          "id": "agent_1234567_abc12",
+          "addedAt": "2026-04-20T17:00:00.000Z",
+          "provider": "playwright",
+          "expiresAt": "2027-04-20T17:00:00.000Z",
+          "profile": {
+            "id": "",
+            "name": "John Doe",
+            "email": "",
+            "picture": ""
+          },
+          "cookies": [ ... all browser cookies ... ],
+          "origins": [ ... localStorage origins ... ]
+        }
+      ]
+    }
+
+THE PROBLEM WITH FILE-BASED STORAGE:
+  - Not multi-user (all users share the same auth.json)
+  - Not scalable (file I/O, no concurrent writes)
+  - Not secure (cookies stored in plaintext on disk)
+  - Not persistent across serverless deployments
+
+
+--------------------------------------------------------------------------------
+2. CURRENT FILE STRUCTURE
+--------------------------------------------------------------------------------
+
+  src/
+  ├── app/
+  │   ├── api/
+  │   │   └── linkedin/
+  │   │       ├── auth/
+  │   │       │   └── route.ts        ← CRUD for agents (GET list, POST add, DELETE remove)
+  │   │       ├── capture/
+  │   │       │   └── route.ts        ← Playwright job runner + polling endpoint
+  │   │       └── callback/
+  │   │           └── route.ts        ← OAuth callback (used if switching to OAuth later)
+  │   └── (dashboard)/
+  │       └── connectors/
+  │           └── page.tsx            ← Frontend UI for managing agents
+  auth.json                           ← DEV ONLY: agent storage (replace with DB)
+
+
+--------------------------------------------------------------------------------
+3. WHY WE USE PLAYWRIGHT (NOT LINKEDIN'S OFFICIAL API)
+--------------------------------------------------------------------------------
+
+LinkedIn's official API (OAuth 2.0) does NOT allow:
+  - Sending connection requests
+  - Sending direct messages at scale
+  - Scraping/searching lead profiles
+  - Auto-engaging with posts
+
+To do any of the above (which is the core of this SaaS), you need the li_at
+session cookie. This is the same cookie LinkedIn's own web app uses.
+
+Every major LinkedIn automation tool uses this approach:
+  HeyReach, Expandi, Dux-Soup, Phantombuster, Lemlist, Waalaxy, etc.
+
+This is technically against LinkedIn's Terms of Service. LinkedIn may
+detect automated activity and restrict or ban accounts. Implement rate
+limiting and human-like delays in all automation (see Section 11).
+
+
+--------------------------------------------------------------------------------
+4. ENVIRONMENT VARIABLES REFERENCE
+--------------------------------------------------------------------------------
+
+Required for all environments:
+  (none — Playwright works without credentials)
+
+Optional server-side variables:
+  PLAYWRIGHT_HEADLESS=true
+    Set to "true" on Linux servers without a display.
+    Default: false (opens a visible browser window)
+
+  DISABLE_PLAYWRIGHT=true
+    Set to "true" to block the capture endpoint (e.g. on Vercel).
+    Default: not set (Playwright is enabled)
+
+  ENCRYPTION_KEY=<32-byte hex string>
+    Used to encrypt cookies before storing in DB.
+    Generate: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+    CRITICAL: Do NOT commit this to git. Use a secret manager.
+
+Add to your .env.local (dev):
+  PLAYWRIGHT_HEADLESS=false
+  ENCRYPTION_KEY=your_key_here
+
+Add to your production server environment:
+  PLAYWRIGHT_HEADLESS=true    (if no display)
+  ENCRYPTION_KEY=your_key_here
+  DATABASE_URL=postgresql://...
+
+
+--------------------------------------------------------------------------------
+5. PRODUCTION SERVER SETUP (Ubuntu/Linux VPS)
+--------------------------------------------------------------------------------
+
+A. Install Node.js 20+
+   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+
+B. Install Playwright and Chromium dependencies
+   npx playwright install chromium
+   npx playwright install-deps chromium
+
+   The install-deps step installs all required system libraries on Linux.
+
+C. For HEADED mode on Linux (user sees the browser):
+   You need a virtual display (Xvfb):
+
+   sudo apt-get install -y xvfb
+   export DISPLAY=:99
+   Xvfb :99 -screen 0 1280x800x24 &
+
+   Or use a process manager like PM2:
+     sudo apt install pm2
+     pm2 start ecosystem.config.js
+
+   ecosystem.config.js example:
+     module.exports = {
+       apps: [{
+         name: 'saas',
+         script: 'npm run start',
+         env: {
+           DISPLAY: ':99',
+           PLAYWRIGHT_HEADLESS: 'false',
+           NODE_ENV: 'production'
+         }
+       }]
+     }
+
+   And start Xvfb as a systemd service:
+     /etc/systemd/system/xvfb.service:
+       [Unit]
+       Description=Virtual Frame Buffer
+       After=network.target
+
+       [Service]
+       ExecStart=/usr/bin/Xvfb :99 -screen 0 1280x800x24
+       Restart=always
+
+       [Install]
+       WantedBy=multi-user.target
+
+   sudo systemctl enable xvfb
+   sudo systemctl start xvfb
+
+D. For HEADLESS mode on Linux (no display needed):
+   Set PLAYWRIGHT_HEADLESS=true in your environment.
+   No Xvfb required.
+   NOTE: In headless mode, the user cannot see the browser and cannot
+   type in their credentials. You would need a different UX flow
+   (e.g. capture locally, then import the session JSON).
+
+
+--------------------------------------------------------------------------------
+6. MIGRATING STORAGE: auth.json → PostgreSQL
+--------------------------------------------------------------------------------
+
+A. CREATE THE TABLE
+
+  CREATE TABLE linkedin_agents (
+    id            TEXT PRIMARY KEY,              -- e.g. "agent_1234_abc12"
+    user_id       TEXT NOT NULL,                 -- your app's user ID (FK to users table)
+    added_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    provider      TEXT NOT NULL DEFAULT 'playwright',
+    expires_at    TIMESTAMPTZ,
+    profile_name  TEXT,
+    profile_email TEXT,
+    profile_pic   TEXT,
+    -- Store cookies encrypted. Use pgcrypto or encrypt at app layer.
+    cookies_enc   BYTEA NOT NULL,               -- AES-256 encrypted JSON
+    origins_enc   BYTEA,
+    is_active     BOOLEAN DEFAULT TRUE,
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  );
+
+  CREATE INDEX idx_linkedin_agents_user_id ON linkedin_agents(user_id);
+
+B. INSTALL DB CLIENT
+  npm install pg @types/pg
+  OR
+  npm install @prisma/client prisma
+
+C. REPLACE FILE READS IN auth/route.ts
+
+  Current (file-based):
+    const raw = fs.readFileSync(AUTH_FILE_PATH, "utf-8");
+    const store = JSON.parse(raw);
+
+  Replace with (PostgreSQL):
+    import { Pool } from "pg";
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+    // GET /api/linkedin/auth — list agents for current user
+    const { rows } = await pool.query(
+      "SELECT * FROM linkedin_agents WHERE user_id = $1 AND is_active = TRUE",
+      [currentUserId]   // get from your auth session (NextAuth, Clerk, etc.)
+    );
+    const agents = rows.map(row => ({
+      id: row.id,
+      addedAt: row.added_at,
+      provider: row.provider,
+      expiresAt: row.expires_at,
+      isExpired: row.expires_at ? new Date(row.expires_at) < new Date() : false,
+      profile: {
+        id: "",
+        name: row.profile_name,
+        email: row.profile_email,
+        picture: row.profile_pic,
+      }
+    }));
+
+D. REPLACE FILE WRITES IN capture/route.ts
+
+  Current (file-based):
+    store.agents.push(newAgent);
+    fs.writeFileSync(AUTH_FILE_PATH, JSON.stringify(store, null, 2), "utf-8");
+
+  Replace with (PostgreSQL + encrypted cookies):
+    import { encryptCookies } from "@/lib/encryption";  // see Section 9
+
+    const cookiesEnc = encryptCookies(JSON.stringify(storageState.cookies));
+    const originsEnc = encryptCookies(JSON.stringify(storageState.origins));
+
+    await pool.query(
+      `INSERT INTO linkedin_agents
+         (id, user_id, provider, expires_at, profile_name, profile_email, profile_pic, cookies_enc, origins_enc)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       ON CONFLICT (id) DO UPDATE SET cookies_enc = $8, updated_at = NOW()`,
+      [agentId, currentUserId, "playwright", expiresAt,
+       profileName, "", profilePicture, cookiesEnc, originsEnc]
+    );
+
+E. DELETE AGENT
+
+  Current (file-based):
+    store.agents = store.agents.filter(a => a.id !== agentId);
+
+  Replace with:
+    await pool.query(
+      "UPDATE linkedin_agents SET is_active = FALSE WHERE id = $1 AND user_id = $2",
+      [agentId, currentUserId]
+    );
+
+
+--------------------------------------------------------------------------------
+7. MIGRATING STORAGE: auth.json → MongoDB
+--------------------------------------------------------------------------------
+
+A. INSTALL MONGOOSE
+  npm install mongoose
+
+B. DEFINE THE SCHEMA
+  // src/models/LinkedInAgent.ts
+  import mongoose from "mongoose";
+
+  const AgentSchema = new mongoose.Schema({
+    userId:       { type: String, required: true, index: true },
+    provider:     { type: String, default: "playwright" },
+    expiresAt:    { type: Date },
+    profileName:  { type: String },
+    profileEmail: { type: String },
+    profilePic:   { type: String },
+    cookiesEnc:   { type: Buffer, required: true }, // encrypted
+    originsEnc:   { type: Buffer },
+    isActive:     { type: Boolean, default: true },
+  }, { timestamps: true });
+
+  export const LinkedInAgent = mongoose.models.LinkedInAgent
+    || mongoose.model("LinkedInAgent", AgentSchema);
+
+C. READ AGENTS
+  const agents = await LinkedInAgent.find({ userId: currentUserId, isActive: true });
+
+D. SAVE AGENT
+  await LinkedInAgent.create({
+    userId:      currentUserId,
+    expiresAt,
+    profileName,
+    cookiesEnc:  encryptCookies(JSON.stringify(storageState.cookies)),
+    originsEnc:  encryptCookies(JSON.stringify(storageState.origins)),
+  });
+
+E. DELETE AGENT
+  await LinkedInAgent.findOneAndUpdate(
+    { _id: agentId, userId: currentUserId },
+    { isActive: false }
+  );
+
+
+--------------------------------------------------------------------------------
+8. MULTI-USER ARCHITECTURE
+--------------------------------------------------------------------------------
+
+Currently auth.json is SHARED across all users. In production:
+
+1. Get the logged-in user's ID from your auth system:
+   - NextAuth.js:  const session = await getServerSession(authOptions)
+                   const userId = session.user.id
+   - Clerk:        const { userId } = auth()
+   - Custom JWT:   decode the token from the Authorization header
+
+2. Pass userId to all DB queries (see Sections 6 & 7)
+
+3. Never return one user's agents to another user.
+   Always filter by userId in every query.
+
+4. The job store (the in-memory Map in capture/route.ts) does NOT currently
+   store userId with each job. Add it for multi-user:
+
+     type CaptureJob = {
+       ...existing fields...
+       userId: string;   // ADD THIS
+     }
+
+   Then in the GET poll endpoint, verify the requesting user owns the job:
+     if (job.userId !== currentUserId) return 403 Forbidden
+
+
+--------------------------------------------------------------------------------
+9. ENCRYPTING SESSION COOKIES (SECURITY)
+--------------------------------------------------------------------------------
+
+NEVER store li_at cookies in plaintext in a database. If your DB is ever
+breached, all users' LinkedIn accounts are compromised.
+
+Use AES-256-GCM encryption at the application layer.
+
+Create: src/lib/encryption.ts
+
+  import crypto from "crypto";
+
+  const KEY = Buffer.from(process.env.ENCRYPTION_KEY!, "hex"); // 32 bytes
+  const ALGORITHM = "aes-256-gcm";
+
+  export function encryptCookies(plaintext: string): Buffer {
+    const iv = crypto.randomBytes(12);
+    const cipher = crypto.createCipheriv(ALGORITHM, KEY, iv);
+    const encrypted = Buffer.concat([
+      cipher.update(plaintext, "utf8"),
+      cipher.final(),
+    ]);
+    const authTag = cipher.getAuthTag();
+    // Store: iv (12 bytes) + authTag (16 bytes) + encrypted data
+    return Buffer.concat([iv, authTag, encrypted]);
+  }
+
+  export function decryptCookies(data: Buffer): string {
+    const iv = data.subarray(0, 12);
+    const authTag = data.subarray(12, 28);
+    const encrypted = data.subarray(28);
+    const decipher = crypto.createDecipheriv(ALGORITHM, KEY, iv);
+    decipher.setAuthTag(authTag);
+    return decipher.update(encrypted) + decipher.final("utf8");
+  }
+
+Generate your key:
+  node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+Store in your secret manager (AWS Secrets Manager, Doppler, 1Password Secrets):
+  ENCRYPTION_KEY=<64-char hex string>
+
+
+--------------------------------------------------------------------------------
+10. USING THE li_at COOKIE FOR LINKEDIN AUTOMATION
+--------------------------------------------------------------------------------
+
+Once you have the agent's cookies from the DB, inject them into Playwright
+to perform automated actions:
+
+  import { decryptCookies } from "@/lib/encryption";
+
+  // Load agent from DB
+  const agent = await getAgentFromDB(agentId, userId);
+  const cookies = JSON.parse(decryptCookies(agent.cookiesEnc));
+
+  // Launch browser and inject session
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext();
+  await context.addCookies(cookies);
+
+  const page = await context.newPage();
+  await page.goto("https://www.linkedin.com/feed/");
+
+  // Now you are logged in as the agent's LinkedIn user.
+  // You can:
+  //   - Search for leads: /search/results/people/?keywords=...
+  //   - Send connection requests: click "Connect" button
+  //   - Send messages: open conversation, type message
+  //   - Scrape profile data: parse the DOM
+
+  // IMPORTANT: Always use delays between actions (see Section 11)
+
+  await browser.close();
+
+
+--------------------------------------------------------------------------------
+11. RATE LIMITING & ACCOUNT SAFETY
+--------------------------------------------------------------------------------
+
+LinkedIn's anti-bot systems detect:
+  - Actions faster than a human can perform them
+  - Consistent timing patterns (always exactly 1 second between actions)
+  - High volume of actions per hour
+  - Accessing LinkedIn from a datacenter IP (use residential proxies)
+
+Recommended limits (conservative, adjust based on account age):
+  - Connection requests: max 20-25 per day per account
+  - Messages: max 50-100 per day per account
+  - Profile views: max 80-100 per day per account
+  - Search queries: max 40-50 per day per account
+
+Add human-like delays between every action:
+  function humanDelay(minMs = 1500, maxMs = 4000): Promise<void> {
+    const ms = Math.random() * (maxMs - minMs) + minMs;
+    return new Promise(r => setTimeout(r, ms));
+  }
+
+  // Use between every LinkedIn action:
+  await humanDelay();
+  await page.click(".connect-button");
+  await humanDelay(2000, 5000);
+
+For production at scale, use residential proxies:
+  const browser = await chromium.launch({
+    headless: true,
+    proxy: {
+      server: "http://proxy.provider.com:8080",
+      username: "user",
+      password: "pass",
+    }
+  });
+
+Recommended proxy providers: Bright Data, Oxylabs, Smartproxy
+
+
+--------------------------------------------------------------------------------
+12. TROUBLESHOOTING COMMON ISSUES
+--------------------------------------------------------------------------------
+
+ISSUE: "Playwright not installed"
+FIX:   npx playwright install chromium
+       npx playwright install-deps chromium   (Linux only)
+
+ISSUE: "li_at cookie not found after capture"
+FIX:   The user may have used a social login (Google/Apple) instead of
+       email+password. LinkedIn may not set li_at in that case.
+       Ask the user to log in with email and password.
+
+ISSUE: Browser opens but LinkedIn shows a CAPTCHA immediately
+FIX:   Your server IP may be flagged. Use a residential proxy (see Section 11).
+       Or run the capture from a local machine and import the session.
+
+ISSUE: "Target page context or browser has been closed"
+FIX:   The user closed the browser window. The error is caught and reported
+       as "browser_closed" status. Just try again.
+
+ISSUE: Session expires after a few weeks
+FIX:   The li_at cookie typically lasts 1-2 years but can be invalidated by:
+         - LinkedIn security scan
+         - User manually logging out on linkedin.com
+         - LinkedIn detecting automation
+       Implement session health checks: try to load /feed/ with the cookies
+       and check for a 200 response. If 401/redirect to login, mark as expired.
+       Prompt the user to re-authenticate in the UI.
+
+ISSUE: Can't write to auth.json on production server
+FIX:   The server process may not have write permission to the project dir.
+       Either fix permissions or (preferred) migrate to a database.
+
+ISSUE: "DISPLAY" variable not set on Linux
+FIX:   Set up Xvfb (see Section 5C) and export DISPLAY=:99
+       OR use PLAYWRIGHT_HEADLESS=true
+
+ISSUE: Playwright hangs waiting for login but user is on a mobile device
+FIX:   Playwright opens the browser on the SERVER, not the user's device.
+       The admin/user must have remote access (VNC/RDP) to see the browser.
+       For a multi-user SaaS, users cannot see server-side browsers —
+       consider a different auth strategy (cookie import via paste).
+
+================================================================================
+END OF GUIDE
+================================================================================

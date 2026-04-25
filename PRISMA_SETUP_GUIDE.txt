@@ -1,0 +1,332 @@
+================================================================================
+  PRISMA + POSTGRESQL SETUP GUIDE
+  For the Next Developer Activating the Database
+================================================================================
+
+LAST UPDATED: April 2026
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+  1.  What Is Already Done (Code-Side)
+  2.  How the Auto-Detect System Works
+  3.  Step-by-Step: Connecting a PostgreSQL Database
+  4.  Running Migrations
+  5.  Cloud Database Options (Free Tiers)
+  6.  Schema Overview
+  7.  Using Prisma in API Routes
+  8.  LinkedIn Agents: File → DB Migration
+  9.  Useful Prisma Commands
+  10. Troubleshooting
+
+--------------------------------------------------------------------------------
+1. WHAT IS ALREADY DONE (CODE-SIDE)
+--------------------------------------------------------------------------------
+
+Everything is set up in code. You do NOT need to change any source files.
+The following files are ready:
+
+  prisma/schema.prisma
+    └── Full schema with all NextAuth tables + LinkedInAgent table
+
+  src/lib/prisma.ts
+    └── Singleton PrismaClient — import { prisma } from "@/lib/prisma"
+
+  src/app/api/auth/[...nextauth]/route.ts
+    └── NextAuth auto-detects DATABASE_URL:
+          - Not set → JWT sessions (works now, no DB needed)
+          - Set     → PrismaAdapter + database sessions (full persistence)
+
+  .env.example
+    └── DATABASE_URL template with examples for Supabase, Neon, Railway
+
+  Packages installed:
+    prisma              — CLI and schema engine
+    @prisma/client      — generated query client
+    @auth/prisma-adapter — NextAuth adapter for Prisma
+
+
+--------------------------------------------------------------------------------
+2. HOW THE AUTO-DETECT SYSTEM WORKS
+--------------------------------------------------------------------------------
+
+In src/app/api/auth/[...nextauth]/route.ts:
+
+  const hasDatabase = !!process.env.DATABASE_URL;
+
+  export const authOptions: NextAuthOptions = {
+    ...(hasDatabase ? { adapter: PrismaAdapter(prisma) } : {}),
+    session: {
+      strategy: hasDatabase ? "database" : "jwt",
+    },
+    ...
+  };
+
+This means:
+  → DATABASE_URL not set: app uses JWT cookies, no DB queries, works today.
+  → DATABASE_URL set:     app uses Prisma, writes to PostgreSQL on every login.
+
+No code changes needed. Just set the env var and run migrations.
+
+
+--------------------------------------------------------------------------------
+3. STEP-BY-STEP: CONNECTING A POSTGRESQL DATABASE
+--------------------------------------------------------------------------------
+
+STEP 1 — Get a PostgreSQL connection string
+  See Section 5 for free cloud options.
+  For local PostgreSQL:
+    Install PostgreSQL: https://www.postgresql.org/download/
+    Create a database:
+      psql -U postgres
+      CREATE DATABASE saas_dev;
+      \q
+    Connection string: postgresql://postgres:your_password@localhost:5432/saas_dev
+
+STEP 2 — Add DATABASE_URL to your environment
+  Development (.env.local):
+    DATABASE_URL=postgresql://postgres:password@localhost:5432/saas_dev
+
+  Production (your server/Vercel/Railway):
+    Set DATABASE_URL as an environment variable in your hosting dashboard.
+
+STEP 3 — Generate the Prisma client
+  npx prisma generate
+
+  This compiles the schema into TypeScript types and the query engine.
+  Must be re-run after every schema change.
+
+STEP 4 — Run the migration to create the tables
+  npx prisma migrate dev --name init
+
+  This:
+    - Reads prisma/schema.prisma
+    - Creates all tables in your PostgreSQL database
+    - Saves the migration to prisma/migrations/
+
+  For production (no dev prompts):
+    npx prisma migrate deploy
+
+STEP 5 — Verify
+  npx prisma studio
+  Opens a browser-based GUI to inspect your tables at http://localhost:5555
+
+STEP 6 — Restart the dev server
+  npm run dev
+
+  On startup, if DATABASE_URL is set, NextAuth will automatically use
+  the Prisma adapter. No other changes required.
+
+
+--------------------------------------------------------------------------------
+4. RUNNING MIGRATIONS
+--------------------------------------------------------------------------------
+
+  First time setup (creates all tables):
+    npx prisma migrate dev --name init
+
+  After changing schema.prisma:
+    npx prisma migrate dev --name describe_your_change
+
+  Push schema without migration history (prototyping only):
+    npx prisma db push
+
+  Apply migrations in production (CI/CD):
+    npx prisma migrate deploy
+
+  View migration history:
+    npx prisma migrate status
+
+  Reset database (DELETES ALL DATA):
+    npx prisma migrate reset
+
+
+--------------------------------------------------------------------------------
+5. CLOUD DATABASE OPTIONS (FREE TIERS)
+--------------------------------------------------------------------------------
+
+A. NEON (Recommended — serverless PostgreSQL, generous free tier)
+   https://neon.tech
+   - Sign up → New project → Copy the DATABASE_URL
+   - Connection string looks like:
+     postgresql://user:password@ep-xxx.us-east-2.aws.neon.tech/neondb?sslmode=require
+   - Works perfectly with Vercel edge functions
+
+B. SUPABASE (PostgreSQL + many extras, 500MB free)
+   https://supabase.com
+   - New project → Settings → Database → Connection string (URI mode)
+   - Use the "Transaction" pooler for serverless:
+     postgresql://postgres.xxx:password@aws-0-us-east-1.pooler.supabase.com:5432/postgres
+
+C. RAILWAY (Simple, $5 free credit/month)
+   https://railway.app
+   - New project → Add PostgreSQL → Connect → Copy DATABASE_URL
+
+D. LOCAL (development only)
+   docker run --name saas-db -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
+   DATABASE_URL=postgresql://postgres:password@localhost:5432/postgres
+
+
+--------------------------------------------------------------------------------
+6. SCHEMA OVERVIEW
+--------------------------------------------------------------------------------
+
+TABLE: User
+  id            — Primary key (cuid)
+  name          — Display name from Google OAuth
+  email         — Email address (unique)
+  emailVerified — Timestamp of email verification
+  image         — Profile picture URL from Google
+  createdAt     — Account creation timestamp
+  updatedAt     — Last update timestamp
+
+TABLE: Account
+  Links a User to their OAuth provider (Google, etc.)
+  Stores access_token, refresh_token, etc.
+  One user can have multiple accounts (e.g. Google + GitHub)
+
+TABLE: Session
+  Active login sessions (only used in "database" strategy)
+  sessionToken  — Unique session identifier stored in cookie
+  expires       — Session expiry datetime
+
+TABLE: VerificationToken
+  Used for email magic links (if you add email provider later)
+
+TABLE: LinkedInAgent
+  id            — Primary key (cuid)
+  userId        — FK to User (cascade delete)
+  provider      — "playwright" or "linkedin_oauth"
+  expiresAt     — When the li_at cookie expires
+  profileName   — LinkedIn display name
+  profileEmail  — LinkedIn email
+  profilePic    — Profile picture URL
+  cookiesEnc    — AES-256-GCM encrypted session cookies (Bytes)
+  originsEnc    — AES-256-GCM encrypted localStorage origins (Bytes)
+  isActive      — Soft delete flag
+  addedAt       — When agent was connected
+  updatedAt     — Last update
+
+INDEXES:
+  LinkedInAgent.userId — for fast lookup of all agents per user
+
+
+--------------------------------------------------------------------------------
+7. USING PRISMA IN API ROUTES
+--------------------------------------------------------------------------------
+
+Import the singleton client:
+
+  import { prisma } from "@/lib/prisma";
+
+Example — get all LinkedIn agents for a user:
+
+  import { getServerSession } from "next-auth";
+  import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+  export async function GET() {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+    const agents = await prisma.linkedInAgent.findMany({
+      where: { userId: session.user.id, isActive: true },
+      orderBy: { addedAt: "desc" },
+    });
+
+    return Response.json({ agents });
+  }
+
+Example — create a LinkedIn agent:
+
+  await prisma.linkedInAgent.create({
+    data: {
+      userId:      session.user.id,
+      provider:    "playwright",
+      expiresAt:   new Date(expiresAt),
+      profileName: "John Doe",
+      cookiesEnc:  Buffer.from(encryptedCookies),
+    },
+  });
+
+Example — soft-delete an agent:
+
+  await prisma.linkedInAgent.update({
+    where: { id: agentId, userId: session.user.id },
+    data:  { isActive: false },
+  });
+
+
+--------------------------------------------------------------------------------
+8. LINKEDIN AGENTS: FILE → DB MIGRATION
+--------------------------------------------------------------------------------
+
+Currently agents are stored in auth.json (file-based, dev only).
+
+To switch to the database:
+
+A. Update src/app/api/linkedin/auth/route.ts:
+   - Replace fs.readFileSync → prisma.linkedInAgent.findMany
+   - Replace fs.writeFileSync → prisma.linkedInAgent.create
+   - Replace filter → prisma.linkedInAgent.update({ data: { isActive: false } })
+   - Always filter by userId from the session
+
+B. Update src/app/api/linkedin/capture/route.ts:
+   - Replace the file write block with prisma.linkedInAgent.create
+   - Encrypt cookies before storing (see LINKEDIN_PLAYWRIGHT_GUIDE.txt Section 9)
+
+C. The LinkedInAgent model is already in schema.prisma — no schema change needed.
+
+See LINKEDIN_PLAYWRIGHT_GUIDE.txt Sections 6 & 8 for detailed code examples.
+
+
+--------------------------------------------------------------------------------
+9. USEFUL PRISMA COMMANDS
+--------------------------------------------------------------------------------
+
+  npx prisma generate          — Regenerate client after schema changes
+  npx prisma migrate dev       — Create and apply a new migration (dev)
+  npx prisma migrate deploy    — Apply pending migrations (production/CI)
+  npx prisma migrate status    — Show migration history
+  npx prisma db push           — Push schema without migration (prototyping)
+  npx prisma db pull           — Introspect existing DB → update schema
+  npx prisma studio            — Open browser-based DB GUI at localhost:5555
+  npx prisma migrate reset     — ⚠️  Reset DB (DELETES ALL DATA)
+  npx prisma format            — Auto-format schema.prisma
+
+
+--------------------------------------------------------------------------------
+10. TROUBLESHOOTING
+--------------------------------------------------------------------------------
+
+ISSUE: "PrismaClientInitializationError: Can't reach database server"
+FIX:   DATABASE_URL is set but the DB is not running or the credentials are
+       wrong. Check the connection string, verify the DB is running, and
+       make sure the port is accessible.
+
+ISSUE: "Table does not exist" after setting DATABASE_URL
+FIX:   Run: npx prisma migrate dev --name init
+       The tables are defined in schema.prisma but don't exist in the DB yet.
+
+ISSUE: "@prisma/client did not initialize yet"
+FIX:   Run: npx prisma generate
+       The client is generated from the schema — this step is required before
+       the app can use prisma.xxx queries.
+
+ISSUE: Type errors on prisma.linkedInAgent.xxx
+FIX:   Run: npx prisma generate
+       After any schema change, regenerate the client to update TypeScript types.
+
+ISSUE: App crashes on startup because DATABASE_URL is partially set
+FIX:   Either set a full valid DATABASE_URL or remove it entirely.
+       The auto-detect system only activates if DATABASE_URL is a non-empty string.
+
+ISSUE: "Environment variable not found: DATABASE_URL" in schema.prisma
+FIX:   This appears during `npx prisma generate` if DATABASE_URL is not set.
+       Set a dummy value temporarily:
+         DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
+       Or use dotenv-cli:
+         npx dotenv -e .env.local -- prisma generate
+
+================================================================================
+END OF GUIDE
+================================================================================
