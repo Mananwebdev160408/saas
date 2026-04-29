@@ -19,7 +19,7 @@ import { api } from "@/lib/api";
 export default function AgentsPage() {
   const { data: agentsData, isLoading } = useQuery({
     queryKey: ["agents"],
-    queryFn: () => api.agents.list(""), // Global list
+    queryFn: () => api.linkedin.getAuth(),
   });
 
   const agents = agentsData?.agents || [];
@@ -40,10 +40,13 @@ export default function AgentsPage() {
           <h1 className="text-3xl sm:text-4xl font-display font-bold mb-2">Automation Agents</h1>
           <p className="text-dim-grey text-sm sm:text-base">Manage your LinkedIn identities and monitor account health.</p>
         </div>
-        <button className="flex items-center justify-center gap-2 bg-white text-black font-bold px-6 py-3.5 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl text-sm sm:text-base">
+        <Link 
+          href="/connectors"
+          className="flex items-center justify-center gap-2 bg-white text-black font-bold px-6 py-3.5 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl text-sm sm:text-base"
+        >
           <Plus size={18} />
           Add New Agent
-        </button>
+        </Link>
       </div>
 
       {/* Filters and Search */}
@@ -63,11 +66,13 @@ export default function AgentsPage() {
 
       {/* Agents List */}
       <div className="grid grid-cols-1 gap-4">
-        {agents.map((sessionPath: string, i: number) => {
-          const agentName = sessionPath.split('/').pop() || `Agent ${i + 1}`;
+        {agents.map((agent: any, i: number) => {
+          const agentName = agent.profile?.name || `Agent ${i + 1}`;
+          const isExpired = agent.isExpired;
+          
           return (
             <motion.div
-              key={sessionPath}
+              key={agent.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
@@ -77,29 +82,31 @@ export default function AgentsPage() {
                 <div className="flex items-center gap-5">
                   <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-white/10 to-transparent border border-white/20 p-0.5 relative">
                     <div className="w-full h-full rounded-2xl overflow-hidden bg-black/40">
-                      <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${agentName}`} alt="Avatar" width={56} height={56} className="w-full h-full" />
+                      <Image src={agent.profile?.picture || `https://api.dicebear.com/7.x/avataaars/svg?seed=${agentName}`} alt="Avatar" width={56} height={56} className="w-full h-full" />
                     </div>
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black bg-green-500" />
+                    <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black ${isExpired ? "bg-amber-500" : "bg-green-500"}`} />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold flex items-center gap-2">
                       {agentName}
                       <ExternalLink size={14} className="text-dim-grey opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" />
                     </h3>
-                    <p className="text-xs text-dim-grey">Connected via Cloud</p>
+                    <p className="text-xs text-dim-grey">Connected via {agent.provider === 'playwright' ? 'Session' : 'OAuth'}</p>
                   </div>
                 </div>
   
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 lg:px-8 lg:border-l lg:border-white/5">
                   <div className="space-y-1 text-center lg:text-left">
                     <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Status</div>
-                    <div className="text-sm font-bold text-green-400">Active</div>
+                    <div className={`text-sm font-bold ${isExpired ? "text-amber-400" : "text-green-400"}`}>
+                      {isExpired ? "Expired" : "Active"}
+                    </div>
                   </div>
                   <div className="space-y-1 text-center lg:text-left">
                     <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Health</div>
                     <div className="flex items-center justify-center lg:justify-start gap-1.5">
-                      <ShieldCheck size={14} className="text-green-400" />
-                      <span className="text-sm font-bold">Healthy</span>
+                      <ShieldCheck size={14} className={isExpired ? "text-amber-400" : "text-green-400"} />
+                      <span className="text-sm font-bold">{isExpired ? "Check needed" : "Healthy"}</span>
                     </div>
                   </div>
                   <div className="space-y-1 text-center lg:text-left">
@@ -108,7 +115,9 @@ export default function AgentsPage() {
                   </div>
                   <div className="space-y-1 text-center lg:text-left">
                     <div className="text-[10px] text-dim-grey font-bold uppercase tracking-tighter">Last Seen</div>
-                    <div className="text-sm font-bold whitespace-nowrap">Active now</div>
+                    <div className="text-sm font-bold whitespace-nowrap">
+                      {agent.addedAt ? new Date(agent.addedAt).toLocaleDateString() : "Just now"}
+                    </div>
                   </div>
                 </div>
   
